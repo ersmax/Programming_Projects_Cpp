@@ -12,6 +12,7 @@ int main( ) {
     double volume_ml;
     double volume_gallons;
     int packets_needed;
+    double division;    //store temp variable
 
     cout << "Enter the volume of the milk package in milliliters:";
     cin >> volume_ml;
@@ -19,7 +20,7 @@ int main( ) {
 
     cout << "Volume in gallons: " << volume_gallons << endl;
     // Round up to ensure at least one gallon
-    double division = ML_PER_GALLON/volume_ml;
+    division = ML_PER_GALLON/volume_ml;
     packets_needed = static_cast<int>(division);
     if (division > packets_needed) {
         packets_needed++; // Round up if there's a remainder
