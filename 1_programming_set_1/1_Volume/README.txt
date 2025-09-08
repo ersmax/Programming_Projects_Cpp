@@ -17,3 +17,19 @@ If ML_PER_GALLON = 3785.41 and package volume = 1000 ml:
 If package volume = 3785.41 ml:
   division = 3785.41 / 3785.41 = 1.0
   packets_needed = 1
+
+
+An alternative solution would be:
+- Use a constant variable to store the conversion factor (ML_PER_GALLON).
+- When calculating the number of packets, use integer division and the modulo operator:
+    packets_needed = static_cast<int>(ML_PER_GALLON / volume_ml) +
+                    (static_cast<int>(ML_PER_GALLON) % static_cast<int>(volume_ml) != 0);
+- This expression rounds up only if there is a remainder, and does not use an if statement or std::ceil.
+- If ML_PER_GALLON is exactly divisible by the package volume, no extra packet is added.
+
+Example:
+If ML_PER_GALLON = 3785.41 and package volume = 1000 ml:
+  packets_needed = 3 + (3785 % 1000 != 0) = 3 + 1 = 4
+
+If package volume = 3785.41 ml:
+  packets_needed = 1 + (3785 % 3785 != 0) = 1 + 0 = 1
