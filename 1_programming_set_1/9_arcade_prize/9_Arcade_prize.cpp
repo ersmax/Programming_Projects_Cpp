@@ -21,7 +21,7 @@ int main() {
     gumballs = remaining_coupons / 3;
 
     cout << "You can get " << candy_bars << " candy bar(s) and "
-         << gumballs << " gumball(s)." << endl;
+         << gumballs << " gumball(s).\n";
 
     return 0;
 }
