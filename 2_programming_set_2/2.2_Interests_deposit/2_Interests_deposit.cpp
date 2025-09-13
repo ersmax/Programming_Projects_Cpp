@@ -26,7 +26,7 @@ int main ( ) {
             months++;
         }
 
-        cout << "The amount can be utilized for " << months << " months." << endl;
+        cout << "The amount can be used for " << months << " months.\n";
     }
 
     return 0;
