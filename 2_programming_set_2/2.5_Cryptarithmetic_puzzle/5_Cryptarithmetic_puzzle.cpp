@@ -30,9 +30,9 @@ int main ( ) {
                              << "D = " << idxD << endl;
                     }
 
-                    }
                 }
             }
         }
-        return 0;
     }
+    return 0;
+}
