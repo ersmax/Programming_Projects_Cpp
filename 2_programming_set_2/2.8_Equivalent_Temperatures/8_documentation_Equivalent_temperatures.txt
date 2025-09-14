@@ -9,7 +9,7 @@ until the two values are the same.
 
 ============================================================================================
 
-Purpose**
+Purpose
 The program finds the temperature (as an integer) where Celsius and Fahrenheit scales are equal.
 
 Logic
