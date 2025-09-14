@@ -1,21 +1,7 @@
-/*
-Write a program to calculate the grade point average (GPA) of a student by getting
-their grades for all their subjects. Grades and their grade points are
-Grade S 10 points
-Grade A 9 points
-Grade B 8 points
-Grade C 7 points
-Grade D 6 points
-Grade E 5 points
-Grade F 0 points
-The program should input the number of subjects, followed by the grade obtained
-in each subject. The program should calculate the average of the grade points and
-print it.
-*/
 #include <iostream>
 using namespace std;
 
-enum Grades {F, E = 5, D, C, B, A, S = 10};
+enum Grades {F, E = 5, D, C, B, A, S = 10, invalid};
 
 Grades charToGrade(char gradeChar) {
     switch (gradeChar) {
@@ -33,8 +19,11 @@ Grades charToGrade(char gradeChar) {
         case 'E': return E;
         case 'f':
         case 'F': return F;
-        default: cerr << "Wrong grade. Default to F.";
-                 return F;
+        default:
+            cerr << "Invalid grade. "
+                    "Please enter a valid grade.\n"
+                    "(S, A, B, C, D, E, F): ";
+            return invalid;
     }
 }
 
@@ -51,10 +40,14 @@ int main ( ) {
 
     int idx = 0;
     while (idx++ < subjects) {
-        cout << "Add the grade of the " << idx << "subject:";
+        cout << "Add the grade of the " << idx << " subject:";
         char gradeChar;
         cin >> gradeChar;
         Grades grade = charToGrade(gradeChar);
+        while (grade == invalid) {
+            cin >> gradeChar;
+            grade = charToGrade(gradeChar);
+        }
         sum += grade;
     }
     float avg = static_cast<float>(sum)/static_cast<float>(subjects);
