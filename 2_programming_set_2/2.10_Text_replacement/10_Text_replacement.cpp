@@ -1,10 +1,3 @@
-/*
-Create a text file that contains the text “I hate C++ and hate programming!” Write
-a program that reads in the text from the file and outputs each word to the console
-but replaces any occurrence of “hate” with “love.” Your program should work with
-any line of text that contains the word “hate,” not just the example given in this
-problem.
-*/
 #include <iostream>
 #include <fstream>
 #include <sstream>
