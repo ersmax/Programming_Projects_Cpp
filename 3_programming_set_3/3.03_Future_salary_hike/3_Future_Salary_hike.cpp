@@ -17,9 +17,7 @@ double totalFutureRaise(double currentSalary, double salaryHike, int years);
 
 void displayFutureRaise(int numberYears, double totalFutureRaise);
 // Precondition: numberYears is a positive integer
-// Postcondition: Displays the total of future salaries with the annuity formula
-// The annuity formula is:
-// S = P * ( ( (1 + r)^n - 1 ) / r
+// Postcondition: Displays the total of future salaries with the annuity
 
 int main( ) {
     char answer;
@@ -92,4 +90,3 @@ void displayFutureRaise(int numberYears, double totalFutureRaise) {
          << numberYears << " years is: "
          << totalFutureRaise << endl << endl;
 }
-
