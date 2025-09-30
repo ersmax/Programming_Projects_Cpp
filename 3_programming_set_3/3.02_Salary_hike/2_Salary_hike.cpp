@@ -1,12 +1,3 @@
-/*
-Write a program to gauge the rate of an employee’s raise from the previous year.
-The program asks for their annual salary in this year and the previous year. It estimates
-the hike percentage as the difference in their salary from the previous year
-divided by the previous year’s salary. Your program should allow the user to repeat
-this calculation as often as the user wishes. Define a function to compute the hike
-percentage for an employee. The hike rate should be a value of type double giving
-the rate as a percentage, for example 5.3 for 5.3%.
-*/
 #include <iostream>
 using namespace std;
 
