@@ -53,6 +53,8 @@ int main( ) {
         if (!errorHandlingHeight(heightFeet, heightInches)) {
             cerr << "Incorrect height. Retry (y/Y)?";
             cin >> answer;
+            if (answer != 'y' && answer != 'Y')
+                return -1;
         } else {
             break;
         }
@@ -65,6 +67,8 @@ int main( ) {
         if (!errorHandlingWeight(weight)) {
             cerr << "Incorrect weight. Retry (y/Y)?";
             cin >> answer;
+            if (answer != 'y' && answer != 'Y')
+                return -1;
         } else {
             break;
         }
@@ -79,6 +83,8 @@ int main( ) {
         if (!errorHandlingAge(age)) {
             cerr << "Incorrect age. Retry (y/Y)?";
             cin >> answer;
+            if (answer != 'y' && answer != 'Y')
+                return -1;
         } else {
             break;
         }
