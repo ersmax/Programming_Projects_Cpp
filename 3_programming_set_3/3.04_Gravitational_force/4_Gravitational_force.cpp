@@ -42,5 +42,3 @@ int main( ) {
 double gravitationalForce(double massBody1, double massBody2, double distance) {
     return ((G * massBody1 * massBody2) / pow(distance, 2));
 }
-
-
