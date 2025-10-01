@@ -20,8 +20,8 @@ float waistSize(int weight, int age);
 // Postcondition: returns the waist size in inches
 
 int getValidatedInput(const string& prompt, int min, int max);
-// Precondition: 0 <= min < max <= 120. Pass prompt by reference
-//               to avoid copying and improve performance
+// Precondition: Pass prompt by reference to avoid copying.
+//               min and max define the valid range
 // Postcondition: Prompts user for input until a valid integer
 //                within the specified range is entered.
 //                Or exits if user chooses not to retry.
