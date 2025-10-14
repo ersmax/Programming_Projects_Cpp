@@ -17,13 +17,12 @@ to win more games of craps, you or the house?
 
 ---
 
-**Program Overview**:
+Program Overview:
 This program simulates 10,000 games of craps using the standard "Pass Line" rules.
 It counts the number of wins and losses, calculates the probability of winning,
 and displays the results.
 
-**Function Descriptions:**
-
+Function Descriptions:
 - `int sum_two_dices();`
   Simulates rolling two six-sided dice and returns their sum (random number between 2 and 12).
 
@@ -43,12 +42,12 @@ and displays the results.
   - Displays the number of wins and losses.
   - Indicates whether the player or the house is more likely to win.
 
-**Key Variables:**
+Key Variables:
 - `games`: Number of games to simulate (10,000).
 - `wins`, `losses`: Counters for wins and losses.
 - `result`: Probability of winning, as a percentage.
 
-**Output:**
+Output:
 - The likelihood of winning (percentage).
 - Number of wins and losses.
 - A message indicating whether the house or the player is more likely to win.
