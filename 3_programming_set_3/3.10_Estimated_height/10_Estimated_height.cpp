@@ -15,6 +15,7 @@ Use the integer data type to store the heights.
 using namespace std;
 
 double estimatedHeight(char gender, int motherHeight, int fatherHeight);
+// Precondition: Gender is either
 
 int main( ) {
     char answer, gender;
@@ -22,12 +23,33 @@ int main( ) {
     int feetChild, inchesChild;
 
     do {
-        cout << "Enter the height on the father in feet and inches (separated by space):";
-        cin >> feetFather >> inchesFather;
-        cout << "Enter the height on the mother in feet and inches (separated by space):";
-        cin >> feetMother >> inchesMother;
-        cout << "Enter the gender of the child (M/F):";
-        cin >> gender;
+        // Input validation father
+        while (true) {
+            cout << "Enter the height on the father in feet and inches (separated by space):";
+            cin >> feetFather >> inchesFather;
+            if (feetFather < 5 || feetFather > 7 || inchesFather < 0 || inchesFather > 11)
+                cerr << "Error: Feet must be between 5 and 7, inches between 0 and 11.\n";
+            else
+                break;
+        }
+        // Input validation mother
+        while (true) {
+            cout << "Enter the height on the mother in feet and inches (separated by space):";
+            cin >> feetMother >> inchesMother;
+            if (feetMother < 5 || feetMother > 7 || inchesMother < 0 || inchesMother > 11)
+                cerr << "Error: Feet must be between 5 and 7, inches between 0 and 11.\n";
+            else
+                break;
+        }
+        // Input validation gender
+        while (true) {
+            cout << "Enter the gender of the child (M/F):";
+            cin >> gender;
+            if (gender != 'M' && gender != 'F')
+                cerr << "Wrong gender value. Retry.\n";
+            else
+                break;
+        }
 
         double result = estimatedHeight(gender,
                                         feetMother * 12 + inchesMother,
