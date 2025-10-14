@@ -5,9 +5,16 @@ using namespace std;
 constexpr int FACES = 6;
 
 int sum_two_dices();
+// Precondition: None
+// Postcondition: returns the sum of rolling two six-sided dice
+
 bool outcome();
+// Precondition: None
+// Postcondition: returns true if the player wins, false if the player loses
 
 int main( ) {
+    // Postcondition: Simulates 10,000 games of craps,
+    //                then displays the likelihood of winning.
     srand(time(0));
     int games = 10000;
     int wins = 0, losses = 0;
