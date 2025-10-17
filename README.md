@@ -119,8 +119,8 @@ This README lists the documentation files for the `1_programming_set_1`, `1_prog
 9. 3.09_Game_of_craps — Simulate 10,000 games of craps (Pass Line) and compute the winning probability.  
    Documentation: `3_programming_set_3/3.09_Game_of_craps/9_documentation_Game_of_craps.md`
 
-10. 3.10_Estimated_height — Estimate the height of a child based on parents' heights and gender
-    Documentation: `3_programming_set_3/3.10_Estimated_height/10_documentation_Estimated_height.md`
+10. 3.10_Estimated_height — Estimate the height of a child based on parents' heights and gender.
+    Documentation: [3.10 Estimated height](`3_programming_set_3/3.10_Estimated_height/10_documentation_Estimated_height.md`)
 
 11. 3.11_Game_of_Pig — Two-player Pig game (human vs computer) based on turn-based die rolls.
     Documentation: `3_programming_set_3/3.11_Game_of_Pig/11_documentation_Game_of_Pig.md`  
