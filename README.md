@@ -124,6 +124,7 @@ This README lists the documentation files for the `1_programming_set_1`, `1_prog
 
 11. 3.11_Game_of_Pig — Two-player Pig game (human vs computer) based on turn-based die rolls.
     Documentation: `3_programming_set_3/3.11_Game_of_Pig/11_documentation_Game_of_Pig.md`  
-    Image: `3_programming_set_3/3.11_Game_of_Pig/GameOfPig.PNG`
+    Image: ![Game of Pig](3_programming_set_3/3.11_Game_of_Pig/GameOfPig.PNG)
+
 
 
