@@ -1,7 +1,8 @@
 # Practical C++ Problems — Documentation Index
 
 This repository contains practical, real-life programming problems solved in C++.
-This README lists the documentation files for the `1_programming_set_1` collection and the `2_programming_set_2` collection.
+This README lists the documentation files for the `1_programming_set_1`, `1_programming_set_2`,
+`1_programming_set_3` collections (much more to come :-).
 
 ## Projects in `1_programming_set_1`
 
