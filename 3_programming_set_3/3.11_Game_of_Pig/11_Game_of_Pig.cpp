@@ -45,9 +45,29 @@ int main( ) {
     // time(nullptr) returns current time
     // cast the result to unsigned required by srand
     srand(static_cast<unsigned>(time(nullptr)));
+    int humanScore = 0, computerScore = 0;
+    string dummy;
 
-    // TODO
+    cout << "Press enter to start the game.\n";
+    getline(cin, dummy);
 
+    while (true) {
+        cout << "Player turn.\n";
+        humanScore += humanTurn(humanScore);
+        if (humanScore >= GOAL) {
+            cout << "Congrats, you won!\n";
+            break;
+        }
+
+        cout << "Computer turn.\n";
+        computerScore += computerTurn(computerScore);
+        if (computerScore >= GOAL) {
+            cout << "Game over. Computer won.\n";
+            break;
+        }
+    }
+
+    return 0;
 }
 
 int humanTurn(int humanTotalScore) {
@@ -60,13 +80,15 @@ int humanTurn(int humanTotalScore) {
 
         // Trivial case
         if (roll == 1) {
-            cout << "Tough luck. All points this turn are lost!\n";
+            cout << "Tough luck. All points this turn are lost!\n"
+                 << "----------------\n";
             return 0;
         }
 
         turnPoints += roll;
         cout << "Turn points: " << turnPoints << "\n"
-             << "Total if held: " << (humanTotalScore + turnPoints) << "\n";
+             << "Total if held: " << (humanTotalScore + turnPoints) << endl
+             << "----------------\n";
 
         if (humanTotalScore + turnPoints >= GOAL)
             cout << "Congratulations, you reached " << GOAL << " points";
@@ -74,8 +96,8 @@ int humanTurn(int humanTotalScore) {
         // Input validation
         while (true) {
             cout << "Roll again (r) or hold (h)? ";
-            // Extract next non-whitespace character,
-            // discards everything up to the next newline.
+            // Extract the next non-whitespace character,
+            // discards everything up to the next newline \n.
             // In case of errors, clean the stream.
             if (!(cin >> answer)) {
                 cin.clear();
@@ -97,5 +119,24 @@ int humanTurn(int humanTotalScore) {
 }
 
 int computerTurn(int computerTotalScore) {
-    // TODO
+    int turnPoint = 0, roll;
+
+    do {
+        roll = rand() % 6 + 1;
+        cout << "Computer rolled " << roll << endl;
+        if (roll == 1) {
+            cout << "Turn points by computer: 0.\n"
+                 << "Tot. points by computer: "
+                 << computerTotalScore << endl
+                 << "----------------\n";;
+            return 0;
+        }
+        turnPoint += roll;
+    } while (turnPoint < 20 && computerTotalScore + turnPoint < GOAL);
+
+    cout << "Turn points by computer: " << turnPoint << endl
+         << "Tot. points by computer: " << turnPoint + computerTotalScore << endl
+         << "----------------\n";
+
+    return turnPoint;
 }
