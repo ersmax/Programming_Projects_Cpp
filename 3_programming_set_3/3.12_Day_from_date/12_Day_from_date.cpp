@@ -49,7 +49,7 @@ day of the week in English.
 #include <algorithm>
 #include <iostream>
 #include <string>
-// #include <cctype>
+#include <cctype>
 #include <map>
 using namespace std;
 
