@@ -88,3 +88,8 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 
 11. [Game_of_Pig](3_programming_set_3/3.11_Game_of_Pig) \- Two-player Pig game (human vs computer) based on turn-based die rolls.  
     ![Game of Pig](3_programming_set_3/3.11_Game_of_Pig/GameOfPig.PNG)
+
+12. [Day_from_date](3_programming_set_3/3.12_Day_from_date) \- Input a date (e\.g\., July 4 2008) 
+    and output the corresponding day of the week using a table\-based algorithm 
+    \([Wikipedia: Calculating the day of the week](http://en.wikipedia.org/wiki/Calculating_the_day_of_the_week)\)\. 
+    Includes both map\-based and switch\-based implementations for month value lookup\.
