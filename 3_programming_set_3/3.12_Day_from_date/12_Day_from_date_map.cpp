@@ -80,7 +80,9 @@ int getCenturyValue(int year);
 
 int getYearValue(int year);
 
-int getMonthValue(const string& monthRaw, int year);
+// int getMonthValue(const string& monthRaw, int year);
+
+int getMonthValue(int monthRaw, int year);
 
 int convertMonth(const string& monthRaw);
 
@@ -92,7 +94,12 @@ int main( ) {
     cout << "Enter date (Month Day Year, for example: July 4 2008):";
     cin >> month >> dayOfMonth >> year;
 
-    monthValue = getMonthValue(month, year);
+    int monthInt = convertMonth(month);
+    if (monthInt == -1) {
+        cerr << "Error: Invalid month name.\n";
+        return -1;
+    }
+    monthValue = getMonthValue(monthInt, year);
     yearValue = getYearValue(year);
     centuryValue = getCenturyValue(year);
 
@@ -119,58 +126,54 @@ int getYearValue(int year) {
     return (yearCentury + yearCentury / 4);     // factor in leap years
 }
 
-int getMonthValue(const string& monthRaw, int year) {
-    string month = monthRaw;
+// int getMonthValue(const string& monthRaw, int year) {
+//     string month = monthRaw;
+//
+//     transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
+//
+//     if (isLeapYear(year) && (month == "JANUARY" || month == "FEBRUARY"))
+//         month += "_LEAP";
+//
+//     auto iteratorMapMonth = monthMap.find(month);
+//     if (iteratorMapMonth != monthMap.end())
+//         return iteratorMapMonth -> second;
+//
+//     return -1;
+// }
 
-    transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
-
-    if (isLeapYear(year) && (month == "JANUARY" || month == "FEBRUARY"))
-        month += "_LEAP";
-
-    auto iteratorMapMonth = monthMap.find(month);
-    if (iteratorMapMonth != monthMap.end())
-        return iteratorMapMonth -> second;
-
-    return -1;
+int getMonthValue(int month, int year) {
+    switch (month) {
+        case 1:  return isLeapYear(year) ? 6 : 0; // January
+        case 2:  return isLeapYear(year) ? 2 : 3; // February
+        case 3:  return 3;
+        case 4:  return 6;
+        case 5:  return 1;
+        case 6:  return 4;
+        case 7:  return 6;
+        case 8:  return 2;
+        case 9:  return 5;
+        case 10: return 0;
+        case 11: return 3;
+        case 12: return 5;
+        default: return -1; // Invalid month
+    }
 }
 
-// int getMonthValue(int month, int year) {
-//     switch (month) {
-//         case 1:  return isLeapYear(year) ? 6 : 0; // January
-//         case 2:  return isLeapYear(year) ? 2 : 3; // February
-//         case 3:  return 3;
-//         case 4:  return 6;
-//         case 5:  return 1;
-//         case 6:  return 4;
-//         case 7:  return 6;
-//         case 8:  return 2;
-//         case 9:  return 5;
-//         case 10: return 0;
-//         case 11: return 3;
-//         case 12: return 5;
-//         default: return -1; // Invalid month
-//     }
-// }
+int convertMonth(const string& monthRaw) {
+    static const string months[] = {
+        "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+        "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+    };
 
-// int convertMonth(const string& monthRaw) {
-//     string month;
-//     transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
-//     switch (month) {
-//         case "JANUARY":  return 1;
-//         case "FEBRUARY":  return 2;
-//         case "MARCH":  return 3;
-//         case "APRIL":  return 4;
-//         case "MAY":  return 5;
-//         case "JUNE":  return 6;
-//         case "JULY":  return 7;
-//         case "AUGUST":  return 8;
-//         case "SEPTEMBER":  return 9;
-//         case "OCTOBER": return 10;
-//         case "NOVEMBER": return 11;
-//         case "DECEMBER": return 12;
-//         default: return -1; // Invalid month
-//     }
-// }
+    string month = monthRaw;
+    transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
+
+    for (int idx = 0; idx < 12; ++idx)
+        if (month == months[idx])
+            return (idx + 1);
+
+    return -1; // Invalid month
+}
 
 
 
