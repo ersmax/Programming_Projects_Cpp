@@ -125,7 +125,7 @@ int getMonthValue(int month, int year) {
         // Month values based on the table provided by wikipedia.
         // Factor in leap years for Jan and Feb.
         case 1:  return isLeapYear(year) ? 6 : 0;
-        case 2:  return isLeapYear(year) ? 2 : 3; 
+        case 2:  return isLeapYear(year) ? 2 : 3;
         case 3:  return 3;
         case 4:  return 6;
         case 5:  return 1;

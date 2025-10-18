@@ -46,11 +46,11 @@ Your program should allow the user to enter any date and output the correspondin
 day of the week in English.
 */
 
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <cctype>
-#include <map>
+#include <algorithm>    // for transform
+#include <iostream>     // for cin, cout, cerr
+#include <string>       // for string class
+#include <cctype>       // for toupper
+#include <map>          // for map
 using namespace std;
 
 
@@ -75,18 +75,25 @@ const string days[] = { "Sunday", "Monday",
                         "Saturday" };
 
 bool isLeapYear(int year);
+// Precondition: year is a positive integer
+// Postcondition: returns true if year is a leap year, false otherwise
 
 int getCenturyValue(int year);
+// Precondition: year is a positive integer
+// Postcondition: returns the century value for the given year
 
 int getYearValue(int year);
+// Precondition: year is a positive integer
+// Postcondition: returns the year value for the given century (e.g. 2025 -> 25)
 
-// int getMonthValue(const string& monthRaw, int year);
-
-int getMonthValue(int monthRaw, int year);
-
-int convertMonth(const string& monthRaw);
+int getMonthValue(const string& monthRaw, int year);
+// Precondition: month is a String (e.g., January), year is a positive integer
+// Postcondition: returns the month value for the given month and year,
+// accounting for leap years, by using the map provided as global constant.
 
 int main( ) {
+    // Postcondition: Prompts user for a date (e.g., July 4 2008)
+    // and displays the corresponding day of the week.
     int dayOfMonth, year, monthValue, yearValue, centuryValue;
     int dayOfWeek;
     string month;
@@ -94,12 +101,7 @@ int main( ) {
     cout << "Enter date (Month Day Year, for example: July 4 2008):";
     cin >> month >> dayOfMonth >> year;
 
-    int monthInt = convertMonth(month);
-    if (monthInt == -1) {
-        cerr << "Error: Invalid month name.\n";
-        return -1;
-    }
-    monthValue = getMonthValue(monthInt, year);
+    monthValue = getMonthValue(month, year);
     yearValue = getYearValue(year);
     centuryValue = getCenturyValue(year);
 
@@ -123,59 +125,20 @@ int getCenturyValue(int year) {
 
 int getYearValue(int year) {
     int yearCentury = year % 100;
-    return (yearCentury + yearCentury / 4);     // factor in leap years
+    return (yearCentury + yearCentury / 4);
 }
 
-// int getMonthValue(const string& monthRaw, int year) {
-//     string month = monthRaw;
-//
-//     transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
-//
-//     if (isLeapYear(year) && (month == "JANUARY" || month == "FEBRUARY"))
-//         month += "_LEAP";
-//
-//     auto iteratorMapMonth = monthMap.find(month);
-//     if (iteratorMapMonth != monthMap.end())
-//         return iteratorMapMonth -> second;
-//
-//     return -1;
-// }
-
-int getMonthValue(int month, int year) {
-    switch (month) {
-        case 1:  return isLeapYear(year) ? 6 : 0; // January
-        case 2:  return isLeapYear(year) ? 2 : 3; // February
-        case 3:  return 3;
-        case 4:  return 6;
-        case 5:  return 1;
-        case 6:  return 4;
-        case 7:  return 6;
-        case 8:  return 2;
-        case 9:  return 5;
-        case 10: return 0;
-        case 11: return 3;
-        case 12: return 5;
-        default: return -1; // Invalid month
-    }
-}
-
-int convertMonth(const string& monthRaw) {
-    static const string months[] = {
-        "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
-        "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
-    };
-
+int getMonthValue(const string& monthRaw, int year) {
     string month = monthRaw;
+
     transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
 
-    for (int idx = 0; idx < 12; ++idx)
-        if (month == months[idx])
-            return (idx + 1);
+    if (isLeapYear(year) && (month == "JANUARY" || month == "FEBRUARY"))
+        month += "_LEAP";
 
-    return -1; // Invalid month
+    auto iteratorMapMonth = monthMap.find(month);
+    if (iteratorMapMonth != monthMap.end())
+        return iteratorMapMonth -> second;
+
+    return -1;
 }
-
-
-
-
-
