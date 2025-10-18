@@ -1,7 +1,8 @@
 Write a program that inputs a date (e.g., July 4, 2008) and outputs the day of
-the week that corresponds to that date. The following algorithm is from http://
-en.wikipedia.org/wiki/Calculating_the_day_of_the_week. The implementation
-will require several functions:
+the week that corresponds to that date. The following algorithm is from
+[Wikipedia: Calculating the day of the week](http://en.wikipedia.org/wiki/Calculating_the_day_of_the_week). 
+
+The implementation will require several functions:
 bool isLeapYear(int year);
 This function should return true if year is a leap year and false if it is not. Here
 is pseudocode to determine a leap year:
