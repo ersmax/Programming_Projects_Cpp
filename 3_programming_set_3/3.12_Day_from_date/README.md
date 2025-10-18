@@ -21,19 +21,23 @@ example, from 2008 we extract 08. Then (8/4) = 2 remainder 0. Return 2 + 8 = 10.
 int getMonthValue(int month, int year);
 This function should return a value based on the following table and will require
 invoking the isLeapYear function:
-MONTH RETURN VALUE
-January 0 (6 if year is a leap year)
-February 3 (2 if year is a leap year)
-March 3
-April 6
-May 1
-June 4
-July 6
-August 2
-September 5
-October 0
-November 3
-December 5
+Here is the information in a Markdown table:
+
+| Month     | Return Value (Normal Year) | Return Value (Leap Year) |
+|-----------|---------------------------|--------------------------|
+| January   | 0                         | 6                        |
+| February  | 3                         | 2                        |
+| March     | 3                         | 3                        |
+| April     | 6                         | 6                        |
+| May       | 1                         | 1                        |
+| June      | 4                         | 4                        |
+| July      | 6                         | 6                        |
+| August    | 2                         | 2                        |
+| September | 5                         | 5                        |
+| October   | 0                         | 0                        |
+| November  | 3                         | 3                        |
+| December  | 5                         | 5                        |
+
 Finally, to compute the day of the week, compute the sum of the date’s day plus
 the values returned by getMonthValue, getYearValue, and getCenturyValue.
 Divide the sum by 7 and compute the remainder. A remainder of 0 corresponds to
