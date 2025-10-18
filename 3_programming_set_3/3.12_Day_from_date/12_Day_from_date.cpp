@@ -1,0 +1,178 @@
+/*
+Write a program that inputs a date (e.g., July 4, 2008) and outputs the day of
+the week that corresponds to that date. The following algorithm is from http://
+en.wikipedia.org/wiki/Calculating_the_day_of_the_week. The implementation
+will require several functions:
+bool isLeapYear(int year);
+This function should return true if year is a leap year and false if it is not. Here
+is pseudocode to determine a leap year:
+leap_year = ((year divisible by 400) or (year divisible by 4 and year not divisible
+by 100))
+int getCenturyValue(int year);
+This function should take the first two digits of the year (i.e., the century), divide
+by 4, and save the remainder. Subtract the remainder from 3 and return this
+value multiplied by 2. For example, the year 2008 becomes (20/4) = 5 remainder
+0. 3 - 0 = 3. Return 3 * 2 = 6.
+int getYearValue(int year);
+This function computes a value based on the years since the beginning of the
+century. First, extract the last two digits of the year. For example, 08 is extracted
+for 2008. Next, factor in leap years. Divide the value from the previous step by 4
+and discard the remainder. Add the two results together and return this value. For
+example, from 2008 we extract 08. Then (8/4) = 2 remainder 0. Return 2 + 8 = 10.
+int getMonthValue(int month, int year);
+This function should return a value based on the following table and will require
+invoking the isLeapYear function:
+MONTH RETURN VALUE
+January 0 (6 if year is a leap year)
+February 3 (2 if year is a leap year)
+March 3
+April 6
+May 1
+June 4
+July 6
+August 2
+September 5
+October 0
+November 3
+December 5
+Finally, to compute the day of the week, compute the sum of the date’s day plus
+the values returned by getMonthValue, getYearValue, and getCenturyValue.
+Divide the sum by 7 and compute the remainder. A remainder of 0 corresponds to
+Sunday, 1 corresponds to Monday, etc.—up to 6—which corresponds to Saturday.
+For example, the date July 4, 2008 should be computed as (day of month) +
+(getMonthValue) + (getYearValue) + (getCenturyValue) = 4 + 6 + 10 + 6 =
+26. 26/7 = 3 remainder 5. The fifth day of the week corresponds to Friday.
+Your program should allow the user to enter any date and output the corresponding
+day of the week in English.
+*/
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+// #include <cctype>
+#include <map>
+using namespace std;
+
+
+const map<string, int> monthMap = {
+    {"JANUARY", 0}, {"JANUARY_LEAP", 6},
+    {"FEBRUARY", 3}, {"FEBRUARY_LEAP", 2},
+    {"MARCH", 3},
+    {"APRIL", 6},
+    {"MAY", 1},
+    {"JUNE", 4},
+    {"JULY", 6},
+    {"AUGUST", 2},
+    {"SEPTEMBER", 5},
+    {"OCTOBER", 0},
+    {"NOVEMBER", 3},
+    {"DECEMBER", 5}
+};
+
+const string days[] = { "Sunday", "Monday",
+                        "Tuesday", "Wednesday",
+                        "Thursday", "Friday",
+                        "Saturday" };
+
+bool isLeapYear(int year);
+
+int getCenturyValue(int year);
+
+int getYearValue(int year);
+
+int getMonthValue(const string& monthRaw, int year);
+
+int convertMonth(const string& monthRaw);
+
+int main( ) {
+    int dayOfMonth, year, monthValue, yearValue, centuryValue;
+    int dayOfWeek;
+    string month;
+
+    cout << "Enter date (Month Day Year, for example: July 4 2008):";
+    cin >> month >> dayOfMonth >> year;
+
+    monthValue = getMonthValue(month, year);
+    yearValue = getYearValue(year);
+    centuryValue = getCenturyValue(year);
+
+    dayOfWeek = (dayOfMonth + monthValue+ yearValue + centuryValue) % 7;
+    cout << days[dayOfWeek] << ", "
+         << month << " "
+         << dayOfMonth << ", "
+         << year << endl;
+    return 0;
+}
+
+bool isLeapYear(int year) {
+    return ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0));
+}
+
+int getCenturyValue(int year) {
+    int century = year / 100;
+    int remainder = century % 4;
+    return ((3 - remainder) * 2);
+}
+
+int getYearValue(int year) {
+    int yearCentury = year % 100;
+    return (yearCentury + yearCentury / 4);     // factor in leap years
+}
+
+int getMonthValue(const string& monthRaw, int year) {
+    string month = monthRaw;
+
+    transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
+
+    if (isLeapYear(year) && (month == "JANUARY" || month == "FEBRUARY"))
+        month += "_LEAP";
+
+    auto iteratorMapMonth = monthMap.find(month);
+    if (iteratorMapMonth != monthMap.end())
+        return iteratorMapMonth -> second;
+
+    return -1;
+}
+
+// int getMonthValue(int month, int year) {
+//     switch (month) {
+//         case 1:  return isLeapYear(year) ? 6 : 0; // January
+//         case 2:  return isLeapYear(year) ? 2 : 3; // February
+//         case 3:  return 3;
+//         case 4:  return 6;
+//         case 5:  return 1;
+//         case 6:  return 4;
+//         case 7:  return 6;
+//         case 8:  return 2;
+//         case 9:  return 5;
+//         case 10: return 0;
+//         case 11: return 3;
+//         case 12: return 5;
+//         default: return -1; // Invalid month
+//     }
+// }
+
+// int convertMonth(const string& monthRaw) {
+//     string month;
+//     transform(monthRaw.begin(), monthRaw.end(), month.begin(), ::toupper);
+//     switch (month) {
+//         case "JANUARY":  return 1;
+//         case "FEBRUARY":  return 2;
+//         case "MARCH":  return 3;
+//         case "APRIL":  return 4;
+//         case "MAY":  return 5;
+//         case "JUNE":  return 6;
+//         case "JULY":  return 7;
+//         case "AUGUST":  return 8;
+//         case "SEPTEMBER":  return 9;
+//         case "OCTOBER": return 10;
+//         case "NOVEMBER": return 11;
+//         case "DECEMBER": return 12;
+//         default: return -1; // Invalid month
+//     }
+// }
+
+
+
+
+
