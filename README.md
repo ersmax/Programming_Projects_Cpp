@@ -93,3 +93,9 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
     and output the corresponding day of the week using a table\-based algorithm 
     \([Wikipedia: Calculating the day of the week](http://en.wikipedia.org/wiki/Calculating_the_day_of_the_week)\)\. 
     Includes both map\-based and switch\-based implementations for month value lookup\.
+
+13. [Price_Winners_Lottery](3_programming_set_3/3.13_Price_Winners_Lottery) 
+    \- Randomly select 4 unique winners from 25 finalists for identical prizes. 
+    Includes two solution approaches: swap-and-shrink pool and boolean flag array to ensure no duplicate winners.
+
+---
