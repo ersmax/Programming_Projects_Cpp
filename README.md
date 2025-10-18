@@ -95,7 +95,8 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
     Includes both map\-based and switch\-based implementations for month value lookup\.
 
 13. [Price_Winners_Lottery](3_programming_set_3/3.13_Price_Winners_Lottery) 
-    \- Randomly select 4 unique winners from 25 finalists for identical prizes. 
+    \- Randomly select Unique winners from Lottery finalists for identical prizes.  
+    Uses the independent rule of selection without replacement.
     Includes two solution approaches: swap-and-shrink pool and boolean flag array to ensure no duplicate winners.
 
 ---
