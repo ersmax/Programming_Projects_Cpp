@@ -46,110 +46,44 @@ day of the week in English.
 
 ---
 
-### 1. Map-Based Solution
-
-
-**Description:**  
-Uses a `std::map<string, int>` to associate month names (as uppercase strings) 
-with their corresponding values. Leap years are handled by appending `"_LEAP"` 
-to the month string for January and February.
-
-**Advantages:**
-- **Scalability:** Easy to add or modify month values.
-- **Readability:** Direct mapping, less code clutter.
-- **String Input:** Accepts month names directly from user input.
-
-**Disadvantages:**
-- **Memory:** Slightly more memory usage for the map.
-- **String Manipulation:** Requires string transformation and concatenation.
-
-**Example:**
-```cpp
-int getMonthValue(const string& monthRaw, int year) {
-    string month = monthRaw;
-    transform(month.begin(), month.end(), month.begin(), ::toupper);
-    if (isLeapYear(year) && (month == "JANUARY" || month == "FEBRUARY"))
-        month += "_LEAP";
-    auto it = monthMap.find(month);
-    if (it != monthMap.end())
-        return it->second;
-    return -1;
-}
-```
-
+Two versions, depending on the use of map or switch for month value lookup.
 ---
 
-### 2. Switch-Based Solution
+## Map-Based vs Switch-Based Implementation
 
-**Description:**  
-Uses a `switch` statement on an integer month value (1-12) to return the corresponding value. Requires a separate function to convert month names to integers.
+### Map-Based Version (`12_Day_from_date_map.cpp`)
 
-**Advantages:**
-- **Performance:** Slightly faster, no map lookup.
-- **Simplicity:** Straightforward for small, fixed sets.
+- **Month Value Lookup:** Uses a `std::map<string, int>` to associate month names (in uppercase) with 
+  their corresponding values. Handles leap years by appending `"_LEAP"` to `"JANUARY"` and `"FEBRUARY"`.
+- **Input:** Accepts month names as strings directly from user input.
+- **Readability & Maintainability:** Easy to read and extend. Adding or modifying month values is straightforward.
+- **Performance:** Slightly slower due to string manipulation and map lookup, but negligible for this use case.
+- **Error Handling:** Returns `-1` if the month is not found in the map.
 
-**Disadvantages:**
-- **Verbosity:** More code, less maintainable for changes.
-- **String Conversion:** Needs a function to convert month names to integers.
-- **Error-Prone:** Harder to extend or modify.
+### Switch-Based Version (`12_Day_from_date_switch.cpp`)
 
-**Example:**
-```cpp
-int getMonthValue(int month, int year) {
-    switch (month) {
-        case 1:  return isLeapYear(year) ? 6 : 0;
-        case 2:  return isLeapYear(year) ? 2 : 3;
-        case 3:  return 3;
-        case 4:  return 6;
-        case 5:  return 1;
-        case 6:  return 4;
-        case 7:  return 6;
-        case 8:  return 2;
-        case 9:  return 5;
-        case 10: return 0;
-        case 11: return 3;
-        case 12: return 5;
-        default: return -1;
-    }
-}
+- **Month Value Lookup:** Uses a `switch` statement on an integer month value (1-12) to return the corresponding value. 
+  Leap years are handled with conditional logic inside the switch.
+- **Input:** Requires converting the month name string to an integer (1-12) using a helper function.
+- **Readability & Maintainability:** More verbose and less flexible. Adding or changing months requires editing 
+  the switch statement.
+- **Performance:** Slightly faster due to direct integer comparison.
+- **Error Handling:** Returns `-1` for invalid months after conversion.
 
-int convertMonth(const string& monthRaw) {
-    string month = monthRaw;
-    transform(month.begin(), month.end(), month.begin(), ::toupper);
-    if (month == "JANUARY") return 1;
-    if (month == "FEBRUARY") return 2;
-    if (month == "MARCH") return 3;
-    if (month == "APRIL") return 4;
-    if (month == "MAY") return 5;
-    if (month == "JUNE") return 6;
-    if (month == "JULY") return 7;
-    if (month == "AUGUST") return 8;
-    if (month == "SEPTEMBER") return 9;
-    if (month == "OCTOBER") return 10;
-    if (month == "NOVEMBER") return 11;
-    if (month == "DECEMBER") return 12;
-    return -1;
-}
-```
+### Summary Table
+
+| Feature         | Map-Based Version                | Switch-Based Version             |
+|-----------------|----------------------------------|----------------------------------|
+| Input Type      | String (month name)              | Integer (converted from string)  |
+| Month Lookup    | Map (`std::map<string, int>`)    | Switch statement                 |
+| Readability     | High                             | Medium                           |
+| Maintainability | High                             | Low                              |
+| Performance     | Medium                           | High                             |
+| Scalability     | High                             | Low                              |
+| Error Handling  | Map lookup, returns `-1`         | Switch default, returns `-1`     |
+
 
 ---
-
-### **Summary Table**
-
-| Feature         | Map-Based Solution         | Switch-Based Solution      |
-|-----------------|---------------------------|---------------------------|
-| Readability     | High                      | Medium                    |
-| Maintainability | High                      | Low                       |
-| Performance     | Medium                    | High                      |
-| Scalability     | High                      | Low                       |
-| Input Type      | String (direct)           | Integer (conversion req.) |
-
---- 
-
-Here is an updated section for your `README.md` explaining the other functions used in the program:
-
----
-
 ### Other Functions Explained
 
 #### `bool isLeapYear(int year)`
