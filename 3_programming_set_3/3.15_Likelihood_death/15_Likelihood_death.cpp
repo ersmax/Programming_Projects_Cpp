@@ -55,6 +55,7 @@ Keep stopping condition consistent: death during year at age A means return A (n
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <vector>
 using namespace std;
 
@@ -69,15 +70,14 @@ int main( ) {
 
 
 void readFile(const string &path, vector<double> &male, vector<double> &female) {
-    string line;
+    string line, text;
+    vector<string> lineFields;
     ifstream inputStream;
-    istringstream iss;
-    string field;
-    vector<string> token;
+
     int age;
     double maleDeathProbability, femaleDeathProbability;
 
-    inputStream.open(PATH);
+    inputStream.open(path);
 
     if (!inputStream)
         return;
@@ -87,32 +87,52 @@ void readFile(const string &path, vector<double> &male, vector<double> &female) 
         return;
 
     // read rows
-    while (inputStream >> line) {
-
+    while (getline(inputStream, line)) {
 
         if (line.empty())
             continue;
 
-        iss.open(line);
+        istringstream iss(line);
 
-        while (iss >> field)
-            token.push_back(field);
+        while (iss >> text)
+            lineFields.push_back(text);
 
-        if (token.size() < 5)
+        // at least 5 fields
+        // (women death prob is the 5th field)
+        if (lineFields.size() < 5)
             continue;
 
+        // read age
         try {
-            age = stoi(token[0]);
+            age = stoi(lineFields[0]);
         } catch (...) {
             continue;
         }
 
+        // read likelihood of death for men
         try {
-            maleDeathProbability = stod(token[1]);
+            maleDeathProbability = stod(lineFields[1]);
         } catch (...) {
-            maleDeathProbability = 
+            maleDeathProbability = 0.0;
         }
 
+        // read likelihood of death for women
+        try {
+            femaleDeathProbability = stod(lineFields[4]);
+        } catch (...) {
+            femaleDeathProbability = 0.0;
+        }
+
+        if (age < 0)
+            continue;
+
+        if (age >= static_cast<int>(male.size()) ) {
+            male.resize(age + 1, 0.0);
+            female.resize(age + 1, 0.0);
+        }
+
+        male[age] = maleDeathProbability;
+        female[age] = femaleDeathProbability;
     }
 
     inputStream.close();
