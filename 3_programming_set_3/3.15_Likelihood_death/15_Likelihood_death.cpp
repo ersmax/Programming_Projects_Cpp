@@ -61,7 +61,12 @@ using namespace std;
 
 const string PATH = "likelihood_death_2025.txt";
 
+string commaRemoval(const string& s);
+//
+// Postcondition: remove commas for stoi and stod
+
 void readFile(const string& path, vector<double>& male, vector<double>& female);
+
 
 int main( ) {
     // TODO
@@ -69,56 +74,54 @@ int main( ) {
 }
 
 
+string commaRemoval(const string &word) {
+    string out;
+    out.reserve(word.size());           // pre-allocate space for performance
+    for (int idx = 0; idx < word.size(); ++idx)
+        if (word[idx] != ',')
+            out.push_back(word[idx]);   // push_back won't reallocate
+    return out;                         //    until capacity exceeded (performance)
+}
+
+
 void readFile(const string &path, vector<double> &male, vector<double> &female) {
     string line, text;
-    vector<string> lineFields;
     ifstream inputStream;
-
     int age;
     double maleDeathProbability, femaleDeathProbability;
 
     inputStream.open(path);
 
-    if (!inputStream)
-        return;
+    if (!inputStream) return;
+    if (!getline(inputStream, line)) return; // skip header
 
-    // skip header
-    if (!getline(inputStream, line))
-        return;
+    while (getline(inputStream, line)) {    // read rows
 
-    // read rows
-    while (getline(inputStream, line)) {
+        if (line.empty()) continue;
 
-        if (line.empty())
-            continue;
-
-        istringstream iss(line);
+        vector<string> lineFields;  // save the fields
+        istringstream iss(line);    // create string stream to parse line
 
         while (iss >> text)
             lineFields.push_back(text);
 
-        // at least 5 fields
-        // (women death prob is the 5th field)
-        if (lineFields.size() < 5)
-            continue;
+        if (lineFields.size() < 5)  // at least 5 fields, or discard line
+            continue;               //    (women death prob is 5th field)
 
-        // read age
         try {
-            age = stoi(lineFields[0]);
+            age = stoi(lineFields[0]);  // field age
         } catch (...) {
             continue;
         }
 
-        // read likelihood of death for men
         try {
-            maleDeathProbability = stod(lineFields[1]);
+            maleDeathProbability = stod(lineFields[1]); // field likelihood death men
         } catch (...) {
             maleDeathProbability = 0.0;
         }
 
-        // read likelihood of death for women
         try {
-            femaleDeathProbability = stod(lineFields[4]);
+            femaleDeathProbability = stod(lineFields[4]); // field likelihood death women
         } catch (...) {
             femaleDeathProbability = 0.0;
         }
