@@ -103,4 +103,11 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
     \- Compute the square root of a positive number using the Babylonian algorithm until convergence within 
     1% of the previous guess. Use functions and input validation with several numbers, including error handling 
     for negative inputs.
+
+15. [Likelihood of Death](3_programming_set_3/3.15_Likelihood_death) 
+    \- Simulate the age at which a person will die in the USA using an Actuarial Life table provided by 
+    the Social Security Administration for the 2025. 
+    Input: starting `age` and `gender` (`M`/`F`). Output: simulated age of death (stops at `MAX_AGE` = 120). 
+    Data file: [Data File](3_programming_set_3/3.15_Likelihood_death/likelihood_death_2025.txt) available at
+    the [Social Security Administration website](https://www.ssa.gov/OACT/STATS/table4c6.html).
 ---
