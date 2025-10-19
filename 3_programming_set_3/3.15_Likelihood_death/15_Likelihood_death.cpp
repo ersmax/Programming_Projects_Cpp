@@ -57,6 +57,8 @@ Keep stopping condition consistent: death during year at age A means return A (n
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 const string PATH = "likelihood_death_2025.txt";
@@ -67,9 +69,25 @@ string commaRemoval(const string& s);
 
 void readFile(const string& path, vector<double>& male, vector<double>& female);
 
+double simulate(int age, char gender, vector<double>& male, vector<double>& female);
 
 int main( ) {
-    // TODO
+    // seed the C library pseudorandom generator
+    //      time(nullptr) returns system time
+    //      cast result to uns int required by srand
+    srand(static_cast<unsigned int>(time(nullptr)));
+    int age;
+    char gender;
+    vector<double> male, female;
+
+    readFile(PATH, male, female);
+
+    cout << "Enter age: ";
+    cin >> age;
+    cout << "Enter gender (M/F):";
+    cin >> gender;
+
+
     return 0;
 }
 
@@ -82,7 +100,6 @@ string commaRemoval(const string &word) {
             out.push_back(word[idx]);   // push_back won't reallocate
     return out;                         //    until capacity exceeded (performance)
 }
-
 
 void readFile(const string &path, vector<double> &male, vector<double> &female) {
     string line, text;
@@ -99,7 +116,7 @@ void readFile(const string &path, vector<double> &male, vector<double> &female) 
 
         if (line.empty()) continue;
 
-        vector<string> lineFields;  // save the fields
+        vector<string> lineFields;  // `container` of fields
         istringstream iss(line);    // create string stream to parse line
 
         while (iss >> text)
@@ -141,5 +158,13 @@ void readFile(const string &path, vector<double> &male, vector<double> &female) 
     inputStream.close();
 }
 
+double simulate(int age, char gender, vector<double>& male, vector<double>& female) {
+    double deathManReference = male[age];
+    double deathWomanReference = female[age];
+
+    double 
+
+    return 0;
+}
 
 
