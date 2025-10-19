@@ -99,4 +99,8 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
     Uses the independent rule of selection without replacement.
     Includes two solution approaches: swap-and-shrink pool and boolean flag array to ensure no duplicate winners.
 
+14. [Babylonian_square_root](3_programming_set_3/3.14_Babylonian_square_root) 
+    \- Compute the square root of a positive number using the Babylonian algorithm until convergence within 
+    1% of the previous guess. Use functions and input validation with several numbers, including error handling 
+    for negative inputs.
 ---
