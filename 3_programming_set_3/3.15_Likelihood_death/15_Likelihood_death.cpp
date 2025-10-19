@@ -7,8 +7,16 @@
 #include <ctime>        // for time
 #include <filesystem>   // for current_path
 #include <windows.h>    // for Windows filesystem
-using namespace std;
+using std::cerr;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::istringstream;
+using std::string;
+using std::vector;
 namespace fs = std::filesystem;
+
 
 const string PATH = "3_programming_set_3/3.15_Likelihood_death/likelihood_death_2025.txt";
 // File path to life death probability data.
