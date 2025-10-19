@@ -5,8 +5,6 @@ file LifeDeathProbability.txt, which is included on the website for the book.
 There are three values for each row: the age, the death probability for a male, and
 the death probability for a female. For example, the first five lines are
 
-Table of age, male death probability, and female death probability:
-
 | Exact age | Male death probability | Female death probability |
 |---:|---:|---:|
 | 0 | 0.006990 | 0.005728 |
