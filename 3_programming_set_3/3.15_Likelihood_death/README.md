@@ -2,7 +2,7 @@
 
 ---
 
-# Likelihood of Death Simulator
+# Likelihood of Death in the USA simulator
 
 ## Overview
 - Small C++ program that simulates the age at which a person will die using an actuarial life table.
@@ -13,6 +13,26 @@
 - `3_programming_set_3/3.15_Likelihood_death/15_Likelihood_death.cpp` — main implementation.
 - `3_programming_set_3/3.15_Likelihood_death/likelihood_death_2025.txt` — cleaned data used by the program.
 - `3_programming_set_3/3.15_Likelihood_death/README.md` — this file.
+
+## Summary of procedure followed
+
+- Read life‑table file `LifeDeathProbability.txt` once and parse rows into aligned vectors: 
+  male death probabilities, female death probabilities;
+- Validate and clean fields while parsing (skip empty/malformed lines; 
+  convert strings to numeric with `std::stoi`/`std::stod` inside `try`/`catch` 
+  and default invalid numeric fields to `0.0`);
+- In `main`: user input (integer age and sex flag `M`/`F`);
+- Seed once by using the Time of the system;
+- Simulation (`simulate(age, sex)`): start at the input age; for each age up to `MAX_AGE`:
+    - Draw a random number in \[0,1);
+    - Compare to the death probability for that age/gender; 
+    - if `random <= probability` return the current age (death occurs that year);
+    - otherwise increment age and continue;
+    - If `MAX_AGE` is reached return `MAX_AGE`;
+- Handle edge cases: if input age > data max treat as `MAX_AGE` (or return input age); 
+- Ensure vectors are resized so indexing by age is safe `.resize(age + 1, 0.0)`;
+- Implementation notes: preferred loading data into memory for repeated simulations; 
+- Keep a small comma‑removal helper available for alternative data formats.
 
 ## Data source
 - Source figures: Social Security Administration table, 2025: https://www.ssa.gov/OACT/STATS/table4c6.html

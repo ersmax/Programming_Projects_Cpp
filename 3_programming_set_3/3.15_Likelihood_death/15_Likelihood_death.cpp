@@ -87,10 +87,10 @@ int main( ) {
 
     cout << "Curret working directory: "
          << fs::current_path() << endl;
-    
+
     if (!readFile(PATH, male, female)) return -1;
 
-    cout << "Enter age: ";
+    cout << "Enter age:";
     cin >> age;
     cout << "Enter gender (M/F):";
     cin >> gender;
