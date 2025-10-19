@@ -108,6 +108,6 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
     \- Simulate the age at which a person will die in the USA using an Actuarial Life table provided by 
     the Social Security Administration for the 2025. 
     Input: starting `age` and `gender` (`M`/`F`). Output: simulated age of death (stops at `MAX_AGE` = 120). 
-    Data file: [Data File](3_programming_set_3/3.15_Likelihood_death/likelihood_death_2025.txt) available at
+    [Data File](3_programming_set_3/3.15_Likelihood_death/likelihood_death_2025.txt) available at
     the [Social Security Administration website](https://www.ssa.gov/OACT/STATS/table4c6.html).
 ---
