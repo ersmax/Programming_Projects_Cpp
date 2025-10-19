@@ -2,9 +2,6 @@
 
 ---
 
-README content for `3_programming_set_3/3.15_Likelihood_death/README.md`:
-
-```markdown
 # Likelihood of Death Simulator
 
 ## Overview
@@ -206,6 +203,3 @@ Note: The period life expectancy at a given age for 2022 is the average remainin
 Data source: Social Security Administration table (2022 period life table) — https://www.ssa.gov/OACT/STATS/table4c6.html
 
 Data preparation: The data in this table was collected and cleaned locally for this project.
-
-
-```
