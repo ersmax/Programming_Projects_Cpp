@@ -1,6 +1,6 @@
 The Social Security Administration maintains an actuarial life table that contains
-the probability that a person in the United States will die (http://www.ssa.gov/
-OACT/STATS/table4c6.html). The death probabilities for 2009 are stored in the
+the probability that a person in the United States will die (http://www.ssa.gov/OACT/STATS/table4c6.html). 
+The death probabilities for 2009 are stored in the
 file LifeDeathProbability.txt, which is included on the website for the book.
 There are three values for each row: the age, the death probability for a male, and
 the death probability for a female. For example, the first five lines are
