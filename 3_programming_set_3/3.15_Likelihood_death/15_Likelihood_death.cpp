@@ -59,17 +59,22 @@ Keep stopping condition consistent: death during year at age A means return A (n
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <filesystem>
+#include <windows.h>
 using namespace std;
+namespace fs = std::filesystem;
 
-const string PATH = "likelihood_death_2025.txt";
+const string PATH = "3_programming_set_3/3.15_Likelihood_death/likelihood_death_2025.txt";
 
-string commaRemoval(const string& s);
+const int MAX_AGE = 120;
+
+string commaRemoval(const string& word);
 //
 // Postcondition: remove commas for stoi and stod
 
-void readFile(const string& path, vector<double>& male, vector<double>& female);
+bool readFile(const string& path, vector<double>& male, vector<double>& female);
 
-double simulate(int age, char gender, vector<double>& male, vector<double>& female);
+int simulate(int age, char gender, vector<double>& male, vector<double>& female);
 
 int main( ) {
     // seed the C library pseudorandom generator
@@ -80,13 +85,19 @@ int main( ) {
     char gender;
     vector<double> male, female;
 
-    readFile(PATH, male, female);
+    cout << "Curret working directory: "
+         << fs::current_path() << endl;
+    
+    if (!readFile(PATH, male, female)) return -1;
 
     cout << "Enter age: ";
     cin >> age;
     cout << "Enter gender (M/F):";
     cin >> gender;
 
+    age = simulate(age, gender, male, female);
+    cout << "The expected age for this person is: "
+         << age << endl;
 
     return 0;
 }
@@ -95,13 +106,13 @@ int main( ) {
 string commaRemoval(const string &word) {
     string out;
     out.reserve(word.size());           // pre-allocate space for performance
-    for (int idx = 0; idx < word.size(); ++idx)
-        if (word[idx] != ',')
-            out.push_back(word[idx]);   // push_back won't reallocate
+    for (char ch : word)
+        if (ch != ',')
+            out.push_back(ch);   // push_back won't reallocate
     return out;                         //    until capacity exceeded (performance)
 }
 
-void readFile(const string &path, vector<double> &male, vector<double> &female) {
+bool readFile(const string &path, vector<double> &male, vector<double> &female) {
     string line, text;
     ifstream inputStream;
     int age;
@@ -109,8 +120,13 @@ void readFile(const string &path, vector<double> &male, vector<double> &female) 
 
     inputStream.open(path);
 
-    if (!inputStream) return;
-    if (!getline(inputStream, line)) return; // skip header
+    if (!inputStream) {
+        cerr << "Error: unable to open file: `"
+             << path  << "`\n";
+        return false;
+    }
+
+    if (!getline(inputStream, line)) return false; // skip header
 
     while (getline(inputStream, line)) {    // read rows
 
@@ -156,15 +172,25 @@ void readFile(const string &path, vector<double> &male, vector<double> &female) 
     }
 
     inputStream.close();
+
+    return true;
 }
 
-double simulate(int age, char gender, vector<double>& male, vector<double>& female) {
-    double deathManReference = male[age];
-    double deathWomanReference = female[age];
+int simulate(int age, char gender, vector<double>& male, vector<double>& female) {
+    double deathReference;
+    bool isMale = (gender == 'M' || gender == 'm');
+    if (age < 0) age = 0;
+    if (age > MAX_AGE) age  = MAX_AGE;
 
-    double 
+    do {
+        deathReference = isMale ? male[age] : female[age];
+        // [0,1) random number
+        double randomGenerator = static_cast<double>(rand( ))
+                                / (static_cast<double>(RAND_MAX) + 1.0);
 
-    return 0;
+        if (randomGenerator <= deathReference) return age;
+
+    } while (age < MAX_AGE);
+
+    return MAX_AGE;
 }
-
-
