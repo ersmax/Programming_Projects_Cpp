@@ -20,7 +20,7 @@ namespace fs = std::filesystem;
 
 const string PATH = "3_programming_set_3/3.15_Likelihood_death/likelihood_death_2025.txt";
 // File path to life death probability data.
-// Path may change, according to the exe location.
+// Path may change, according to the settings of `working directory` under Run menu in CLion.
 
 const int MAX_AGE = 120;
 
