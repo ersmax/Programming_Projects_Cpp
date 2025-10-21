@@ -4,7 +4,7 @@ This repository contains practical, real-life programming problems solved in C++
 This README lists the documentation files for the `1_programming_set_1`, `2_programming_set_2`,
 `3_programming_set_3` collections (much more to come :-).
 
-## Projects in 1_programming_set_1
+## Projects set 1
 
 1. [Volume](1_programming_set_1/01_Volume) \- Convert milliliters to gallons and compute number of packets needed.
 2. [Diet](1_programming_set_1/02_Diet) \- Estimate maximum safe diet soda consumption based on sweetener toxicity scaling.
@@ -22,7 +22,7 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 
 ---
 
-## Projects in 2_programming_set_2
+## Projects set 2
 
 1. [Apartment_price](2_programming_set_2/2.01_Apartment_price) \- Estimate apartment prices per floor including compound base price increases, amenities, and taxes.
 2. [Interests_deposit](2_programming_set_2/2.02_Interests_deposit) \- Calculate how many months a deposit lasts with monthly withdrawals and interest; includes boundary checks.
@@ -40,7 +40,7 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 
 ---
 
-## Projects in 3_programming_set_3
+## Projects set 3
 
 1. [File_size](3_programming_set_3/3.01_File_size) \- Compute video file size from bit rate and duration (megabyte = 8000 kilobits).
 2. [Salary_hike](3_programming_set_3/3.02_Salary_hike) \- Compute employee raise percentage and allow repeated calculations.
@@ -77,6 +77,6 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 
 ---
 
-## Projects in 3_programming_set_4
+## Projects set 4
 
 soon ...
