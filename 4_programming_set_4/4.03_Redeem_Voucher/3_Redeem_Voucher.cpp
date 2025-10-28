@@ -1,18 +1,3 @@
-/*
-You have a voucher for a bakery, which you redeem to buy baked goods of your
-choice. The value of the voucher is fixed and the total bill of the items selected
-should not exceed the voucher value. If the voucher has any value left after the
-purchase, then it cannot be utilized again. Write a program that displays 4 items
-and their prices as a menu and then reads the value of the voucher.
-Write a function, with parameters itemCode and voucherValue passed by reference,
-that deducts the price of an item from the voucher’s value only if the item’s
-value is less that or equal to the voucher value. Use a loop to invoke the above
-function as many times as required until the value of the voucher is less than or
-equal to the cheapest item on the menu.
-Finally, display the calculated sum of the prices of the items selected, and the unutilized
-balance on the voucher after purchase.
-*/
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -32,14 +17,32 @@ using std::swap;
 constexpr int ITEMS = 4;
 
 void addVoucherValue(double& voucherValue);
+// Precondition: voucherValue is declared
+// Postcondition: defines the value of voucherValue
 
 void addItem(vector<pair<string, double>>& items);
+// Precondition: items is declared
+// Postcondition: adds an item (name, price) to items vector
 
 void sortItem(vector<pair<string, double>>& items);
+// Precondition: items vector is filled with items and has predefined size
+// Postcondition: sorts items vector in descending order by price
 
 void showItem(const vector<pair<string, double>>& items);
+// Precondition: items vector is filled with items
+// Postcondition: displays the items and their prices
 
-void useVoucher(vector<pair<string, double>>&items, double& voucherValue, double& total);
+void useVoucher(vector<pair<string, double>>&items,
+                double& voucherValue, double& total);
+// Precondition: items vector is filled with items
+// Postcondition: deducts item prices from voucherValue
+//                until voucherValue is less than the cheapest item
+//                updates total with the sum of prices of items redeemed
+
+void showTotalBalance(double voucherValue, double total);
+// Precondition: voucherValue is greater than or equal to 0
+// Postcondition: displays the total value of items redeemed
+//                and the voucher balance left
 
 int main( ) {
     vector<pair<string, double>> items;
@@ -53,8 +56,12 @@ int main( ) {
     sortItem(items);
 
     showItem(items);
-
     useVoucher(items, voucherValue, total);
+    cout << "Items redeemed:\n";
+    showItem(items);
+
+    assert(voucherValue >= 0);
+    showTotalBalance(voucherValue, total);
 
     return 0;
 }
@@ -102,11 +109,11 @@ void addItem(vector<pair<string, double> >& items) {
 }
 
 void sortItem(vector<pair<string, double> >& items) {
-    for (int i = 0; i < items.size(); i++) {
-        int idxMaxValue = i;
+    for (size_t i = 0; i < items.size(); i++) {
+        size_t idxMaxValue = i;
 
-        for (int j = i + 1; j < items.size(); j++)
-            if (items[i].second > items[j].second)
+        for (size_t j = i + 1; j < items.size(); j++)
+            if (items[idxMaxValue].second < items[j].second)
                 idxMaxValue = j;
 
         if (idxMaxValue != i)
@@ -116,9 +123,24 @@ void sortItem(vector<pair<string, double> >& items) {
 
 void showItem(const vector<pair<string, double>>& items) {
     for (const pair<string, double>& item : items)
-        cout << item.first << " price: " << item.second << "\n-----\n";
+        cout << item.first << " price: " << item.second << endl;
 }
 
-void useVoucher(vector<pair<string, double> >& items, double& voucherValue, double& total) {
+void useVoucher(vector<pair<string, double> >& items,
+                double& voucherValue, double& total) {
+    total = 0;
 
+    // use iterator to change the items vector
+    for (auto iterator = items.begin(); iterator != items.end();)
+        if (voucherValue >= iterator->second) {
+            total += iterator->second;
+            voucherValue -= iterator->second;
+            ++iterator;
+        } else
+            iterator = items.erase(iterator);
+}
+
+void showTotalBalance(const double voucherValue, const double total) {
+    cout << "Total value items redeemed: " << total << endl;
+    cout << "Voucher value left (not reedeemed): " << voucherValue << endl;
 }
