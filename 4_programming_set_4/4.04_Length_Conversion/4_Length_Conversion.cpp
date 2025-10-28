@@ -52,6 +52,7 @@ int main( ) {
 
     } while (answer == 'y' || answer == 'Y');
 
+    cout << endl;
     return 0;
 }
 
