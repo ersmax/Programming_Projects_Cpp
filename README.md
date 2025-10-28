@@ -85,3 +85,7 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 2. [Area Circumference](4_programming_set_4/4.02_Area_Circumference) 
    \- Calculate area and circumference of a circle given its radius.
    Validate that the radius is a positive number before performing calculations.
+3. [Redeem Voucher](4_programming_set_4/4.03_Redeem_Voucher) 
+   \- Redeem a voucher code for a discount on a purchase.
+   Validate the voucher code against a predefined list and ensure the purchase amount is positive.
+   Coded sorting and searching algorithms for voucher codes as well as input validation with `vector<pair>`.
