@@ -89,3 +89,6 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
    \- Redeem a voucher code for a discount on a purchase.
    Validate the voucher code against a predefined list and ensure the purchase amount is positive.
    Coded sorting and searching algorithms for voucher codes as well as input validation with `vector<pair>`.
+4. [Length Conversion](4_programming_set_4/4.04_Length_Conversion) 
+   \- Convert lengths between different units (e.g., inches to centimeters).
+   Validate that the input length is a non-negative number and that the specified units are supported.
