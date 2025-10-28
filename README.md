@@ -82,3 +82,6 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 1. [Hour Conversion](4_programming_set_4/4.01_Hour_Conversion) 
    \- Convert 12-hour time format to 24-hour format with input validation.
    Check preconditions and proper input format (e.g., "02:30 PM") and insertion.
+2. [Area Circumference](4_programming_set_4/4.02_Area_Circumference) 
+   \- Calculate area and circumference of a circle given its radius.
+   Validate that the radius is a positive number before performing calculations.
