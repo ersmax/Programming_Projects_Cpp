@@ -2,7 +2,8 @@
 
 This repository contains practical, real-life programming problems solved in C++ std 14/17.
 This README lists the documentation files for the collections: `1_programming_set_1`, `2_programming_set_2`,
-`3_programming_set_3`, `4_programming_set_4` (much more to come related to OOP, memory management, pointers:-).
+`3_programming_set_3`, `4_programming_set_4` (much more to come related to OOP, memory management, pointers, 
+stay tuned C++ enthusiasts :-).
 
 ## Projects set 1
 
