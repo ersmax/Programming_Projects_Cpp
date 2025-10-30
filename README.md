@@ -1,8 +1,8 @@
 # Practical C++ Problems — Documentation Index
 
 This repository contains practical, real-life programming problems solved in C++ std 14/17.
-This README lists the documentation files for the `1_programming_set_1`, `2_programming_set_2`,
-`3_programming_set_3` collections (much more to come :-).
+This README lists the documentation files for the collections: `1_programming_set_1`, `2_programming_set_2`,
+`3_programming_set_3`, `4_programming_set_4` (much more to come related to OOP, memory management, pointers:-).
 
 ## Projects set 1
 
@@ -92,3 +92,6 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 4. [Feet Inches to Meters](4_programming_set_4/4.04_Feet_Inches_to_Meters) 
    \- Convert lengths between different units (e.g., inches to centimeters).
    Validate that the input length is a non-negative number and that the specified units are supported.
+5. [Meters to Feet Inches](4_programming_set_4/4.05_Meters_to_Feet_Inches) 
+   \- Convert lengths from meters and centimeters to feet and inches.
+   Validate that meters are in [0, 2] and centimeters in [0, 99], truncating results to avoid rounding up.
