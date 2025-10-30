@@ -1,6 +1,6 @@
 # Practical C++ Problems — Documentation Index
 
-This repository contains practical, real-life programming problems solved in C++.
+This repository contains practical, real-life programming problems solved in C++ std 14/17.
 This README lists the documentation files for the `1_programming_set_1`, `2_programming_set_2`,
 `3_programming_set_3` collections (much more to come :-).
 
@@ -15,7 +15,7 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
 7. [calories_deficit](1_programming_set_1/07_calories_deficit) \- Calculate calories burned during a staged treadmill workout.
 8. [Babylonian_algorithm](1_programming_set_1/08_Babylonian_algorithm) \- Babylonian method to approximate square roots (5 iterations).
 9. [arcade_prize](1_programming_set_1/09_arcade_prize) \- Redeem coupons for candy bars and gumballs with preference logic.
-10. [Plance_distance](1_programming_set_1/10_Plance_distance) \- Compute airplane distance and convert speed to meters per second.
+10. [Plane_distance](1_programming_set_1/10_Plance_distance) \- Compute airplane distance and convert speed to meters per second.
 11. [Time](1_programming_set_1/11_Time) \- Convert total seconds into hours, minutes, and seconds.
 12. [BMI](1_programming_set_1/12_BMI) \- Estimate ideal body weight based on height (5 feet baseline + 5 lb per inch).
 13. [Coffee_intake](1_programming_set_1/13_Coffee_intake) \- Compute how many drinks reach a lethal caffeine dose estimate.
@@ -89,6 +89,6 @@ This README lists the documentation files for the `1_programming_set_1`, `2_prog
    \- Redeem a voucher code for a discount on a purchase.
    Validate the voucher code against a predefined list and ensure the purchase amount is positive.
    Coded sorting and searching algorithms for voucher codes as well as input validation with `vector<pair>`.
-4. [Length Conversion](4_programming_set_4/4.04_Length_Conversion) 
+4. [Feet Inches to Meters](4_programming_set_4/4.04_Feet_Inches_to_Meters) 
    \- Convert lengths between different units (e.g., inches to centimeters).
    Validate that the input length is a non-negative number and that the specified units are supported.
