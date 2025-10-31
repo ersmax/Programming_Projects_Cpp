@@ -100,3 +100,6 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
    \- Combine conversions between feet\+inches and meters\+centimeters.
    Present a menu for conversion direction, validate inputs, and allow repeated conversions until exit.
    Add structures for Feet/Inches and Meters/cm to handle properly function overloading and modularity.
+7. [Pounds Ounces to Grams](4_programming_set_4/4.07_Pounds_Ounces_to_Grams) 
+   \- Convert weights from pounds and ounces to kilograms and grams, allowing repeated conversions until exit.
+   Use structures for Pounds/Ounces and Kilograms/Grams to facilitate function overloading and modularity.

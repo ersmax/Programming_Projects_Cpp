@@ -1,22 +1,15 @@
-/*
-Write a program that will read a weight in pounds and ounces and will output
-the equivalent weight in kilograms and grams. Use at least three functions: one
-for input, one or more for calculating, and one for output. Include a loop that lets
-the user repeat this computation for new input values until the user says he or she
-wants to end the program. There are 2.2046 pounds in a kilogram, 1000 grams in
-a kilogram, and 16 ounces in a pound.
-*/
-// define NDEBUG
-#include <iomanip>
-#include <iostream>
-#include <limits>
+// define NDEBUG        // uncomment this line todisable assertions
+#include <cassert>      // for assert
+#include <iomanip>      // for setprecision
+#include <iostream>     // for cin, cout
+#include <limits>       // for numeric_limits, streamsize
 using std::cin;
 using std::cout;
 using std::numeric_limits;
 using std::streamsize;
 using std::fixed;
-using std::showpoint;
-using std::showpoint;
+using std::setprecision;
+
 
 constexpr double POUNDS_KILO = 2.2046;
 constexpr int OUNCES_POUND = 16;
@@ -24,10 +17,18 @@ constexpr double OUNCES_KILO = POUNDS_KILO * OUNCES_POUND;
 constexpr int GRAMS_KILO = 1000;
 
 void getData(int& pound, int& ounce);
+// Precondition: pound and ounce are declared
+// Postcondition: defines the values of pound and ounce
 
 void transformData(int pound, int ounce, int& kilo, double& grams);
+// Precondition: pound and ounce are non-negative integers
+// Postcondition: converts pound and ounce to kilo and grams
 
-void showData()
+void showData(int pound, int ounce, int kilo, double grams);
+// Precondition: pound and ounce are non-negative integers
+//               kilo is a non-negative integer
+//               grams is a non-negative double
+// Postcondition: displays the equivalent weight in kilos and grams
 
 int main( ) {
     char answer;
@@ -36,9 +37,14 @@ int main( ) {
 
     do {
         getData(pound, ounce);
+
+        assert(pound >= 0 && ounce >= 0);
         transformData(pound, ounce, kilo, grams);
-        cout << fixed << std::setprecision(0);
-        cout << kilo << " " << grams << '\n';
+
+        assert(pound >= 0 && ounce >= 0
+               && kilo >= 0 && grams >= 0);
+        showData(pound, ounce, kilo, grams);
+
         cout << "Continue (y/Y)?: ";
         cin >> answer;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -61,7 +67,7 @@ void getData(int& pound, int& ounce) {
         if (pound >= 0 && ounce >= 0)
             break;
 
-        cout << "Weight must be greater than 0.\n";
+        cout << "Weight must be greater than or equal to 0.\n";
     }
 }
 
@@ -72,4 +78,16 @@ void transformData(int pound, int ounce, int& kilo, double& grams) {
 
     kilo = static_cast<int>(totalGrams / GRAMS_KILO);
     grams = totalGrams - static_cast<double>(kilo * GRAMS_KILO);
+}
+
+void showData(int pound, int ounce, int kilo, double grams) {
+    cout << fixed << std::setprecision(0);
+    const char* poundLabel = (pound == 1) ? "pound" : "pounds";
+    const char* ounceLabel = (ounce == 1) ? "ounce" : "ounces";
+
+    cout << pound << " " << poundLabel << " "
+         << ounce << " " << ounceLabel << " "
+         << " are equivalent to "
+         << kilo << " kilos and "
+         << grams << " grams.\n" ;
 }
