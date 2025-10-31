@@ -16,11 +16,19 @@ wants to end the program.
 
 #include <iostream>
 #include <cassert>
+#include <cmath>
 #include <limits>
 using std::cout;
 using std::cin;
 using std::numeric_limits;
 using std::streamsize;
+using std::floor;
+using std::round;
+
+constexpr double METERS_FEET = 0.3048;
+constexpr int INCHES_FEET = 12;
+constexpr double METERS_INCH = METERS_FEET / INCHES_FEET;
+constexpr int CM_METER = 100.0;
 
 struct FeetInches {
     int feet = 0;
@@ -38,6 +46,11 @@ void getData(FeetInches& feetInches);
 
 void getData(MetersCentimeters& metersCentimeters);
 
+void convertData(const FeetInches& feetInches, MetersCentimeters& metersCentimeters);
+
+void convertData(const MetersCentimeters& metersCentimeters, FeetInches& feetInches);
+
+
 int main( ) {
     int choice;
 
@@ -45,15 +58,17 @@ int main( ) {
     switch (choice) {
         case 1: {
             FeetInches feetInches;
+            MetersCentimeters metersCentimeters;
             getData(feetInches);
-            // TODO convertData
+            convertData(feetInches, metersCentimeters);
             // TODO showData
             break;
         }
         case 2: {
+            FeetInches feetInches;
             MetersCentimeters metersCentimeters;
             getData(metersCentimeters);
-            // TODO convertData
+            convertData(metersCentimeters, feetInches);
             // TODO showData
             break;
         }
@@ -110,7 +125,6 @@ void getData(MetersCentimeters& metersCentimeters) {
     }
 }
 
-
 void getData(FeetInches& feetInches) {
     while (true) {
         cout << "Enter feet and inches: \n";
@@ -134,3 +148,25 @@ void getData(FeetInches& feetInches) {
     }
 }
 
+void convertData(const FeetInches& feetInches, MetersCentimeters& metersCentimeters) {
+    double totalMeters = METERS_FEET * feetInches.feet
+                         + feetInches.inches * METERS_INCH;
+
+    // round to nearest height
+    int totalCentimeters = static_cast<int>(round(totalMeters * CM_METER));
+
+    metersCentimeters.meters = totalCentimeters / CM_METER;
+    metersCentimeters.centimeters = totalCentimeters % CM_METER;
+}
+
+void convertData(const MetersCentimeters& metersCentimeters, FeetInches& feetInches) {
+    int totalCentimeters = metersCentimeters.meters * CM_METER
+                           + metersCentimeters.centimeters;
+
+    // trunc the inches to avoid overestimating height
+    int totalInches = static_cast<int>(floor(static_cast<double>(totalCentimeters)
+                                                    / (METERS_INCH * CM_METER)));
+
+    feetInches.feet = totalInches / INCHES_FEET;
+    feetInches.inches = totalInches % INCHES_FEET;
+}
