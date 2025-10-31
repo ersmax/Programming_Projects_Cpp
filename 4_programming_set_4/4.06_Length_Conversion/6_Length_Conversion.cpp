@@ -1,23 +1,8 @@
-/*
-(You should do the previous two programming projects before doing this one.)
-Write a program that combines the functions in the previous two programming
-projects. The program asks the user if he or she wants to convert from feet and
-inches to meters and centimeters or from meters and centimeters to feet and inches.
-The program then performs the desired conversion. Have the user respond by typing
-the integer 1 for one type of conversion and 2 for the other conversion. The
-program reads the user’s answer and then executes an if-else statement. Each
-branch of the if-else statement will be a function call. The two functions called
-in the if-else statement will have function definitions that are very similar to
-the programs for the previous two programming projects. Thus, they will be fairly
-complicated function definitions that call other functions. Include a loop that lets
-the user repeat this computation for new input values until the user says he or she
-wants to end the program.
-*/
-
-#include <iostream>
-#include <cassert>
-#include <cmath>
-#include <limits>
+// define NDEBUG        // uncomment this line todisable assertions
+#include <iostream>     // for cin, cout, endl
+#include <cassert>      // for assert
+#include <cmath>        // for round
+#include <limits>       // for numeric_limits, streamsize
 using std::cout;
 using std::cin;
 using std::numeric_limits;
@@ -41,42 +26,76 @@ struct MetersCentimeters {
 };
 
 void makeChoice(int& choice);
+// Precondition: choice is declared
+// Postcondition: 1 if user wants to convert feet/inches to meters/centimeters
+//                2 if user wants to convert meters/centimeters to feet/inches
+//                0 to exit program
 
 void getData(FeetInches& feetInches);
+// Precondition: feetInches is declared
+// Postcondition: defines the values of feet and inches
 
 void getData(MetersCentimeters& metersCentimeters);
+// Precondition: metersCentimeters is declared
+// Postcondition: defines the values of meters and centimeters
 
 void convertData(const FeetInches& feetInches, MetersCentimeters& metersCentimeters);
+// Precondition: feetInches is in 5-7 feet and 0-11 inches range
+// Postcondition: converts feet and inches to meters and centimeters
 
 void convertData(const MetersCentimeters& metersCentimeters, FeetInches& feetInches);
+// Precondition: metersCentimeters is in 0-2 meters and 0-99 centimeters range
+// Postcondition: converts meters and centimeters to feet and inches
 
+void showData(FeetInches feetInches, MetersCentimeters metersCentimeters);
+// Precondition: feetInches is in 5-7 feet and 0-11 inches range
+//               metersCentimeters is in 0-2 meters and 0-99 centimeters range
+// Postcondition: displays the equivalent lengths
 
 int main( ) {
+    // Postcondition: Prompts user for conversion choice,
+    //                performs the desired conversion,
+    //                and displays the results.
     int choice;
 
-    makeChoice(choice);
-    switch (choice) {
-        case 1: {
-            FeetInches feetInches;
-            MetersCentimeters metersCentimeters;
-            getData(feetInches);
-            convertData(feetInches, metersCentimeters);
-            // TODO showData
-            break;
+    do {
+        makeChoice(choice);
+        switch (choice) {
+            case 1: {
+                FeetInches feetInches;
+                MetersCentimeters metersCentimeters;
+                getData(feetInches);
+
+                assert(feetInches.feet >= 5 && feetInches.feet <= 7 &&
+                       feetInches.inches >= 0 && feetInches.inches <= 11);
+                convertData(feetInches, metersCentimeters);
+
+                assert(metersCentimeters.meters >= 0 && metersCentimeters.meters <= 2 &&
+                       metersCentimeters.centimeters >= 0 && metersCentimeters.centimeters <= 99);
+                showData(feetInches, metersCentimeters);
+                break;
+            }
+            case 2: {
+                FeetInches feetInches;
+                MetersCentimeters metersCentimeters;
+                getData(metersCentimeters);
+
+                assert(metersCentimeters.meters >= 0 && metersCentimeters.meters <= 2 &&
+                       metersCentimeters.centimeters >= 0 && metersCentimeters.centimeters <= 99);
+                convertData(metersCentimeters, feetInches);
+
+                assert(feetInches.feet >= 5 && feetInches.feet <= 7 &&
+                       feetInches.inches >= 0 && feetInches.inches <= 11);
+                showData(feetInches, metersCentimeters);
+                break;
+            }
+            case 0:
+                cout << "Goodbye\n";
+            default:
+                break;
         }
-        case 2: {
-            FeetInches feetInches;
-            MetersCentimeters metersCentimeters;
-            getData(metersCentimeters);
-            convertData(metersCentimeters, feetInches);
-            // TODO showData
-            break;
-        }
-        case 0:
-            cout << "Goodbye\n";
-        default:
-            break;
-    }
+
+    } while (choice == 1 || choice == 2);
 
     return 0;
 }
@@ -137,7 +156,7 @@ void getData(FeetInches& feetInches) {
                      }
         // ignore the remainder of the input
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        if (feetInches.feet >= 0 &&
+        if (feetInches.feet >= 5 &&
             feetInches.feet <= 7 &&
             feetInches.inches >= 0 &&
             feetInches.inches <= 11) {
@@ -163,10 +182,14 @@ void convertData(const MetersCentimeters& metersCentimeters, FeetInches& feetInc
     int totalCentimeters = metersCentimeters.meters * CM_METER
                            + metersCentimeters.centimeters;
 
-    // trunc the inches to avoid overestimating height
-    int totalInches = static_cast<int>(floor(static_cast<double>(totalCentimeters)
+    int totalInches = static_cast<int>(round(static_cast<double>(totalCentimeters)
                                                     / (METERS_INCH * CM_METER)));
 
     feetInches.feet = totalInches / INCHES_FEET;
     feetInches.inches = totalInches % INCHES_FEET;
+}
+
+void showData(FeetInches feetInches, MetersCentimeters metersCentimeters) {
+    cout << feetInches.feet << " feet, " << feetInches.inches << "\" are equivalent to "
+         << metersCentimeters.meters << " meters and " << metersCentimeters.centimeters << " cm.\n";
 }

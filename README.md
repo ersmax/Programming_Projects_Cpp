@@ -96,3 +96,7 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
 5. [Meters to Feet Inches](4_programming_set_4/4.05_Meters_to_Feet_Inches) 
    \- Convert lengths from meters and centimeters to feet and inches.
    Validate that meters are in [0, 2] and centimeters in [0, 99], truncating results to avoid rounding up.
+6. [Length Conversion](4_programming_set_4/4.06_Length_Conversion) 
+   \- Combine conversions between feet\+inches and meters\+centimeters.
+   Present a menu for conversion direction, validate inputs, and allow repeated conversions until exit.
+   Add structures for Feet/Inches and Meters/cm to handle properly function overloading and modularity.
