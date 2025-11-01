@@ -34,9 +34,9 @@ using std::numeric_limits;
 using std::streamsize;
 
 struct Choice {
-    int lengthWeight = -1;  // 0 exit, 1 length,   2 weight
-    int meterFeet = -1;     // 0 exit, 1 feet/m,   2 m/feet
-    int kiloPound = -1;     // 0 exit, 1 pound/kg, 2 kg/pound
+    int lengthWeight = -1;  // 0: exit, 1: length,        2: weight
+    int meterFeet = -1;     // 0: exit, 1: feet/meter,    2: meter/feet
+    int kiloPound = -1;     // 0: exit, 1: pound/kg,      2: kg/pound
 };
 
 void makeChoice(Choice& choice);                    // orchestrator
@@ -45,6 +45,7 @@ void makeChoice(int& choice);                       // top-menu
 
 void makeChoice(int& choice, int& subChoice);       // submenu
 
+
 int main ( ) {
     Choice choice;
 
@@ -52,13 +53,14 @@ int main ( ) {
         makeChoice(choice);
         if (choice.lengthWeight == 0) break;        // menu & sub-menu termination
 
-        if (choice.lengthWeight == 1) {
-            // TODO
+        if (choice.lengthWeight == 1) {             // outer if-else
+            // TODO 1: handle conversion length inner if-else
+                // TODO 3: Show conversion for weight
         }
         if (choice.lengthWeight == 2) {
-            // TODO
+            // TODO 2: handle conversion weight inner if-else
+                // TODO 4: Show conversion for weight
         }
-
     }
     cout << '\n';
     return 0;
