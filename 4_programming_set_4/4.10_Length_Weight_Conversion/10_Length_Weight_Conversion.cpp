@@ -34,12 +34,14 @@ using std::numeric_limits;
 using std::streamsize;
 
 struct Choice {
-    int lengthWeight = -1;
-    int meterFeet = -1;
-    int kiloPound = -1;
+    int lengthWeight = -1;  // 0 exit, 1 length,   2 weight
+    int meterFeet = -1;     // 0 exit, 1 feet/m,   2 m/feet
+    int kiloPound = -1;     // 0 exit, 1 pound/kg, 2 kg/pound
 };
 
-void makeChoice(Choice& choice);
+void makeChoice(Choice& choice);             // orchestrator
+void makeChoice(int& choice);                // top-level menu
+void makeChoice(int& choice, bool isLength); // submenu
 
 int main ( ) {
     Choice choice;
@@ -47,9 +49,15 @@ int main ( ) {
     while (true) {
         makeChoice(choice);
         if (choice.lengthWeight == 1) {
+            makeChoice(choice, subChoice);
+            if (choice.lengthWeight == 0)
+                break;
             // TODO
         }
         else if (choice.lengthWeight == 2) {
+            makeChoice(choice, subChoice);
+            if (choice.lengthWeight == 0)
+                break;
             // TODO
         } else
             break;
@@ -61,8 +69,8 @@ int main ( ) {
 void makeChoice(Choice& choice) {
     while (true) {
         cout << "Menu:\n"
-             << "1. Convert length \n (feet & inches to km & meters or vice-versa)\n"
-             << "2. Convert weight \n (pounds & ounces to kg & grams or vice-versa)\n"
+             << "1. Convert length (feet & inches <-> km & meters)\n"
+             << "2. Convert weight (pounds & ounces <-> kg & grams)\n"
              << "0. Exit\n"
              << "Choice:";
         if (!(cin >> choice.lengthWeight)) {
@@ -82,3 +90,42 @@ void makeChoice(Choice& choice) {
     }
 }
 
+void makeChoice(Choice& choice, Choice& subChoice) {
+    while (true) {
+        int answer;
+        if (choice.lengthWeight == 1)
+            cout << "Length menu:\n"
+                 << "1. Convert feet & inches to meters and centimeters\n"
+                 << "2. Convert meters & centimeters to feet & inches\n";
+        else if (choice.lengthWeight == 2)
+            cout << "Length menu:\n"
+                 << "1. Convert pounds & ounces to kilos and grams\n"
+                 << "2. Convert kilo & grams to pounds & ounces\n";
+
+        cout << "0. Exit\n"
+             << "Enter action:\n";
+
+        if (!(cin >> answer)) {
+            cout << "Invalid choice.\n\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+        // ignore remaining input after 1 or 2
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (answer < 0 || answer > 2) {
+            cout << "Invalid choice.\n\n";
+            continue;
+        }
+        if (choice.lengthWeight == 1)
+            subChoice.meterFeet = answer;
+        if (choice.lengthWeight == 2)
+            subChoice.kiloPound = answer;
+        if (choice.lengthWeight == 0)
+            choice.lengthWeight = 0;
+        break;
+    }
+}
+
+// TODO: assess whether is more convenient to use an orchestrator to handle submenu.
