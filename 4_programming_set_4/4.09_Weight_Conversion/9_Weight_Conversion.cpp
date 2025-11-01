@@ -28,7 +28,7 @@ struct KilogramsGrams {
     double grams = 0.0;
 };
 
-void makeChoice(int& choice);
+void makeChoice(int& choiceMenu);
 // Precondition: choice is declared
 // Postcondition: 1 if user wants to convert pounds/ounces to kilograms/grams
 
@@ -89,14 +89,14 @@ int main( ) {
     return 0;
 }
 
-void makeChoice(int &choice) {
+void makeChoice(int &choiceMenu) {
     while (true) {
         cout << "Menu:\n"
              << "1. Convert pounds & ounces to kilo and grams\n"
              << "2. Kilograms and grams to pounds and ounces\n"
              << "0. Exit\n"
              << "Choice:";
-        if (!(cin >> choice)) {
+        if (!(cin >> choiceMenu)) {
             cout  << "Invalid choice.\n\n";
             cin.clear();
             cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
@@ -104,7 +104,7 @@ void makeChoice(int &choice) {
         }
         // ignore remaining input
         cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
-        if (choice == 0 || choice == 1 || choice == 2)
+        if (choiceMenu == 0 || choiceMenu == 1 || choiceMenu == 2)
             break;
         cout << "Invalid choice.\n\n";
     }

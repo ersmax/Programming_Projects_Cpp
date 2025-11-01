@@ -39,11 +39,11 @@ struct Choice {
     int kiloPound = -1;     // 0: exit, 1: pound/kg,      2: kg/pound
 };
 
-void makeChoice(Choice& choice);                    // orchestrator
+void makeChoice(Choice& choice);                        // orchestrator
 
-void makeChoice(int& choice);                       // top-menu
+void makeChoice(int& choiceMenu);                       // top-menu
 
-void makeChoice(int& choice, int& subChoice);       // submenu
+void makeChoice(int& choiceMenu, int& choiceSubmenu);   // submenu
 
 
 int main ( ) {
@@ -76,14 +76,14 @@ void makeChoice(Choice& choice) {
     }
 
 
-void makeChoice(int& choice) {
+void makeChoice(int& choiceMenu) {
     while (true) {
         cout << "Menu:\n"
              << "1. Convert length (feet & inches <-> km & meters)\n"
              << "2. Convert weight (pounds & ounces <-> kg & grams)\n"
              << "0. Exit\n"
              << "Choice:";
-        if (!(cin >> choice)) {
+        if (!(cin >> choiceMenu)) {
             cout  << "Invalid choice.\n\n";
             cin.clear();
             cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
@@ -91,22 +91,22 @@ void makeChoice(int& choice) {
         }
         // ignore remaining input
         cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
-        if (choice == 0 || choice == 1 || choice == 2)
+        if (choiceMenu == 0 || choiceMenu == 1 || choiceMenu == 2)
             break;
 
         cout << "Invalid choice.\n\n";
     }
 }
 
-void makeChoice(int& choice, int& subChoice) {
+void makeChoice(int& choiceMenu, int& choiceSubmenu) {
     while (true) {
         int answer;
 
-        if (choice == 1)
+        if (choiceMenu == 1)
             cout << "Length menu:\n"
                  << "1. Convert feet & inches to meters and centimeters\n"
                  << "2. Convert meters & centimeters to feet & inches\n";
-        if (choice == 2)
+        if (choiceMenu == 2)
             cout << "Weight menu:\n"
                  << "1. Convert pounds & ounces to kilos and grams\n"
                  << "2. Convert kilo & grams to pounds & ounces\n";
@@ -124,11 +124,11 @@ void makeChoice(int& choice, int& subChoice) {
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         if (answer == 0) {
-            choice = answer;
+            choiceMenu = answer;
             break;
         }
         if (answer == 1 || answer == 2) {
-            subChoice = answer;
+            choiceSubmenu = answer;
             break;
         }
 

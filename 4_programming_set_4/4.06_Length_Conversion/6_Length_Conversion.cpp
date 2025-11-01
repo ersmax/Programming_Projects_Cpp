@@ -25,7 +25,7 @@ struct MetersCentimeters {
     int centimeters = 0;
 };
 
-void makeChoice(int& choice);
+void makeChoice(int& choiceMenu);
 // Precondition: choice is declared
 // Postcondition: 1 if user wants to convert feet/inches to meters/centimeters
 //                2 if user wants to convert meters/centimeters to feet/inches
@@ -100,14 +100,14 @@ int main( ) {
     return 0;
 }
 
-void makeChoice(int& choice) {
+void makeChoice(int& choiceMenu) {
     while (true) {
         cout << "Enter choice:\n"
          << "1. Convert feet inches to meters and cm\n"
          << "2. Convert meters and cm into feet inches\n"
          << "0. Exit\n"
          << "-----------------------------------------\n";
-        if (!(cin >> choice)) {
+        if (!(cin >> choiceMenu)) {
             cout << "Wrong choice.\n\n";
             cin.clear();   // clear err flag and ignore line
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
@@ -115,7 +115,7 @@ void makeChoice(int& choice) {
         }
         // Read only choice, discard the remainder of line
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        if (choice >= 0 && choice <= 2)
+        if (choiceMenu >= 0 && choiceMenu <= 2)
             break;
         cout << "Wrong choice.\n\n";
     }
