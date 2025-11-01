@@ -104,3 +104,8 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
    \- Convert weights from pounds and ounces to kilograms and grams, allowing repeated conversions until exit.
 8. [Grams to Pounds Ounces](4_programming_set_4/4.08_Grams_to_Pounds_Ounces) 
    \- Convert weights from grams to pounds and ounces, allowing repeated conversions until exit.
+9. [Weight Conversion](4_programming_set_4/4.09_Weight_Conversion) 
+   \- Combine conversions between pounds\+ounces and kilograms\+grams.
+   Present a menu for conversion direction, validate inputs, and allow repeated conversions until exit.
+   Add structures for Pounds/Ounces and Kilograms/Grams to handle properly function overloading and modularity.
+
