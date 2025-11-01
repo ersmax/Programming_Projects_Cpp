@@ -37,8 +37,6 @@ The program converts a weight given as kilograms and grams into pounds and ounce
 void convertData(int kilograms, double grams, int& pounds, double& ounces) {
     double totalPounds = (kilograms + grams / GRAMS_KILO ) * POUNDS_KILO;
     pounds = static_cast<int>(floor(totalPounds));
-    double totalPounds = (kilograms + grams / GRAMS_KILO ) * POUNDS_KILO;
-    pounds = static_cast<int>(floor(totalPounds));
     double leftOunces = ((totalPounds - pounds) * OUNCES_POUND);
     ounces = static_cast<int>(round(leftOunces));
     if (ounces == OUNCES_POUND) {
