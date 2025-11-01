@@ -102,4 +102,5 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
    Add structures for Feet/Inches and Meters/cm to handle properly function overloading and modularity.
 7. [Pounds Ounces to Grams](4_programming_set_4/4.07_Pounds_Ounces_to_Grams) 
    \- Convert weights from pounds and ounces to kilograms and grams, allowing repeated conversions until exit.
-   Use structures for Pounds/Ounces and Kilograms/Grams to facilitate function overloading and modularity.
+8. [Grams to Pounds Ounces](4_programming_set_4/4.08_Grams_to_Pounds_Ounces) 
+   \- Convert weights from grams to pounds and ounces, allowing repeated conversions until exit.

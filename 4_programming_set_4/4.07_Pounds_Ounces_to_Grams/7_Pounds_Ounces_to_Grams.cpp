@@ -24,7 +24,7 @@ void transformData(int pound, int ounce, int& kilo, double& grams);
 // Precondition: pound and ounce are non-negative integers
 // Postcondition: converts pound and ounce to kilo and grams
 
-void showData(int pound, int ounce, int kilo, double grams);
+void showData(int pound, int ounce, int kilograms, double grams);
 // Precondition: pound and ounce are non-negative integers
 //               kilo is a non-negative integer
 //               grams is a non-negative double
@@ -80,7 +80,7 @@ void transformData(int pound, int ounce, int& kilo, double& grams) {
     grams = totalGrams - static_cast<double>(kilo * GRAMS_KILO);
 }
 
-void showData(int pound, int ounce, int kilo, double grams) {
+void showData(int pound, int ounce, int kilograms, double grams) {
     cout << fixed << std::setprecision(0);
     const char* poundLabel = (pound == 1) ? "pound" : "pounds";
     const char* ounceLabel = (ounce == 1) ? "ounce" : "ounces";
@@ -88,6 +88,6 @@ void showData(int pound, int ounce, int kilo, double grams) {
     cout << pound << " " << poundLabel << " "
          << ounce << " " << ounceLabel << " "
          << " are equivalent to "
-         << kilo << " kilos and "
+         << kilograms << " kilos and "
          << grams << " grams.\n" ;
 }
