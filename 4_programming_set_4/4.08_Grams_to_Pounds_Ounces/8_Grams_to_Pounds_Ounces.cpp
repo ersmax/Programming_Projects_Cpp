@@ -10,6 +10,7 @@ using std::numeric_limits;
 using std::streamsize;
 using std::floor;
 using std::fixed;
+using std::showpoint;
 using std::setprecision;
 
 constexpr double POUNDS_KILO = 2.2046;
@@ -85,7 +86,7 @@ void convertData(int kilograms, double grams, int& pounds, double& ounces) {
 }
 
 void showData(int kilograms, double grams, int pounds, double ounces) {
-    cout << fixed << std::setprecision(2);
+    cout << fixed << showpoint << std::setprecision(2);
     const char* kiloLabel = (kilograms == 0 || kilograms == 1) ? "kilo" : "kilos";
     const char* gramsLabel = (grams == 0 || grams == 1) ? "gram" : "grams";
     cout << kilograms << " " << kiloLabel << " "
