@@ -27,13 +27,16 @@ he or she wants to end the program.
 */
 
 #include <iostream>
+#include <limits>
 using std::cout;
 using std::cin;
+using std::numeric_limits;
+using std::streamsize;
 
 struct Choice {
-    int lengthWeight;
-    int meterFeet;
-    int kiloPound;
+    int lengthWeight = -1;
+    int meterFeet = -1;
+    int kiloPound = -1;
 };
 
 void makeChoice(Choice& choice);
@@ -54,3 +57,28 @@ int main ( ) {
     cout << '\n';
     return 0;
 }
+
+void makeChoice(Choice& choice) {
+    while (true) {
+        cout << "Menu:\n"
+             << "1. Convert length \n (feet & inches to km & meters or vice-versa)\n"
+             << "2. Convert weight \n (pounds & ounces to kg & grams or vice-versa)\n"
+             << "0. Exit\n"
+             << "Choice:";
+        if (!(cin >> choice.lengthWeight)) {
+            cout  << "Invalid choice.\n\n";
+            cin.clear();
+            cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+        // ignore remaining input
+        cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
+        if (choice.lengthWeight == 0 ||
+            choice.lengthWeight == 1 ||
+            choice.lengthWeight == 2)
+            break;
+
+        cout << "Invalid choice.\n\n";
+    }
+}
+
