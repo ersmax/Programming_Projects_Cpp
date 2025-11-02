@@ -44,7 +44,7 @@ using std::setprecision;
 constexpr double METERS_FEET = 0.3048;
 constexpr int INCHES_FEET = 12;
 constexpr double METERS_INCH = METERS_FEET / INCHES_FEET;
-constexpr int CM_METER = 100.0;
+constexpr int CM_METER = 100;
 
 constexpr double POUNDS_KILO = 2.2046;
 constexpr int OUNCES_POUND = 16;
@@ -175,8 +175,8 @@ void makeChoice(Choice& choice) {
 void makeChoice(int& choiceMenu) {
     while (true) {
         cout << "Menu:\n"
-             << "1. Convert length (feet & inches <-> km & meters)\n"
-             << "2. Convert weight (pounds & ounces <-> kg & grams)\n"
+             << "1. Convert length (feet & inches <-> meters & centimeters)\n"
+             << "2. Convert weight (pounds & ounces <-> kilograms & grams)\n"
              << "0. Exit\n"
              << "Choice:";
         if (!(cin >> choiceMenu)) {
@@ -207,7 +207,7 @@ void makeChoice(const int& choiceMenu, int& choiceSubmenu) {
                  << "1. Convert pounds & ounces to kilos and grams\n"
                  << "2. Convert kilo & grams to pounds & ounces\n";
 
-        cout     << "0. Exit sub-menu\n"
+        cout     << "0. Return to main menu\n"
                  << "Enter action:";
 
         if (!(cin >> choiceSubmenu)) {
