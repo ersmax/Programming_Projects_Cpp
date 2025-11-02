@@ -89,10 +89,10 @@ For alternative 2., see improvements below.
 If the user wants to exit at the sub-menu (choosing betweeen feet & meters conversion or pound & kilo conversion),
 one needs to change the signature and definition of the function `void makeChoice(const int& choiceMenu, int& choiceSubmenu)`
 to the following:
-```
+```cpp
 void makeChoice(int& choiceMenu, int& choiceSubmenu);
 ```
-```
+```cpp
 void makeChoice(int& choiceMenu, int& choiceSubmenu) {
     while (true) {
         int answer;
