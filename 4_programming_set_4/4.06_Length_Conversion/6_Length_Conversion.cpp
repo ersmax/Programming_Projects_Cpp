@@ -47,7 +47,7 @@ void convertData(const MetersCentimeters& metersCentimeters, FeetInches& feetInc
 // Precondition: metersCentimeters is in 0-2 meters and 0-99 centimeters range
 // Postcondition: converts meters and centimeters to feet and inches
 
-void showData(FeetInches feetInches, MetersCentimeters metersCentimeters);
+void showData(const FeetInches& feetInches, const MetersCentimeters& metersCentimeters);
 // Precondition: feetInches is in 5-7 feet and 0-11 inches range
 //               metersCentimeters is in 0-2 meters and 0-99 centimeters range
 // Postcondition: displays the equivalent lengths
@@ -134,9 +134,7 @@ void getData(MetersCentimeters& metersCentimeters) {
         // ignore the remainder of the input
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
         if (metersCentimeters.meters >= 0 &&
-            metersCentimeters.meters <= 2 &&
-            metersCentimeters.centimeters >= 0 &&
-            metersCentimeters.centimeters <= 99) {
+            metersCentimeters.centimeters >= 0) {
 
             break;
         }
@@ -156,13 +154,10 @@ void getData(FeetInches& feetInches) {
                      }
         // ignore the remainder of the input
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        if (feetInches.feet >= 5 &&
-            feetInches.feet <= 7 &&
-            feetInches.inches >= 0 &&
-            feetInches.inches <= 11) {
-
+        if (feetInches.feet >= 0 &&
+            feetInches.inches >= 0)
             break;
-            }
+
         cout << "Wrong Input.\n";
     }
 }
@@ -189,7 +184,7 @@ void convertData(const MetersCentimeters& metersCentimeters, FeetInches& feetInc
     feetInches.inches = totalInches % INCHES_FEET;
 }
 
-void showData(FeetInches feetInches, MetersCentimeters metersCentimeters) {
+void showData(const FeetInches& feetInches, const MetersCentimeters& metersCentimeters) {
     cout << feetInches.feet << " feet, " << feetInches.inches << "\" are equivalent to "
          << metersCentimeters.meters << " meters and " << metersCentimeters.centimeters << " cm.\n";
 }
