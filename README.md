@@ -108,4 +108,8 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
    \- Combine conversions between pounds\+ounces and kilograms\+grams.
    Present a menu for conversion direction, validate inputs, and allow repeated conversions until exit.
    Add structures for Pounds/Ounces and Kilograms/Grams to handle properly function overloading and modularity.
-
+10. [Length and Weight Conversion](4_programming_set_4/4.10_Length_Weight_Conversion) 
+    \- Combine length and weight conversions into a single program with a menu and sub-menu, according to 
+    the user's choice.
+    Allow users to choose between length and weight conversions, validate inputs, and repeat until exit.
+    Used function overloading, pass by reference and constant reference parameters. 
