@@ -34,16 +34,17 @@ using std::numeric_limits;
 using std::streamsize;
 
 struct Choice {
-    int lengthWeight = -1;  // 0: exit, 1: length,        2: weight
-    int meterFeet = -1;     // 0: exit, 1: feet/meter,    2: meter/feet
-    int kiloPound = -1;     // 0: exit, 1: pound/kg,      2: kg/pound
+    int lengthWeight = -1;  // 0: exit, 1: length,      2: weight
+    int meterFeet = -1;     // 0: exit, 1: feet/meter,  2: meter/feet
+    int kiloPound = -1;     // 0: exit, 1: pound/kg,    2: kg/pound
 };
 
 void makeChoice(Choice& choice);                        // orchestrator
 
 void makeChoice(int& choiceMenu);                       // top-menu
 
-void makeChoice(int& choiceMenu, int& choiceSubmenu);   // submenu
+void makeChoice(const int& choiceMenu,                  // submenu
+                int& choiceSubmenu);
 
 
 int main ( ) {
@@ -51,9 +52,11 @@ int main ( ) {
 
     while (true) {
         makeChoice(choice);
-        if (choice.lengthWeight == 0) break;        // menu & sub-menu termination
+        if (choice.lengthWeight == 0) break;            // menu termination
+        if (choice.meterFeet == 0 ||                    // sub-menu termination
+            choice.kiloPound == 0) continue;
 
-        if (choice.lengthWeight == 1) {             // outer if-else
+        if (choice.lengthWeight == 1) {                 // outer if-else
             // TODO 1: handle conversion length inner if-else
                 // TODO 3: Show conversion for weight
         }
@@ -72,7 +75,7 @@ void makeChoice(Choice& choice) {
     if (choice.lengthWeight == 1)
         makeChoice(choice.lengthWeight, choice.meterFeet);  // length sub-menu
     else if (choice.lengthWeight == 2)
-        makeChoice(choice.lengthWeight, choice.kiloPound); // weight sub-menu
+        makeChoice(choice.lengthWeight, choice.kiloPound);  // weight sub-menu
     }
 
 
@@ -91,6 +94,8 @@ void makeChoice(int& choiceMenu) {
         }
         // ignore remaining input
         cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
+        cout << "\n";
+
         if (choiceMenu == 0 || choiceMenu == 1 || choiceMenu == 2)
             break;
 
@@ -98,10 +103,8 @@ void makeChoice(int& choiceMenu) {
     }
 }
 
-void makeChoice(int& choiceMenu, int& choiceSubmenu) {
+void makeChoice(const int& choiceMenu, int& choiceSubmenu) {
     while (true) {
-        int answer;
-
         if (choiceMenu == 1)
             cout << "Length menu:\n"
                  << "1. Convert feet & inches to meters and centimeters\n"
@@ -111,10 +114,10 @@ void makeChoice(int& choiceMenu, int& choiceSubmenu) {
                  << "1. Convert pounds & ounces to kilos and grams\n"
                  << "2. Convert kilo & grams to pounds & ounces\n";
 
-        cout     << "0. Exit\n"
-                 << "Enter action:\n";
+        cout     << "0. Exit sub-menu\n"
+                 << "Enter action:";
 
-        if (!(cin >> answer)) {
+        if (!(cin >> choiceSubmenu)) {
             cout << "Invalid choice.\n\n";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -122,15 +125,12 @@ void makeChoice(int& choiceMenu, int& choiceSubmenu) {
         }
         // ignore remaining input after 1 or 2
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\n";
 
-        if (answer == 0) {
-            choiceMenu = answer;
+        if (choiceSubmenu == 0 ||
+            choiceSubmenu == 1 ||
+            choiceSubmenu == 2)
             break;
-        }
-        if (answer == 1 || answer == 2) {
-            choiceSubmenu = answer;
-            break;
-        }
 
         cout << "Invalid result.\n\n";
     }
