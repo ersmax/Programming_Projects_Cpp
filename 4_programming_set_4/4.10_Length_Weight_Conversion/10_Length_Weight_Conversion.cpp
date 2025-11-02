@@ -26,12 +26,12 @@ that lets the user repeat this computation for new input values until the user s
 he or she wants to end the program.
 */
 
-// #define NDEBUG
-#include <cassert>
-#include <iostream>
-#include <limits>
-#include <cmath>
-#include <iomanip>
+// #define NDEBUG       // uncomment this line to disable assertions
+#include <cassert>      // for assert
+#include <iostream>     // for cin, cout
+#include <limits>       // for numeric_limits, streamsize
+#include <cmath>        // for round
+#include <iomanip>      // for setprecision
 using std::cout;
 using std::cin;
 using std::numeric_limits;
@@ -78,15 +78,33 @@ struct KilogramsGrams {
 };
 
 void makeChoice(Choice& choice);                        // orchestrator
+// Precondition: choice is declared
+// Postcondition: organise the top menu
+//                and sub-menus function calls
+
 
 void makeChoice(int& choiceMenu);                       // top-menu
+// Precondition: choice is declared
+// Postcondition: 1 if user wants to convert length,
+//                2 if user wants to convert weight
+//                0 to exit program
 
 void makeChoice(const int& choiceMenu,                  // submenu
                 int& choiceSubmenu);
+// Precondition: choiceMenu is 1 (length) or 2 (weight)
+// Postcondition: 1 convert from feet/inches to meters/centimeters
+//                  or convert from pounds/ounces to kilograms/grams
+//                2 convert from meters/centimeters to feet/inches
+//                  or convert from kilograms/grams to pounds/ounces
+//                0 to return to main menu
 
 void getData(FeetInches& feetInches);
+// Precondition: feetInches is declared
+// Postcondition: defines the values of feet and inches
 
 void getData(MetersCentimeters& metersCentimeters);
+// Precondition: metersCentimeters is declared
+// Postcondition: defines the values of meters and centimeters
 
 void getData(PoundsOunces& poundsOunces);
 
@@ -166,11 +184,15 @@ int main ( ) {
 
 void makeChoice(Choice& choice) {
     makeChoice(choice.lengthWeight);                        // top-menu
-    if (choice.lengthWeight == 1)
+    if (choice.lengthWeight == 1) {
+        assert(choice.lengthWeight == 1);
         makeChoice(choice.lengthWeight, choice.meterFeet);  // length sub-menu
-    else if (choice.lengthWeight == 2)
+    }
+    else if (choice.lengthWeight == 2) {
+        assert(choice.lengthWeight == 2);
         makeChoice(choice.lengthWeight, choice.kiloPound);  // weight sub-menu
     }
+}
 
 void makeChoice(int& choiceMenu) {
     while (true) {
