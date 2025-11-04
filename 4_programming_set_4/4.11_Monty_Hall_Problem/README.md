@@ -63,8 +63,9 @@ For the common host rule "open all but one other door", the theoretical result i
 - Using `std::uniform_int_distribution` ensures unbiased uniform draws among door indices.
 
 ## Figures
-<div style="text-align:center; max-width:900px; margin:0 auto;">
-  <img src="./MontyHall.jpg" alt="Monty Hall diagram" style="max-width:100%; height:auto; display:block; margin:0 auto;">
+<div style="text-align:center; max-width:400px; margin:0 auto;">
+  <img src="./MontyHall.jpg" alt="Monty Hall diagram"
+       style="width:300px; height:auto; display:block; margin:0 auto;">
   <p style="font-size:0.9rem; color:#666; margin-top:0.5rem;">Figure: Monty Hall diagram</p>
 </div>
 
