@@ -1,24 +1,3 @@
-/*
-You are a contestant on a game show and have won a shot at the grand prize.
-Before you are three doors. $1,000,000 in cash has randomly been placed behind
-one door. Behind the other two doors are the consolation prizes of dishwasher detergent.
-The game show host asks you to select a door, and you randomly pick one.
-However, before revealing the prize behind your door, the game show host reveals
-one of the other doors that contains a consolation prize. At this point, the game
-show host asks if you would like to stick with your original choice or to switch to
-the remaining door.
-Write a function to simulate the game show problem. Your function should randomly
-select locations for the prizes, select a door at random chosen by the contestant,
-and then determine whether the contestant would win or lose by sticking with
-the original choice or switching to the remaining door. You may wish to create
-additional functions invoked by this function.
-
-Next, modify your program so that it simulates playing 10,000 games. Count the
-number of times the contestant wins when switching versus staying. If you are
-the contestant, what choice should you make to optimize your chances of winning
-the cash, or does it not matter?
-*/
-
 #include <iostream>     // for cin, console out
 #include <random>       // for random device, mt19937, uniform int distribution
 #include <utility>      // for pair
@@ -39,9 +18,9 @@ using std::uniform_int_distribution;
 std::random_device rd;  // obtain a random number from hardware
 std::mt19937 rng(rd()); // seed the generator
 
-constexpr int DOORS = 5;        // Change here # of doors. Original: 3
+constexpr int DOORS = 100;        // Change here # of doors. Original: 3
 
-constexpr int GAMES = 1;        // Change here # of games to simulate. Original: 10000
+constexpr int GAMES = 10000;        // Change here # of games to simulate. Original: 10000
 
 void showResults(const vector<pair<int, double> >& leftDoorsProbs, int selectedDoor);
 // Precondition: leftDoorsProbs contains doors and their probabilities of winning
@@ -96,19 +75,19 @@ int main( ) {
 
         startGame(leftDoorsProbs);
         randomDoorPrice(winningDoor);
-        cout << "Winning door: " << winningDoor << "\n";
+        // cout << "Winning door: " << winningDoor << "\n";
 
         const int initialChoice = initialPick(selectedDoor);
 
-        showResults(leftDoorsProbs, selectedDoor);
+        // showResults(leftDoorsProbs, selectedDoor);
 
         size_t doorsLeft = leftDoorsProbs.size();
         while (doorsLeft > 2) {
             removeLosingDoor(leftDoorsProbs, winningDoor, selectedDoor);
             nextPick(leftDoorsProbs, selectedDoor);
             --doorsLeft;
-            showResults(leftDoorsProbs, selectedDoor);
-            showResults(leftDoorsProbs, selectedDoor);
+            // showResults(leftDoorsProbs, selectedDoor);
+            // showResults(leftDoorsProbs, selectedDoor);
         }
         if (initialChoice == winningDoor)
             ++winsStaying;
