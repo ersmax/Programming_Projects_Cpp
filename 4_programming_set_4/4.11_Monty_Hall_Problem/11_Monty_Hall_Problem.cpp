@@ -185,8 +185,6 @@ void nextPick(const vector<pair<int, double> >& leftDoorsProbs, int& selectedDoo
         return;
 
     // pick randomly among best doors
-
-
     uniform_int_distribution<size_t> dist(0, bestDoors.size() - 1);
     selectedDoor = bestDoors[dist(rng)];        // C++ standard compliant
     /* This is NOT thread safe */
