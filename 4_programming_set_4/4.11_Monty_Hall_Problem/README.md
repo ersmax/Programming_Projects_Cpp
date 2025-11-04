@@ -63,26 +63,25 @@ For the common host rule "open all but one other door", the theoretical result i
 - Using `std::uniform_int_distribution` ensures unbiased uniform draws among door indices.
 
 ## Figures
-<div style="text-align:center; max-width:400px; margin:0 auto;">
-  <img src="./MontyHall.jpg" alt="Monty Hall diagram"
-       style="width:300px; height:auto; display:block; margin:0 auto;">
-  <p style="font-size:0.9rem; color:#666; margin-top:0.5rem;">Figure: Monty Hall diagram</p>
-</div>
+
+<p align="center">
+  <img src="./MontyHall.jpg" alt="Monty Hall diagram" width="48%" />
+  <img src="./MontyHall.PNG" alt="Monty Hall" width="48%" />
+</p>
+
 
 - My draw shows a manual probability decomposition: it enumerates cases and shows how probabilities shift when the host opens doors. 
   That is a Bayes-style tree counting approach: each initial pick has probability 1/5, 
   and conditioned on the host\`s allowed reveals, the remaining unopened door(s) get redistributed probabilities.
 
-![Monty Hall](./MontyHall.PNG)
 - The program screenshot shows a single-run (one game) console trace and final percentages computed from a run for 5 doors game. 
   Small-sample output can be extreme (0\% vs 100\%) because one run is not representative.
 - For 10,000 runs ((`GAMES = 10000`)) and 100 doors (`DOORS = 100`) the results for Switching converges to about 60\% wins.
   The picture below illustrates:
 
-<p align="center">
-  <img src="./MontyHall.PNG" alt="Monty Hall" width="48%" />
-  <img src="./MontyHall10000.PNG" alt="Monty Hall 10000" width="48%" />
-</p>
+<div style="text-align:center; max-width:400px; margin:0 auto;">
+  <img src="./MontyHall10000.PNG" alt="Monty Hall 10000" width="100%" />
+</div>
 
 ## Practical note / conclusion
 - This program implementation is a variant of the original game. 
