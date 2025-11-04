@@ -121,6 +121,6 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
     \- Output: counts and percentages for wins when staying vs. switching; optional verbose mode for single-run tracing.  
     \- Empirical results: For 10,000 runs and 100 doors, the simulation converges to 60% probability of success.
     <p align="center">
-        <img src="./4_programming_set_4/4.11_Monty_Hall_Problem/MontyHall.PNG" alt="Monty Hall diagram" width="48%" />
-        <img src="./4_programming_set_4/4.11_Monty_Hall_Problem/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
+        <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall.PNG" alt="Monty Hall diagram" width="48%" />
+        <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
     </p>

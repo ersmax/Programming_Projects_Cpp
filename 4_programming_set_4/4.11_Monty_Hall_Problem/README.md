@@ -65,8 +65,8 @@ For the common host rule "open all but one other door", the theoretical result i
 ## Figures
 
 <p align="center">
-  <img src="./MontyHall.jpg" alt="Monty Hall diagram" width="48%" />
-  <img src="./MontyHall.PNG" alt="Monty Hall" width="48%" />
+  <img src="Figures/MontyHall.jpg" alt="Monty Hall diagram" width="48%" />
+  <img src="Figures/MontyHall.PNG" alt="Monty Hall" width="48%" />
 </p>
 
 
@@ -80,7 +80,7 @@ For the common host rule "open all but one other door", the theoretical result i
   The picture below illustrates:
 
 <p align="center">
-  <img src="./MontyHall10000.PNG" alt="Monty Hall 10000" width="60%" />
+  <img src="Figures/MontyHall10000.PNG" alt="Monty Hall 10000" width="60%" />
 </p>
 
 
