@@ -113,3 +113,14 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
     the user's choice.
     Allow users to choose between length and weight conversions, validate inputs, and repeat until exit.
     Used function overloading, pass by reference and constant reference parameters. 
+11. [Monty Hall Problem](4_programming_set_4/4.11_Monty_Hall_Problem)
+    \- Simulate a generalized Monty Hall experiment to compare empirical win rates for the two strategies: staying with the initial pick versus switching after the host reveals losing doors.  
+    \- Configurable parameters: number of doors (`DOORS`) and number of simulations (`GAMES`) so you can test small and large-scale scenarios (e.g., `DOORS = 100`, `GAMES = 10000`).  
+    \- Supports the canonical host rule (host opens `n-2` losing doors, leaving exactly one other) and easily adapts to variants where the host leaves multiple unopened doors.  
+    \- Written in modern C++ using `std::vector`, iterators, `std::mt19937` and `std::uniform_int_distribution` for unbiased draws and reproducible results (seedable).  
+    \- Output: counts and percentages for wins when staying vs. switching; optional verbose mode for single-run tracing.  
+    \- Empirical results: For 10,000 runs and 100 doors, the simulation converges to 60% probability of success.
+    <p align="center">
+        <img src="./4_programming_set_4/4.11_Monty_Hall_Problem/MontyHall.PNG" alt="Monty Hall diagram" width="48%" />
+        <img src="./4_programming_set_4/4.11_Monty_Hall_Problem/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
+    </p>
