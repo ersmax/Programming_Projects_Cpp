@@ -18,9 +18,9 @@ using std::uniform_int_distribution;
 std::random_device rd;  // obtain a random number from hardware
 std::mt19937 rng(rd()); // seed the generator
 
-constexpr int DOORS = 100;        // Change here # of doors. Original: 3
+constexpr int DOORS = 5;        // Change here # of doors. Original: 3
 
-constexpr int GAMES = 10000;        // Change here # of games to simulate. Original: 10000
+constexpr int GAMES = 1;        // Change here # of games to simulate. Original: 10000
 
 void showResults(const vector<pair<int, double> >& leftDoorsProbs, int selectedDoor);
 // Precondition: leftDoorsProbs contains doors and their probabilities of winning
@@ -75,19 +75,19 @@ int main( ) {
 
         startGame(leftDoorsProbs);
         randomDoorPrice(winningDoor);
-        // cout << "Winning door: " << winningDoor << "\n";
+        cout << "Winning door: " << winningDoor << "\n";
 
         const int initialChoice = initialPick(selectedDoor);
 
-        // showResults(leftDoorsProbs, selectedDoor);
+        showResults(leftDoorsProbs, selectedDoor);
 
         size_t doorsLeft = leftDoorsProbs.size();
         while (doorsLeft > 2) {
             removeLosingDoor(leftDoorsProbs, winningDoor, selectedDoor);
             nextPick(leftDoorsProbs, selectedDoor);
             --doorsLeft;
-            // showResults(leftDoorsProbs, selectedDoor);
-            // showResults(leftDoorsProbs, selectedDoor);
+            showResults(leftDoorsProbs, selectedDoor);
+            showResults(leftDoorsProbs, selectedDoor);
         }
         if (initialChoice == winningDoor)
             ++winsStaying;

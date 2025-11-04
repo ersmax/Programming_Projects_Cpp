@@ -63,7 +63,11 @@ For the common host rule "open all but one other door", the theoretical result i
 - Using `std::uniform_int_distribution` ensures unbiased uniform draws among door indices.
 
 ## Figures
-![Monty Hall](./MontyHall.jpg)
+<div style="text-align:center; max-width:900px; margin:0 auto;">
+  <img src="./MontyHall.jpg" alt="Monty Hall diagram" style="max-width:100%; height:auto; display:block; margin:0 auto;">
+  <p style="font-size:0.9rem; color:#666; margin-top:0.5rem;">Figure: Monty Hall diagram</p>
+</div>
+
 - My draw shows a manual probability decomposition: it enumerates cases and shows how probabilities shift when the host opens doors. 
   That is a Bayes-style tree counting approach: each initial pick has probability 1/5, 
   and conditioned on the host\`s allowed reveals, the remaining unopened door(s) get redistributed probabilities.
@@ -71,8 +75,13 @@ For the common host rule "open all but one other door", the theoretical result i
 ![Monty Hall](./MontyHall.PNG)
 - The program screenshot shows a single-run (one game) console trace and final percentages computed from a run for 5 doors game. 
   Small-sample output can be extreme (0\% vs 100\%) because one run is not representative.
-- For 10,000 runs (constant `DOORS`) the results for Switching converges to about 60\% wins.
-  
+- For 10,000 runs ((`GAMES = 10000`)) and 100 doors (`DOORS = 100`) the results for Switching converges to about 60\% wins.
+  The picture below illustrates:
+
+<p align="center">
+  <img src="./MontyHall.PNG" alt="Monty Hall" width="48%" />
+  <img src="./MontyHall10000.PNG" alt="Monty Hall 10000" width="48%" />
+</p>
 
 ## Practical note / conclusion
 - This program implementation is a variant of the original game. 
@@ -80,9 +89,8 @@ For the common host rule "open all but one other door", the theoretical result i
 - 2 are the alternatives: Whether the host leaves exactly one other door or leaves multiple unopened doors and the contestant then picks among them. 
 - The canonical Monty Hall switch (when host opens n-2 doors leaving exactly one other) gives switching probability (n-1)/n.
 - To empirically verify, run the program by changing the constants `DOORS` and `GAMES` with, say, 10\,000 or 100\,000 trials and compare "keep" vs "switch". 
-- Results will converge to win rate of ~60% as in the picture below.
+- Results will converge to win rate of ~60% as above.
 
-![Monty Hall](./MontyHall10000.PNG)
 
 ```cpp
 constexpr int DOORS = 5;        // <-- Change here # of doors. Original: 3
@@ -90,11 +98,13 @@ constexpr int DOORS = 5;        // <-- Change here # of doors. Original: 3
 constexpr int GAMES = 1;        // <-- Change here # of games to simulate. Original: 10000
 ```
 
-- Do not forget to comment off or delete `showResults(leftDoorsProbs, selectedDoor);` in main 
-  to avoid cluttering the console output.
+- Do not forget to comment out `showResults(leftDoorsProbs, selectedDoor);` 
+  and `cout << "Winning door: " << winningDoor << "\n";` in main to avoid cluttering the console output.
 
 ```cpp
         // ... previous code in main
+        
+        cout << "Winning door: " << winningDoor << "\n";    // <-- comment out to avoid cluttering output
         
         const int initialChoice = initialPick(selectedDoor);
 
