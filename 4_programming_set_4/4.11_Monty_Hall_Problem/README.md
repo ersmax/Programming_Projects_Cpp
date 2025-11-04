@@ -130,5 +130,5 @@ constexpr int GAMES = 1;        // <-- Change here # of games to simulate. Origi
 ```
 
 ## References
-[Math.stackexchange: Monty Hall problem with more than 3 doors](https://math.stackexchange.com/questions/221876/monty-hall-problem-with-more-than-3-doors)
+[Math.stackexchange: Monty Hall problem with more than 3 doors](https://math.stackexchange.com/questions/1032661/monty-hall-problem-with-five-doors)
 
