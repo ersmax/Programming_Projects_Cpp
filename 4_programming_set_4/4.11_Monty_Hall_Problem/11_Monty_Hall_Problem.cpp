@@ -41,6 +41,8 @@ void randomDoorPrice(int& winningDoor);
 
 void initialPick(int& choiceDoor);
 
+void nextPick(const vector<pair<int, double> >& leftDoorsProbs, int& selectedDoor);
+
 void startGame(vector<pair<int, double>>& leftDoorsProbs);
 
 void removeLosingDoor(vector<pair<int, double> >& leftDoorsProbs,
@@ -48,17 +50,42 @@ void removeLosingDoor(vector<pair<int, double> >& leftDoorsProbs,
                       int selectedDoor);
 
 int main( ) {
-    int winningDoor, selectedDoor;
+    int winningDoor, selectedDoor, doorsLeft;
     vector<pair<int, double>> leftDoorsProbs;
 
     startGame(leftDoorsProbs);
     randomDoorPrice(winningDoor);
     cout << "Winning door: " << winningDoor << "\n";
+
     initialPick(selectedDoor);
-    cout << "Selected door: " << selectedDoor << "\n";
+
     for (auto pair : leftDoorsProbs)
-        cout << pair.first << " " << pair.second << "\n";
-    removeLosingDoor(leftDoorsProbs, winningDoor, selectedDoor);
+        cout << pair.first << " " << pair.second << "\t";
+    cout << "\n";
+    cout << "Selected door: " << selectedDoor << "\n";
+
+    doorsLeft = leftDoorsProbs.size();
+    while (doorsLeft > 2) {
+        removeLosingDoor(leftDoorsProbs, winningDoor, selectedDoor);
+        nextPick(leftDoorsProbs, selectedDoor);
+        --doorsLeft;
+        for (auto pair : leftDoorsProbs)
+            cout << pair.first << " " << pair.second << "\t";
+        cout << "\n";
+        cout << "Selected door: " << selectedDoor << "\n";
+    }
+    nextPick(leftDoorsProbs, selectedDoor);
+
+    for (auto pair : leftDoorsProbs)
+        cout << pair.first << " " << pair.second << "\t";
+    cout << "\n";
+    cout << "Selected door: " << selectedDoor << "\n";
+
+
+
+
+
+
     for (auto pair : leftDoorsProbs)
         cout << pair.first << " " << pair.second << "\n";
 
@@ -85,6 +112,38 @@ void randomDoorPrice(int& winningDoor) {
 void initialPick(int& choiceDoor) {
     choiceDoor = rand( ) % DOORS + 1;
 }
+
+void nextPick(const vector<pair<int, double> >& leftDoorsProbs, int& selectedDoor) {
+    // choose among candidates that have higher probability
+    //  pick the door(s) with max probability and break ties randomly
+    double selectedDoorProb = -1.0;
+
+    for (const auto& door : leftDoorsProbs) {
+        if (door.first == selectedDoor) {
+            selectedDoorProb = door.second;
+            break;
+        }
+    }
+    // find max probability among remaining doors
+    double maxProb = -1.0;
+    for (const auto& door : leftDoorsProbs) {
+       if (door.first == selectedDoor)
+           continue;
+       if (door.second >= selectedDoorProb && door.second > maxProb)
+           maxProb = door.second;
+    }
+
+    // collect doors with max probability and break ties randomly
+    vector<int> bestDoors;
+    for (const auto& door : leftDoorsProbs) {
+        if (door.second == maxProb)
+            bestDoors.push_back(door.first);
+    }
+
+    selectedDoor = bestDoors[rand() % bestDoors.size()];
+
+}
+
 
 void removeLosingDoor(vector<pair<int, double> >& leftDoorsProbs,
                       const int winningDoor,
