@@ -113,7 +113,7 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
     the user's choice.
     Allow users to choose between length and weight conversions, validate inputs, and repeat until exit.
     Used function overloading, pass by reference and constant reference parameters. 
-11. [Monty Hall Problem](4_programming_set_4/4.11_Monty_Hall_Problem)
+11. [Monty Hall Problem](./4_programming_set_4/4.11_Monty_Hall_Problem)
     \- Simulate a generalized Monty Hall experiment to compare empirical win rates for the two strategies: staying with the initial pick versus switching after the host reveals losing doors.  
     \- Configurable parameters: number of doors (`DOORS`) and number of simulations (`GAMES`) so you can test small and large-scale scenarios (e.g., `DOORS = 100`, `GAMES = 10000`).  
     \- Supports the canonical host rule (host opens `n-2` losing doors, leaving exactly one other) and easily adapts to variants where the host leaves multiple unopened doors.  
