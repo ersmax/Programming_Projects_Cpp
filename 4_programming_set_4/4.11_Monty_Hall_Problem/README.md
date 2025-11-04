@@ -80,7 +80,7 @@ For the common host rule "open all but one other door", the theoretical result i
   The picture below illustrates:
 
 <div style="text-align:center; max-width:400px; margin:0 auto;">
-  <img src="./MontyHall10000.PNG" alt="Monty Hall 10000" width="100%" />
+  <img src="./MontyHall10000.PNG" alt="Monty Hall 10000" width="60%" />
 </div>
 
 ## Practical note / conclusion
