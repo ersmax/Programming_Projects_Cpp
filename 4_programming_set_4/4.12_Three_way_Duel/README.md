@@ -36,6 +36,16 @@ first shot or to try and hit the best shooter?
 | **Bob (B)**     | (p_B=\tfrac12) |
 | **Charlie (C)** | (p_C=1)        |
 
+0. Turn order repeats A → B → C.  
+   Everyone always aims at the most accurate opponent still alive.
+
+| Shooter         | Accuracy         |
+| --------------- | ---------------- |
+| `Aaron (A)`     | `p_A = 1/3`      |
+| `Bob (B)`       | `p_B = 1/2`      |
+| `Charlie (C)`   | `p_C = 1`        |
+
+
 1. Two-person duel when Charlie is gone
 
 | Situation | Who fires first       | Aaron’s win probability                                         |
