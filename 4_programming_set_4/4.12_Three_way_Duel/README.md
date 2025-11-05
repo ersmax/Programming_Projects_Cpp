@@ -32,7 +32,7 @@ first shot or to try and hit the best shooter?
 
 | Shooter       | Accuracy              |
 |---------------|-----------------------|
-| `Aaron (A)`   | `p<sub>A</sub> = 1/3` |
+| `Aaron (A)`   | `p`<sub>A</sub>` = 1/3` |
 | `Bob (B)`     | `p<sub>B</sub> = 1/2` |
 | `Charlie (C)` | `p<sub>C</sub> = 1`   |
 
