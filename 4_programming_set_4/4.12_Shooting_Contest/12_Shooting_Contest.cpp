@@ -55,14 +55,21 @@ bool oneLeft(const vector<pair<string, double> >& participants);
 
 void gameRound(vector<pair<string, double> >& participants);
 
+void addStats(const vector<pair<string, double> >& participants,
+              vector<pair<string, int> >& winStats);
+
 int main( ) {
     vector<pair<string, double> > participants;
+    vector<pair<string, int> > winStats;
 
-    gameStart(participants);
-    while (!oneLeft(participants)) {
-        gameRound(participants);
+    for (int game = 0; game < GAMES; ++game ) {
+        gameStart(participants);
+        while (!oneLeft(participants)) {
+            gameRound(participants);
+        }
+        addStats(participants, winStats);
     }
-    cout << participants[0].first;
+    showStats(winStats);
 
     cout << "\n";
     return 0;
@@ -126,4 +133,18 @@ void gameRound(vector<pair<string, double> >& participants) {
 
         ++nPlayer;
     }
+}
+
+void addStats(const vector<pair<string, double> >& participants, vector<pair<string, int> >& winStats) {
+    if (participants.empty()) return;
+
+    const string& winner = participants.front().first;
+
+    for (auto& entry : winStats)
+        if (entry.first == winner) {
+            ++entry.second;
+            return;
+        }
+
+    winStats.emplace_back(winner, 1);
 }
