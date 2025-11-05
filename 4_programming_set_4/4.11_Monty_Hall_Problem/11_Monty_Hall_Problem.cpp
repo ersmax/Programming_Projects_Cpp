@@ -84,9 +84,8 @@ int main( ) {
         size_t doorsLeft = leftDoorsProbs.size();
         while (doorsLeft > 2) {
             removeLosingDoor(leftDoorsProbs, winningDoor, selectedDoor);
-            nextPick(leftDoorsProbs, selectedDoor);
             --doorsLeft;
-            showResults(leftDoorsProbs, selectedDoor);
+            nextPick(leftDoorsProbs, selectedDoor);
             showResults(leftDoorsProbs, selectedDoor);
         }
         if (initialChoice == winningDoor)
@@ -101,7 +100,7 @@ int main( ) {
 
 }
 
-void showResults(const vector<pair<int, double> > & leftDoorsProbs,
+void showResults(const vector<pair<int, double> >& leftDoorsProbs,
                  const int selectedDoor) {
 
 
@@ -138,7 +137,7 @@ void startGame(vector<pair<int, double> >& leftDoorsProbs) {
 }
 
 void randomDoorPrice(int& winningDoor) {
-    uniform_int_distribution dist(1, DOORS);
+    uniform_int_distribution<int> dist(1, DOORS);
     winningDoor = dist(rng);              // C++ standard compliant
     // winningDoor = rand( ) % DOORS + 1; // This is NOT thread safe
 }

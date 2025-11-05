@@ -118,7 +118,6 @@ constexpr int GAMES = 1;        // <-- Change here # of games to simulate. Origi
             nextPick(leftDoorsProbs, selectedDoor);
             --doorsLeft;
             // showResults(leftDoorsProbs, selectedDoor);   // <--- comment out to avoid cluttering output
-            // showResults(leftDoorsProbs, selectedDoor);   // <--- comment out to avoid cluttering output
         }
         if (initialChoice == winningDoor)
             ++winsStaying;
