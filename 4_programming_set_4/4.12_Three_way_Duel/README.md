@@ -27,14 +27,16 @@ first shot or to try and hit the best shooter?
 
 # My mathematical explanation of the Game Theory of Three-Way duel.
 
-0. Turn order repeats A → B → C.  
+0. Turn order repeats A → B → C. 
    Everyone always aims at the most accurate opponent still alive.
 
-| Shooter         | Accuracy         |
-| --------------- | ---------------- |
-| `Aaron (A)`     | `p_A = 1/3`      |
-| `Bob (B)`       | `p_B = 1/2`      |
-| `Charlie (C)`   | `p_C = 1`        |
+| Shooter         | Accuracy       |
+| --------------- | -------------- |
+| **Aaron (A)**   | (p_A=\tfrac13) |
+| **Bob (B)**     | (p_B=\tfrac12) |
+| **Charlie (C)** | (p_C=1)        |
+
+\frac{1/2}
 
 
 1. Two-person duel when Charlie is gone
@@ -44,16 +46,6 @@ first shot or to try and hit the best shooter?
 | A vs B    | **Aaron** fires first | (P_{AB}^{A}= \frac{1/3}{1-\frac23\cdot\frac12}= \tfrac12)       |
 | A vs B    | **Bob** fires first   | (P_{AB}^{B}= (1-p_B),P_{AB}^{A}= \frac12\cdot\frac12= \tfrac14) |
 | A vs C    | **Aaron** fires first | (P_{AC}=p_A = \tfrac13)                                         |
-
-
-1. Two-person duel when Charlie is gone
-
-| Situation | Who fires first       | Aaron’s win probability |
-| --------- | --------------------- | ----------------------- |
-| A vs B    | Aaron fires first     | `P_{AB}^{A} = 1/2`      |
-| A vs B    | Bob fires first       | `P_{AB}^{A} = 1/4`      |
-| A vs C    | Aaron fires first     | `P_{AC} = p_A = 1/3`    |
-
 
 2. Strategy 1: Aaron shoots at Charlie first
 
