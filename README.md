@@ -128,8 +128,8 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
 12. [Three Way Duel](./4_programming_set_4/4.12_Three_Way_Duel)
     \- Simulate a three-way duel (truel) between three marksmen with different accuracies, under different strategies 
        (aiming at the strongest opponent, intentionally missing).
-    \- Written in modern C++ using `std::vector`, RNG`std::mt19937`, `bernoulli_distribution`.
-    \- The theory suggests 36.1% and 47.1% chances of success under 2 strategies. These results are validated through simulation.
+    - Written in modern C++ using `std::vector`, RNG`std::mt19937`, `bernoulli_distribution`.
+    - The theory suggests 36.1% and 41.7% chances of success under 2 strategies. These results are validated through simulation.
    <p align="center">
         <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/EmpiricalResults.png" alt="Three Way Duel diagram" width="48%" />
     </p>
