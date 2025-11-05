@@ -125,7 +125,7 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
         <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
     </p> 
 
-12.[Three Way Duel](./4_programming_set_4/4.12_Three_Way_Duel)
+12. [Three Way Duel](./4_programming_set_4/4.12_Three_Way_Duel)
     \- Simulate a three-way duel (truel) between three marksmen with different accuracies.
     \- Each marksman has a defined shooting accuracy: A (33.33%), B (50%), C (100%).
     \- The simulation runs multiple duels to estimate survival probabilities for each marksman under different strategies.
