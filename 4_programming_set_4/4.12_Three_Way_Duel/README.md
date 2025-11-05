@@ -25,16 +25,116 @@ first shot or to try and hit the best shooter?
 
 ---
 
-# My mathematical explanation of the Game Theory of Three-Way duel.
 
-0. Turn order repeats A → B → C.  
-   Everyone always aims at the most accurate opponent still alive.
+# Mathematical Explanation of the Game Theory of Three-Way Duel
 
-| Shooter       | Accuracy              |
-|---------------|-----------------------|
-| `Aaron (A)`   | `p`<sub>A</sub>` = 1/3` |
-| `Bob (B)`     | `p<sub>B</sub> = 1/2` |
-| `Charlie (C)` | `p<sub>C</sub> = 1`   |
+## 0. Setup
+
+Turn order repeats **A → B → C.**  
+Everyone always aims at the most accurate opponent still alive.
+
+| Shooter       | Accuracy     |
+|---------------|--------------|
+| Aaron (A)     | pₐ = 1/3     |
+| Bob (B)       | pᵦ = 1/2     |
+| Charlie (C)   | p꜀ = 1       |
+
+
+
+## 1. Two-person duel when Charlie is gone
+
+| Situation | Who fires first | Aaron’s win probability |
+|------------|----------------|--------------------------|
+| A vs B | **Aaron** fires first | P₍AB₎ᵃ = (1/3) / [1 − (2/3)·(1/2)] = 1/2 |
+| A vs B | **Bob** fires first   | P₍AB₎ᵇ = (1 − pᵦ)·P₍AB₎ᵃ = (1/2)·(1/2) = 1/4 |
+| A vs C | **Aaron** fires first | P₍AC₎ = pₐ = 1/3 |
+
+---
+
+## 2. Strategy 1 – Aaron shoots at Charlie first
+
+| Path | Probability of the path | Aaron’s eventual win probability |
+|------|--------------------------|----------------------------------|
+| (1) A hits C → duel A vs B, **Bob** to fire | pₐ = 1/3 | P₍AB₎ᵇ = 1/4 |
+| (2a) A misses, B hits C → duel A vs B, **Aaron** to fire | (1 − pₐ)pᵦ = (2/3)·(1/2) = 1/3 | P₍AB₎ᵃ = 1/2 |
+| (2b) A misses, B misses, C kills B → duel A vs C, **Aaron** to fire | (1 − pₐ)(1 − pᵦ) = (2/3)·(1/2) = 1/3 | P₍AC₎ = 1/3 |
+
+Adding the probabilities:
+
+Pₐ (shoot) = (1/3)·(1/4) + (1/3)·(1/2) + (1/3)·(1/3)
+= 1/12 + 1/6 + 1/9
+= 3/36 + 6/36 + 4/36
+= 13/36 ≈ 0.3611 = 36.11%
+
+
+The simulation result **36.10%** matches the analytical **36.11%**.
+
+---
+
+## 3. Strategy 2 – Aaron intentionally misses his first shot
+
+- Aaron first shoots into the air
+- Bob then shoots at Charlie
+
+| Branch | Path probability | Resulting duel | Aaron’s chance in that duel |
+|---------|------------------|----------------|------------------------------|
+| B hits C | pᵦ = 1/2 | A vs B, **Aaron** to fire | P₍AB₎ᵃ = 1/2 |
+| B misses C | (1 − pᵦ) = 1/2 | C kills B → A vs C, **Aaron** to fire | P₍AC₎ = 1/3 |
+
+Calculating total probability:
+
+
+Pₐ (miss) = (1/2)·(1/2) + (1/2)·(1/3)
+= 1/4 + 1/6
+= 3/12 + 2/12
+= 5/12 ≈ 0.4167 = 41.67%
+
+
+Simulation results (~42.3% and ~42.6%) agree with this analytical value.
+
+---
+
+## 4. Why Bob will never skip his shot
+
+If Bob declines to shoot, Charlie (who never misses) kills him immediately.  
+Bob’s winning probability drops to **0%**.  
+Thus, the equilibrium of the game is:
+
+- Aaron intentionally misses.
+- Bob fires at Charlie.
+- Charlie fires at Bob.
+
+---
+
+## 5. Theoretical results vs Empirical results
+
+| Strategy profile | Aaron | Bob | Charlie |
+|------------------|--------|-----|----------|
+| **Normal play** – Aaron shoots at Charlie | 13/36 ≈ 36.1% | 5/12 ≈ 41.7% | 2/9 ≈ 22.2% |
+| **Aaron misses first** (equilibrium) | 5/12 ≈ 41.7% | 1/4 = 25% | 1/3 ≈ 33.3% |
+
+---
+
+## 6. Final Observation
+
+For Aaron, intentionally missing on his first shot is unequivocally better.
+
+**41.7% chance of winning** versus **36.1%** if he tries to hit Charlie right away.
+
+The empirical results for **10,000 duels** match these exact values,  
+so the analysis and code are both correct.
+
+---
+
+## 🧮 Implementation note
+
+You can use any random simulation loop to verify:
+- 10,000 runs
+- Probabilities: A=1/3, B=1/2, C=1
+- Turn order: A → B → C
+- Everyone shoots at the most accurate survivor
+
+
 
 
 1. Two-person duel when Charlie is gone
@@ -44,14 +144,6 @@ first shot or to try and hit the best shooter?
 | A vs B    | **Aaron** fires first | (P_{AB}^{A}= \frac{1/3}{1-\frac23\cdot\frac12}= \tfrac12)       |
 | A vs B    | **Bob** fires first   | (P_{AB}^{B}= (1-p_B),P_{AB}^{A}= \frac12\cdot\frac12= \tfrac14) |
 | A vs C    | **Aaron** fires first | (P_{AC}=p_A = \tfrac13)                                         |
-
-
-| Situation | Who fires first       | Aaron’s win probability                                                                              |
-| --------- | --------------------- |------------------------------------------------------------------------------------------------------|
-| A vs B    | Aaron fires first     | `P<sub>AB</sub><sup>A</sup> = (1/3) / [1-(2/3)*(1/2)] = 1/2`                                         |
-| A vs B    | Bob fires first       | `P<sub>{AB}</sub><sup>B</sup> = (1 - p<sub>B</sub>*P<sub>AB</sub><sup>A</sup> = (1/2) * (1/2) = 1/4` |
-| A vs C    | Aaron fires first     | `P_{AC} = p_A = 1/3`                                                                                 |
-
 
 
 2. Strategy 1: Aaron shoots at Charlie first
