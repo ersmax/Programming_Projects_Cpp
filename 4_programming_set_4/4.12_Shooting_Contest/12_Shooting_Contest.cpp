@@ -25,18 +25,24 @@ for each contestant. What strategy is better for Aaron, to intentionally miss on
 first shot or to try and hit the best shooter?
 */
 
-#include <iostream>
+#include <iostream>     
 #include <algorithm>
+#include <iomanip>
 #include <random>
 #include <vector>
 #include <string>
 #include <utility>
-// #include <random>
+#include <numeric>
 using std::vector;
 using std::pair;
 using std::string;
 using std::cout;
 using std::bernoulli_distribution;
+using std::showpoint;
+using std::fixed;
+using std::setprecision;
+using std::iota;
+using std::sort;
 
 constexpr double AARON_SKILLS = 1.0/3.0;
 constexpr double BOB_SKILLS = 0.5;
@@ -55,27 +61,50 @@ bool oneLeft(const vector<pair<string, double> >& participants);
 
 void gameRound(vector<pair<string, double> >& participants);
 
+void gameRound(vector<pair<string, double> >& participants, const bool& bias);
+
 void addStats(const vector<pair<string, double> >& participants,
               vector<pair<string, int> >& winStats);
 
+void showStats(const vector<pair<string, int> >& winStats, const bool& bias);
+
+void eraseStats(vector<pair<string, int> >& winStats);
+
 int main( ) {
+    cout << fixed << showpoint << setprecision(2);
     vector<pair<string, double> > participants;
     vector<pair<string, int> > winStats;
 
+    // Strategy 1: Aaron hits at first shot
     for (int game = 0; game < GAMES; ++game ) {
         gameStart(participants);
         while (!oneLeft(participants)) {
-            gameRound(participants);
+            gameRound(participants, false);
         }
         addStats(participants, winStats);
     }
-    showStats(winStats);
+    showStats(winStats, false);
+
+    // Strategy 2: Aaron intentionally misses first
+    eraseStats(winStats);
+    for (int game = 0; game < GAMES; ++game ) {
+        gameStart(participants);
+        gameRound(participants, true);
+        while (!oneLeft(participants)) {
+            gameRound(participants, false);
+        }
+        addStats(participants, winStats);
+    }
+    showStats(winStats, true);
 
     cout << "\n";
     return 0;
 }
 
+
 void gameStart(vector<pair<string, double> >& participants) {
+    // clean list each game
+    participants.clear();
     participants.emplace_back("Aaron", AARON_SKILLS);
     participants.emplace_back("Bob", BOB_SKILLS);
     participants.emplace_back("Charlie", CHARLIE_SKILLS);
@@ -83,6 +112,7 @@ void gameStart(vector<pair<string, double> >& participants) {
 }
 
 void orderShoot(vector<pair<string, double> >& participants) {
+    if (participants.size() < 2) return;
 
     for (size_t idx1 = 0; idx1 < participants.size() - 1; ++idx1) {
 
@@ -104,10 +134,12 @@ bool oneLeft(const vector<pair<string, double> >& participants) {
     return (participants.size() == 1);
 }
 
-void gameRound(vector<pair<string, double> >& participants) {
+void gameRound(vector<pair<string, double> >& participants, const bool& bias) {
     if (participants.size() < 2) return;
 
-    size_t nPlayer = 0;
+    // set starting player depending on Aaron missing (biased) or hitting
+    size_t nPlayer = (bias == true) ? 1 : 0;
+
     while (nPlayer < participants.size()) {
         bernoulli_distribution hit(participants[nPlayer].second);
         if (!hit(rng)) {
@@ -135,6 +167,7 @@ void gameRound(vector<pair<string, double> >& participants) {
     }
 }
 
+
 void addStats(const vector<pair<string, double> >& participants, vector<pair<string, int> >& winStats) {
     if (participants.empty()) return;
 
@@ -147,4 +180,33 @@ void addStats(const vector<pair<string, double> >& participants, vector<pair<str
         }
 
     winStats.emplace_back(winner, 1);
+}
+
+void showStats(const vector<pair<string, int> >& winStats, const bool& bias) {
+    // avoid copying strings, but sort the indices only
+
+    vector<size_t> indices(winStats.size());
+    iota(indices.begin(), indices.end(), 0);
+
+    sort(indices.begin(), indices.end(),
+        [&](const size_t pair1, const size_t pair2) {
+            return (winStats[pair1].first < winStats[pair2].first);
+            });
+    if (bias)
+        cout << string(50,'-') << "\n"
+             << "Biased game (Aaron misses intentionally first)\n";
+
+    for (size_t idx : indices) {
+        double stats = static_cast<double>(winStats[idx].second) / GAMES;
+        cout << winStats[idx].first << " won "
+             << winStats[idx].second << "/"
+             << GAMES << " duels or "
+             << stats * 100.0 << "%\n";
+    }
+}
+
+void eraseStats(vector<pair<string, int> >& winStats) {
+    for (auto& playerStats : winStats) {
+        playerStats.second = 0;
+    }
 }
