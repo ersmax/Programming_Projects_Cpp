@@ -1,3 +1,5 @@
+# Three-Way Duel Simulation and Analysis
+
 In the land of Puzzlevania, Aaron, Bob, and Charlie had an argument over which
 one of them was the greatest puzzle-solver of all time. To end the argument once
 and for all, they agreed on a duel to the death. Aaron was a poor shot and only hit
