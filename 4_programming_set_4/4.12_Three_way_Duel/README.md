@@ -25,7 +25,7 @@ first shot or to try and hit the best shooter?
 
 ---
 
-# Explanation of the Game Theory
+# My mathematical explanation of the Game Theory of Three-Way duel.
 
 0. Turn order repeats A → B → C. 
    Everyone always aims at the most accurate opponent still alive.
@@ -59,6 +59,46 @@ P = 1/3·1/4 + 1/3·1/2 + 1/3·1/3
 = 3/36 + 6/36 + 4/36 = 13/36 ≈ 0.36111 = 36.11%
 
 The simulation result 36.10% matches the analytical 36.11%.
+
+3. Strategy 2: Aaron misses his first shot (until one participant dies)
+    - Aaron first shoots into the air
+    - Bob shoots at Charlie
+
+| Branch     | Path probability | Resulting duel                        | Aaron’s chance in that duel |
+| ---------- | ---------------- | ------------------------------------- | --------------------------- |
+| B hits C   | (p_B=\tfrac12)   | A vs B, **Aaron** to fire             | (P_{AB}^{A}=\tfrac12)       |
+| B misses C | (1-p_B=\tfrac12) | C kills B → A vs C, **Aaron** to fire | (P_{AC}= \tfrac13)          |
+
+
+P_A_miss = (1/2)(1/2) + (1/2)(1/3) = 1/4 + 1/6 = 3/12 + 2/12 = 5/12 ≈ 0.4167 = 41.67%.
+Simulation results ≈ 42.3% and 42.6% are within expected sampling error and agree with the analytical value.
+
+4. The ground truth: Bob will never try to miss a shot at Charlie
+
+If Bob declines his first shot, Charlie immediately kills him (Charlie never misses).
+Bob’s winning probability would drop to 0 %.
+Shooting at Charlie (his strongest rival) is strictly better for Bob, so the equilibrium of the game is:
+- Aaron intentionally misses.
+- Bob fires at Charlie.
+- Charlie fires at Bob.
+
+5. Theoretical results vs Empirical results
+
+| Strategy profile                          | Aaron                        | Bob                         | Charlie                |
+| ----------------------------------------- | ---------------------------- | --------------------------- | ---------------------- |
+| **Normal play** – Aaron shoots at Charlie | (\frac{13}{36}\approx 36.1%) | (\frac{5}{12}\approx 41.7%) | (\frac29\approx 22.2%) |
+| **Aaron misses first** (equilibrium)      | (\frac{5}{12}\approx 41.7%)  | (\frac14 = 25%)             | (\frac13\approx 33.3%) |
+
+6. Final Observation
+
+For Aaron, intentionally missing on his first shot is unequivocally better:
+
+41.7% chance of winning versus 36.1% if he tries to hit Charlie right away.
+
+The empirical result for 10,000 runs are consistent with these exact values, 
+so the program runs just fine.
+
+## Implementation
 
 
 
