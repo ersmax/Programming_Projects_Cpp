@@ -120,7 +120,19 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
     \- Written in modern C++ using `std::vector`, iterators, `std::mt19937` and `std::uniform_int_distribution` for unbiased draws and reproducible results (seedable).  
     \- Output: counts and percentages for wins when staying vs. switching; optional verbose mode for single-run tracing.  
     \- Empirical results: For 10,000 runs and 100 doors, the simulation converges to 60% probability of success.
-    <p align="center">
+   <p align="center">
         <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall.PNG" alt="Monty Hall diagram" width="48%" />
         <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
+    </p> 
+
+12.[Three Way Duel](./4_programming_set_4/4.12_Three_Way_Duel)
+    \- Simulate a three-way duel (truel) between three marksmen with different accuracies.
+    \- Each marksman has a defined shooting accuracy: A (33.33%), B (50%), C (100%).
+    \- The simulation runs multiple duels to estimate survival probabilities for each marksman under different strategies.
+    \- Strategies include: random target selection, aiming at the strongest opponent, and intentionally missing.
+    \- The program uses modern C++ features like `std::vector`, random number generation with `std::mt19937`, and structured programming for clarity.
+    \- Output includes survival counts and percentages for each marksman under each strategy after a large number of simulated duels.
+   <p align="center">
+        <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/ThreeWayDuel.PNG" alt="Three Way Duel diagram" width="48%" />
     </p>
+    
