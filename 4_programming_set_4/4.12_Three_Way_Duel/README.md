@@ -252,3 +252,6 @@ void gameRound(vector<pair<string, double> >& participants) {
     }
 }
 ```
+
+### References
+[Math StackExchange: Three-way duel probabilities](https://math.stackexchange.com/questions/687272/a-three-way-duel-probability-puzzle)
