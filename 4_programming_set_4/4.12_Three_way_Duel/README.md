@@ -36,7 +36,7 @@ first shot or to try and hit the best shooter?
 | **Bob (B)**     | (p_B=\tfrac12) |
 | **Charlie (C)** | (p_C=1)        |
 
-\frac{1/2}
+\(P = \frac{1/3}{1-(2/3)(1/2)} = 1/2\)
 
 
 1. Two-person duel when Charlie is gone
