@@ -25,7 +25,7 @@ for each contestant. What strategy is better for Aaron, to intentionally miss on
 first shot or to try and hit the best shooter?
 */
 
-#include <iostream>     
+#include <iostream>
 #include <algorithm>
 #include <iomanip>
 #include <random>
@@ -43,6 +43,8 @@ using std::fixed;
 using std::setprecision;
 using std::iota;
 using std::sort;
+using std::setfill;
+using std::setw;
 
 constexpr double AARON_SKILLS = 1.0/3.0;
 constexpr double BOB_SKILLS = 0.5;
@@ -59,21 +61,20 @@ void orderShoot(vector<pair<string, double> >& participants);
 
 bool oneLeft(const vector<pair<string, double> >& participants);
 
-void gameRound(vector<pair<string, double> >& participants);
-
-void gameRound(vector<pair<string, double> >& participants, const bool& bias);
+void gameRound(vector<pair<string, double> >& participants, bool bias);
 
 void addStats(const vector<pair<string, double> >& participants,
               vector<pair<string, int> >& winStats);
 
-void showStats(const vector<pair<string, int> >& winStats, const bool& bias);
+void showStats(const vector<pair<string, int> >& winStats, bool bias);
 
-void eraseStats(vector<pair<string, int> >& winStats);
+void eraseStats(vector<pair<string, int> >& vectorPlayers);
 
 int main( ) {
     cout << fixed << showpoint << setprecision(2);
     vector<pair<string, double> > participants;
     vector<pair<string, int> > winStats;
+    vector<pair<string, int> > winStatsBiased;
 
     // Strategy 1: Aaron hits at first shot
     for (int game = 0; game < GAMES; ++game ) {
@@ -85,17 +86,21 @@ int main( ) {
     }
     showStats(winStats, false);
 
-    // Strategy 2: Aaron intentionally misses first
-    eraseStats(winStats);
+    // Strategy 2: Aaron intentionally misses first shot
     for (int game = 0; game < GAMES; ++game ) {
         gameStart(participants);
-        gameRound(participants, true);
+
+        size_t initial_size = participants.size();
+        while (initial_size == participants.size())
+            gameRound(participants, true);
         while (!oneLeft(participants)) {
             gameRound(participants, false);
         }
-        addStats(participants, winStats);
+        addStats(participants, winStatsBiased);
     }
-    showStats(winStats, true);
+    showStats(winStatsBiased, true);
+
+
 
     cout << "\n";
     return 0;
@@ -134,7 +139,7 @@ bool oneLeft(const vector<pair<string, double> >& participants) {
     return (participants.size() == 1);
 }
 
-void gameRound(vector<pair<string, double> >& participants, const bool& bias) {
+void gameRound(vector<pair<string, double> >& participants, const bool bias) {
     if (participants.size() < 2) return;
 
     // set starting player depending on Aaron missing (biased) or hitting
@@ -156,6 +161,9 @@ void gameRound(vector<pair<string, double> >& participants, const bool& bias) {
         // most lethal is shot
         using diff_t = vector<pair<string, double>>::difference_type;
         participants.erase(participants.begin() + static_cast<diff_t>(target));
+
+        if (bias)       // if Aaron doesn't shoot at first (bias),
+            return;     // he starts when one participant dies
 
         // if we removed element before current shooter,
         // current shooter's index decreased by 1
@@ -182,7 +190,7 @@ void addStats(const vector<pair<string, double> >& participants, vector<pair<str
     winStats.emplace_back(winner, 1);
 }
 
-void showStats(const vector<pair<string, int> >& winStats, const bool& bias) {
+void showStats(const vector<pair<string, int> >& winStats, const bool bias) {
     // avoid copying strings, but sort the indices only
 
     vector<size_t> indices(winStats.size());
@@ -193,7 +201,7 @@ void showStats(const vector<pair<string, int> >& winStats, const bool& bias) {
             return (winStats[pair1].first < winStats[pair2].first);
             });
     if (bias)
-        cout << string(50,'-') << "\n"
+        cout << setfill('-') << setw(50) << "" << setfill(' ') << "\n"
              << "Biased game (Aaron misses intentionally first)\n";
 
     for (size_t idx : indices) {
@@ -205,8 +213,6 @@ void showStats(const vector<pair<string, int> >& winStats, const bool& bias) {
     }
 }
 
-void eraseStats(vector<pair<string, int> >& winStats) {
-    for (auto& playerStats : winStats) {
-        playerStats.second = 0;
-    }
+void eraseStats(vector<pair<string, int> >& vectorPlayers) {
+    vectorPlayers = vector<pair<string, int> >();
 }

@@ -25,6 +25,43 @@ first shot or to try and hit the best shooter?
 
 ---
 
+# Explanation of the Game Theory
+
+0. Turn order repeats A → B → C. 
+   Everyone always aims at the most accurate opponent still alive.
+
+| Shooter         | Accuracy       |
+| --------------- | -------------- |
+| **Aaron (A)**   | (p_A=\tfrac13) |
+| **Bob (B)**     | (p_B=\tfrac12) |
+| **Charlie (C)** | (p_C=1)        |
+
+1. Two-person duel when Charlie is gone
+
+| Situation | Who fires first       | Aaron’s win probability                                         |
+| --------- | --------------------- | --------------------------------------------------------------- |
+| A vs B    | **Aaron** fires first | (P_{AB}^{A}= \frac{1/3}{1-\frac23\cdot\frac12}= \tfrac12)       |
+| A vs B    | **Bob** fires first   | (P_{AB}^{B}= (1-p_B),P_{AB}^{A}= \frac12\cdot\frac12= \tfrac14) |
+| A vs C    | **Aaron** fires first | (P_{AC}=p_A = \tfrac13)                                         |
+
+2. Strategy 1: Aaron shoots at Charlie first
+
+| Path                                                                    | Probability of the path                         | Aaron’s eventual win prob. on that path |
+| ----------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------- |
+| **(1)** A hits C → duel A vs B, **Bob** to fire                         | (p_A=\tfrac13)                                  | (P_{AB}^{B}= \tfrac14)                  |
+| **(2a)** A misses, B hits C → duel A vs B, **Aaron** to fire            | ((1-p_A)p_B=\tfrac23\cdot\tfrac12=\tfrac13)     | (P_{AB}^{A}= \tfrac12)                  |
+| **(2b)** A misses, B misses, C kills B → duel A vs C, **Aaron** to fire | ((1-p_A)(1-p_B)=\tfrac23\cdot\tfrac12=\tfrac13) | (P_{AC}= \tfrac13)                      |
+
+Adding the probabilities:
+
+P = 1/3·1/4 + 1/3·1/2 + 1/3·1/3
+= 1/12 + 1/6 + 1/9
+= 3/36 + 6/36 + 4/36 = 13/36 ≈ 0.36111 = 36.11%
+
+The simulation result 36.10% matches the analytical 36.11%.
+
+
+
 function `orderShoot` can also be rewritten more efficiently by using `algorithm` 
 from std library. 
 
