@@ -27,16 +27,14 @@ first shot or to try and hit the best shooter?
 
 # My mathematical explanation of the Game Theory of Three-Way duel.
 
-0. Turn order repeats A → B → C. 
+0. Turn order repeats A → B → C.  
    Everyone always aims at the most accurate opponent still alive.
 
-| Shooter         | Accuracy       |
-| --------------- | -------------- |
-| **Aaron (A)**   | (p_A=\tfrac13) |
-| **Bob (B)**     | (p_B=\tfrac12) |
-| **Charlie (C)** | (p_C=1)        |
-
-\(P = \frac{1/3}{1-(2/3)(1/2)} = 1/2\)
+| Shooter       | Accuracy     |
+|---------------|--------------|
+| `Aaron (A)`   | `p\_A = 1/3` |
+| `Bob (B)`     | `p_B = 1/2`  |
+| `Charlie (C)` | `p_C = 1`    |
 
 
 1. Two-person duel when Charlie is gone
