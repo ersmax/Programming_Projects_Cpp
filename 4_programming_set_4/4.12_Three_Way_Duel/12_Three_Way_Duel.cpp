@@ -1,38 +1,11 @@
-/*
-In the land of Puzzlevania, Aaron, Bob, and Charlie had an argument over which
-one of them was the greatest puzzle-solver of all time. To end the argument once
-and for all, they agreed on a duel to the death. Aaron was a poor shot and only hit
-his target with a probability of 1/3. Bob was a bit better and hit his target with a
-probability of 1/2. Charlie was an expert marksman and never missed. A hit means
-a kill and the person hit drops out of the duel.
-To compensate for the inequities in their marksmanship skills, the three decided
-that they would fire in turns, starting with Aaron, followed by Bob, and then by
-Charlie. The cycle would repeat until there was one man standing. That man
-would be remembered for all time as the Greatest Puzzle-Solver of All Time.
-An obvious and reasonable strategy is for each man to shoot at the most accurate
-shooter still alive, on the grounds that this shooter is the deadliest and has the best
-chance of hitting back.
-Write a program to simulate the duel using this strategy. Your program should use
-random numbers and the probabilities given in the problem to determine whether
-a shooter hits his target. You will likely want to create multiple subroutines and
-functions to complete the problem. Once you can simulate a duel, add a loop to
-your program that simulates 10,000 duels. Count the number of times that each
-contestant wins and print the probability of winning for each contestant (e.g., for
-Aaron your program might output “Aaron won 3595/10,000 duels or 35.95%”).
-An alternate strategy is for Aaron to intentionally miss on his first shot. Modify the
-program to accommodate this new strategy and output the probability of winning
-for each contestant. What strategy is better for Aaron, to intentionally miss on the
-first shot or to try and hit the best shooter?
-*/
-
-#include <iostream>
-#include <algorithm>
-#include <iomanip>
-#include <random>
-#include <vector>
-#include <string>
-#include <utility>
-#include <numeric>
+#include <iostream>         // std::cout
+#include <algorithm>        // std::sort
+#include <iomanip>          // std::setprecision
+#include <random>           // std::random_device, std::mt19937, std::bernoulli_distribution
+#include <vector>           // std::vector
+#include <string>           // std::string
+#include <utility>          // std::pair
+#include <numeric>          // std::iota
 using std::vector;
 using std::pair;
 using std::string;
@@ -56,19 +29,33 @@ std::random_device rd;
 std::mt19937 rng(rd());
 
 void gameStart(vector<pair<string, double> >& participants);
+// Precondition: participants is empty
+// Postcondition: participants contains the three players with their skills
 
 void orderShoot(vector<pair<string, double> >& participants);
+// Precondition: participants has at least two players
+// Postcondition: participants is ordered by ascending skills
 
 bool oneLeft(const vector<pair<string, double> >& participants);
+// Postcondition: returns true if only one player is left
 
 void gameRound(vector<pair<string, double> >& participants, bool bias);
+// Precondition: participants has at least two players
+// Postcondition: one round of shooting is done; if bias is true, Aaron
+//                intentionally misses his first shot
 
 void addStats(const vector<pair<string, double> >& participants,
               vector<pair<string, int> >& winStats);
+// Precondition: participants has only one player (the winner)
+// Postcondition: winStats is updated with the winner's stats
 
 void showStats(const vector<pair<string, int> >& winStats, bool bias);
+// Postcondition: winStats is displayed; if bias is true, indicates that
+//                Aaron intentionally missed his first shot
 
 void eraseStats(vector<pair<string, int> >& vectorPlayers);
+// Postcondition: vectorPlayers is cleared
+//               (not used in this implementation, but could be useful)
 
 int main( ) {
     cout << fixed << showpoint << setprecision(2);

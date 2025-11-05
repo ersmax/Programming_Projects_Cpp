@@ -1,6 +1,0 @@
-# Enable MathJax for every Markdown file rendered by GitHub Pages
-markdown: kramdown
-
-kramdown:
-  input: GFM          # keep GitHub-Flavoured Markdown
-  math_engine: mathjax
