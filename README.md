@@ -126,13 +126,11 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
     </p> 
 
 12. [Three Way Duel](./4_programming_set_4/4.12_Three_Way_Duel)
-    \- Simulate a three-way duel (truel) between three marksmen with different accuracies.
-    \- Each marksman has a defined shooting accuracy: A (33.33%), B (50%), C (100%).
-    \- The simulation runs multiple duels to estimate survival probabilities for each marksman under different strategies.
-    \- Strategies include: random target selection, aiming at the strongest opponent, and intentionally missing.
-    \- The program uses modern C++ features like `std::vector`, random number generation with `std::mt19937`, and structured programming for clarity.
-    \- Output includes survival counts and percentages for each marksman under each strategy after a large number of simulated duels.
+    \- Simulate a three-way duel (truel) between three marksmen with different accuracies, under different strategies 
+       (aiming at the strongest opponent, intentionally missing).
+    \- Written in modern C++ using `std::vector`, RNG`std::mt19937`, `bernoulli_distribution`.
+    \- The theory suggests 36.1% and 47.1% chances of success under 2 strategies. These results are validated through simulation.
    <p align="center">
-        <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/ThreeWayDuel.PNG" alt="Three Way Duel diagram" width="48%" />
+        <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/EmpiricalResults.png" alt="Three Way Duel diagram" width="48%" />
     </p>
     

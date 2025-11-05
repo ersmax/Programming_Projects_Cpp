@@ -67,7 +67,7 @@ Pₐ (shoot) = (1/3)·(1/4) + (1/3)·(1/2) + (1/3)·(1/3)
 = 13/36 ≈ 0.3611 = 36.11%
 
 
-The simulation result **36.10%** matches the analytical **36.11%**.
+The simulation result **36.15%** matches the analytical **36.11%**.
 
 ---
 
@@ -90,7 +90,7 @@ Pₐ (miss) = (1/2)·(1/2) + (1/2)·(1/3)
 = 5/12 ≈ 0.4167 = 41.67%
 
 
-Simulation results (~42.3% and ~42.6%) agree with this analytical value.
+Simulation results (~41.67%) agree perfectly with this analytical value.
 
 ---
 
@@ -106,12 +106,22 @@ Thus, the equilibrium of the game is:
 
 ---
 
-## 5. Theoretical results vs Empirical results
+## 5. Theoretical results
 
 | Strategy profile | Aaron | Bob | Charlie |
 |------------------|--------|-----|----------|
 | **Normal play** – Aaron shoots at Charlie | 13/36 ≈ 36.1% | 5/12 ≈ 41.7% | 2/9 ≈ 22.2% |
 | **Aaron misses first** (equilibrium) | 5/12 ≈ 41.7% | 1/4 = 25% | 1/3 ≈ 33.3% |
+
+
+## 6. Empirical results
+- 10,000 runs
+- Turn order: A → B → C
+- Everyone shoots at the most accurate survivor
+
+<p align="center">
+  <img src="./Figures/EmpiricalResults.png" alt="Three way game 10000" width="60%" />
+</p>
 
 ---
 
@@ -124,86 +134,79 @@ For Aaron, intentionally missing on his first shot is unequivocally better.
 The empirical results for **10,000 duels** match these exact values,  
 so the analysis and code are both correct.
 
+
 ---
 
-## 🧮 Implementation note
+Added a short "Implementation notes & function comments" fragment suitable to paste into `README.md` after section 6. Final Observation.
 
-You can use any random simulation loop to verify:
-- 10,000 runs
-- Probabilities: A=1/3, B=1/2, C=1
-- Turn order: A → B → C
-- Everyone shoots at the most accurate survivor
+## 7. Implementation notes \& function comments
 
+### Constants and RNG (i.e. Random number generator)
+  - `AARON_SKILLS`, `BOB_SKILLS`, `CHARLIE_SKILLS` — shooter accuracies (`1/3`, `1/2`, `1`).
+  - `GAMES` — number of simulated duels (10,000).
+  - `std::random_device rd; std::mt19937 rng(rd());` — non-deterministic seed used for simulation. 
+     For reproducible unit tests replace `rd()` with a fixed seed (e.g., `std::mt19937 rng(12345);`).
 
+- `main()`
+  - Sets floating output formatting.
+  - Runs two experiments:
+    1. Normal play (Aaron fires normally).
+    2. Biased play (Aaron intentionally misses his first opportunity).
+  - For each game it calls `gameStart`, then loops `gameRound` until one winner remains, and finally accumulates results with `addStats`.
+  - Prints results with `showStats`.
 
+- `gameStart(vector<pair<string,double>>& participants)`
+  - Resets and populates the `participants` vector with `("Aaron", p)`, `("Bob", p)`, `("Charlie", p)`.
+  - Calls `orderShoot` so shooters are ordered by ascending accuracy (so the firing cycle is lowest-accuracy first).
 
-1. Two-person duel when Charlie is gone
+- `orderShoot(vector<pair<string,double>>& participants)`
+  - Reorders `participants` so that the least accurate shooter is first and the most accurate is last.
+  - The current implementation uses a simple selection-like loop. It can be replaced by `std::sort` with a comparator on `.second` (see below).
 
-| Situation | Who fires first       | Aaron’s win probability                                         |
-| --------- | --------------------- | --------------------------------------------------------------- |
-| A vs B    | **Aaron** fires first | (P_{AB}^{A}= \frac{1/3}{1-\frac23\cdot\frac12}= \tfrac12)       |
-| A vs B    | **Bob** fires first   | (P_{AB}^{B}= (1-p_B),P_{AB}^{A}= \frac12\cdot\frac12= \tfrac14) |
-| A vs C    | **Aaron** fires first | (P_{AC}=p_A = \tfrac13)                                         |
+- `oneLeft(const vector<pair<string,double>>& participants)`
+  - Returns true when only one participant remains (the winner).
 
+- `gameRound(vector<pair<string,double>>& participants, bool bias)`
+  - Simulates a single pass through the current alive shooters.
+  - `bias == true` starts the round with the second shooter (Aaron intentionally misses) so Aaron effectively skips his first shot until someone dies.
+  - For each shooter in turn:
+    - Draws a Bernoulli trial using the shooter's accuracy.
+    - If the shooter hits, they always target the most accurate opponent still alive (the element at the end of the `participants` vector). If the shooter is the most accurate, they target the second-most accurate.
+    - Removing a target may shift indices; the function adjusts the current shooter index when necessary.
+    - If `bias` was set and a kill occurs, the function returns immediately so Aaron's deliberate miss behavior is enforced until a death happens.
+  - Assumes `participants` is ordered by accuracy before the call.
 
-2. Strategy 1: Aaron shoots at Charlie first
+- `addStats(const vector<pair<string,double>>& participants, vector<pair<string,int>>& winStats)`
+  - The remaining `participants.front()` is the winner; increment that player's counter in `winStats` or add a new entry if first seen.
 
-| Path                                                                    | Probability of the path                         | Aaron’s eventual win prob. on that path |
-| ----------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------- |
-| **(1)** A hits C → duel A vs B, **Bob** to fire                         | (p_A=\tfrac13)                                  | (P_{AB}^{B}= \tfrac14)                  |
-| **(2a)** A misses, B hits C → duel A vs B, **Aaron** to fire            | ((1-p_A)p_B=\tfrac23\cdot\tfrac12=\tfrac13)     | (P_{AB}^{A}= \tfrac12)                  |
-| **(2b)** A misses, B misses, C kills B → duel A vs C, **Aaron** to fire | ((1-p_A)(1-p_B)=\tfrac23\cdot\tfrac12=\tfrac13) | (P_{AC}= \tfrac13)                      |
+- `showStats(const vector<pair<string,int>>& winStats, bool bias)`
+  - Prints the aggregated win counts and percentages (uses `GAMES` for normalization).
+  - Sorts printed output by player name to keep results stable and readable.
+  - When `bias == true` prints a separator and a header indicating the biased experiment.
 
-Adding the probabilities:
+- `eraseStats(vector<pair<string,int>>& vectorPlayers)`
+  - Resets the stats vector to empty.
 
-P = 1/3·1/4 + 1/3·1/2 + 1/3·1/3
-= 1/12 + 1/6 + 1/9
-= 3/36 + 6/36 + 4/36 = 13/36 ≈ 0.36111 = 36.11%
+### Notes 
+- The algorithm relies on ordering `participants` by accuracy, but could use `sort` from `algorithm` library 
+- For deterministic tests, we use a fixed RNG seed; for real runs we use the `std::random_device` seed like in the code
+- The `gameRound` index adjustments are critical — removing an element before the current shooter reduces the current index by 1
+- It is also critical the line below in function `gameRound`, to allow Aaron start playing in the biased version
 
-The simulation result 36.10% matches the analytical 36.11%.
-
-3. Strategy 2: Aaron misses his first shot (until one participant dies)
-    - Aaron first shoots into the air
-    - Bob shoots at Charlie
-
-| Branch     | Path probability | Resulting duel                        | Aaron’s chance in that duel |
-| ---------- | ---------------- | ------------------------------------- | --------------------------- |
-| B hits C   | (p_B=\tfrac12)   | A vs B, **Aaron** to fire             | (P_{AB}^{A}=\tfrac12)       |
-| B misses C | (1-p_B=\tfrac12) | C kills B → A vs C, **Aaron** to fire | (P_{AC}= \tfrac13)          |
-
-
-P_A_miss = (1/2)(1/2) + (1/2)(1/3) = 1/4 + 1/6 = 3/12 + 2/12 = 5/12 ≈ 0.4167 = 41.67%.
-Simulation results ≈ 42.3% and 42.6% are within expected sampling error and agree with the analytical value.
-
-4. The ground truth: Bob will never try to miss a shot at Charlie
-
-If Bob declines his first shot, Charlie immediately kills him (Charlie never misses).
-Bob’s winning probability would drop to 0 %.
-Shooting at Charlie (his strongest rival) is strictly better for Bob, so the equilibrium of the game is:
-- Aaron intentionally misses.
-- Bob fires at Charlie.
-- Charlie fires at Bob.
-
-5. Theoretical results vs Empirical results
-
-| Strategy profile                          | Aaron                        | Bob                         | Charlie                |
-| ----------------------------------------- | ---------------------------- | --------------------------- | ---------------------- |
-| **Normal play** – Aaron shoots at Charlie | (\frac{13}{36}\approx 36.1%) | (\frac{5}{12}\approx 41.7%) | (\frac29\approx 22.2%) |
-| **Aaron misses first** (equilibrium)      | (\frac{5}{12}\approx 41.7%)  | (\frac14 = 25%)             | (\frac13\approx 33.3%) |
-
-6. Final Observation
-
-For Aaron, intentionally missing on his first shot is unequivocally better:
-
-41.7% chance of winning versus 36.1% if he tries to hit Charlie right away.
-
-The empirical result for 10,000 runs are consistent with these exact values, 
-so the program runs just fine.
-
-## Implementation
+```cpp
+void gameRound(vector<pair<string, double> >& participants, const bool bias) {
+   
+   // other code..
+   
+   if (bias)       // if Aaron doesn't shoot at first (bias),
+      return;      // he starts when one participant dies
+```
 
 
 
+## 8. Alternative ways to the problem
+
+### 8.1 Ordering
 function `orderShoot` can also be rewritten more efficiently by using `algorithm` 
 from std library. 
 
@@ -218,6 +221,7 @@ void orderShoot(vector<pair<string, double> >& participants) {
 }
 ```
 
+### 8.2 gameRound with for loop
 one could also write the function `gameRound` with a for loop, even though the while is clearer here.
 
 ```cpp
@@ -245,6 +249,4 @@ void gameRound(vector<pair<string, double> >& participants) {
         if (participants.size() < 2) break;
     }
 }
-
-
 ```
