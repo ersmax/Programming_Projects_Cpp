@@ -30,11 +30,11 @@ first shot or to try and hit the best shooter?
 0. Turn order repeats A → B → C.  
    Everyone always aims at the most accurate opponent still alive.
 
-| Shooter       | Accuracy     |
-|---------------|--------------|
-| `Aaron (A)`   | `p\_A = 1/3` |
-| `Bob (B)`     | `p_B = 1/2`  |
-| `Charlie (C)` | `p_C = 1`    |
+| Shooter       | Accuracy              |
+|---------------|-----------------------|
+| `Aaron (A)`   | `p<sub>A</sub> = 1/3` |
+| `Bob (B)`     | `p<sub>B</sub> = 1/2` |
+| `Charlie (C)` | `p<sub>C</sub> = 1`   |
 
 
 1. Two-person duel when Charlie is gone
@@ -44,6 +44,15 @@ first shot or to try and hit the best shooter?
 | A vs B    | **Aaron** fires first | (P_{AB}^{A}= \frac{1/3}{1-\frac23\cdot\frac12}= \tfrac12)       |
 | A vs B    | **Bob** fires first   | (P_{AB}^{B}= (1-p_B),P_{AB}^{A}= \frac12\cdot\frac12= \tfrac14) |
 | A vs C    | **Aaron** fires first | (P_{AC}=p_A = \tfrac13)                                         |
+
+
+| Situation | Who fires first       | Aaron’s win probability                                                                              |
+| --------- | --------------------- |------------------------------------------------------------------------------------------------------|
+| A vs B    | Aaron fires first     | `P<sub>AB</sub><sup>A</sup> = (1/3) / [1-(2/3)*(1/2)] = 1/2`                                         |
+| A vs B    | Bob fires first       | `P<sub>{AB}</sub><sup>B</sup> = (1 - p<sub>B</sub>*P<sub>AB</sub><sup>A</sup> = (1/2) * (1/2) = 1/4` |
+| A vs C    | Aaron fires first     | `P_{AC} = p_A = 1/3`                                                                                 |
+
+
 
 2. Strategy 1: Aaron shoots at Charlie first
 
