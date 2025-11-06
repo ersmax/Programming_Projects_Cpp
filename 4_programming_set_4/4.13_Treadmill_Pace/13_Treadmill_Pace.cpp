@@ -1,15 +1,3 @@
-/*
-You would like to know how fast you can run in miles per hour. Your treadmill
-will tell you your speed in terms of a pace (minutes and seconds per mile, such as
-“5:30 mile”) or in terms of kilometers per hour (kph).
-Write an overloaded function called convertToMPH. The first definition should
-take as input two integers that represent the pace in minutes and seconds per mile
-and return the speed in mph as a double. The second definition should take as
-input one double that represents the speed in kph and return the speed in mph as
-a double. One mile is approximately 1.61 kilometers. Write a driver program to
-test your function.
-*/
-
 // define NDEBUG        // uncomment this line todisable assertions
 #include <iostream>     // for cin, cout
 #include <limits>       // for numeric_limits, streamsize
@@ -35,7 +23,7 @@ int main( ) {
     enterData(paceMinutesMile, paceSecondsMile);
     double speedMph = convertToMPH(paceMinutesMile, paceSecondsMile);
     double speedMph2 = convertToMPH(speedMph * KM_MILE);
-    std::cout << speedMph << " mph or "
+    std::cout << speedMph2 << " mph or "
               << paceMinutesMile << "::"
               << paceSecondsMile
               << " min, seconds";
