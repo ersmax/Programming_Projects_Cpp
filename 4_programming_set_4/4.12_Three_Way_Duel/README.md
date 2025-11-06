@@ -151,7 +151,7 @@ Pₐ (Aaron misses) =
 = 5/12 ≈ 0.4167 = 41.67%
 ```
 
-The empirical results (~41.67%) agree perfectly with this theoretical value.
+The empirical results (figure below) (~41.67%) agree perfectly with this theoretical value.
 
 For Aaron, missing his target and waiting for the other two opponents to kill each other 
 is better than shooting at Charlie right away (41.67% > 36.11%).
