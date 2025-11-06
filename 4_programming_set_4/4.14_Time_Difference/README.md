@@ -15,19 +15,16 @@ Hint: Be careful of time intervals that start before midnight and end the follow
 # Time Difference (24-hour, HHMM)
 
 ## Overview
-\
 This utility computes the number of minutes to advance a time-machine from a start time to an end time. 
 Both times use 24-hour "military" notation as four-digit values (HHMM). 
 The end time is guaranteed to be within 24 hours after the start time.
 
 ## Behavior and assumptions
-\
 - Inputs are treated as strings representing HHMM (e.g., `0000` for midnight, `2359` for 23:59).  
 - The program assumes the end time occurs within the next 24 hours (including same-day or next-day).  
 - Invalid inputs (wrong length, non-digit characters, or invalid hour/minute ranges) are rejected before computing the difference.
 
 ## Key routines
-\
 - `minutesFromHHMM(const std::string& t)`  
   Converts an HHMM string to total minutes since midnight. Example: `0130` -> `90`. Validates format and numeric ranges prior to conversion.
 
@@ -42,17 +39,14 @@ The end time is guaranteed to be within 24 hours after the start time.
   A helper that verifies an HHMM string is exactly 4 characters, all digits, and represents a valid time (hours 0..23, minutes 0..59).
 
 ## Constants
-\
 - `constexpr int MINUTES_PER_DAY = 24 * 60;` — used when wrapping negative differences.
 
 ## Examples
-\
 - Start `0900`, End `1030` -> diff = 90.  
 - Start `2300`, End `0030` -> diff = 90 (wraps across midnight).  
 - Start `0000`, End `0000` -> diff = 0 (no advancement).  
 - Start `2359`, End `2358` -> diff = 24*60 - 1 = 1439.
 
 ## Implementation notes
-\
 - 2 ways of computing the difference: from total minute (`int differenceMin`) and from hour and minutes separately (`int differenceMinute`)
 - When calling `std::isdigit` on `char`, cast to `unsigned char` to avoid Undefined Behavior on negative `char` values.
