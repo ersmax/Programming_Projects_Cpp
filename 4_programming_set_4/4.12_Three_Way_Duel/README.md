@@ -121,30 +121,46 @@ The empirical result (figure below) of **36.15%** matches the analytical result 
 
 ## 3. Strategy 2 – Aaron intentionally misses his first shot
 
-- Aaron first shoots into the air
-- Bob then shoots at Charlie
+A second strategy for Aaron is that of intentionally missing the target on his first shot.
+In other words, Aaron will wait for Bob and Charlie to shoot at each other first, 
+then Aaron will start shooting at the most accurate opponent still alive.
 
 | Branch | Path probability | Resulting duel | Aaron’s chance in that duel |
 |---------|------------------|----------------|------------------------------|
 | B hits C | pᵦ = 1/2 | A vs B, **Aaron** to fire | P₍AB₎ᵃ = 1/2 |
 | B misses C | (1 − pᵦ) = 1/2 | C kills B → A vs C, **Aaron** to fire | P₍AC₎ = 1/3 |
 
-Calculating total probability:
+1. Case 1: Bob shoots at Charlie and hits him (probability pᵦ = 1/2).  
+   Now Aaron is left dueling with Bob in a two-person duel, where Aaron shoots next, 
+   with probability of winning above of P₍AB₎ᵃ = 1/2.  
+   Aaron’s chance of winning this duel in this case equals to: pᵦ· P₍AB₎ᵃ = (1/2)·(1/2) = 1/4.
 
+2. Case 2: Bob shoots at Charlie and misses him (probability 1 − pᵦ = 1/2).  
+   Now Charlie shoots at Bob and kills him (probability 1).  
+   Aaron is left dueling with Charlie in a two-person duel, where Aaron shoots next, 
+   with probability of winning above of P₍AC₎ = 1/3.  
+   Aaron’s chance of winning this duel in this case equals to: (1 − pᵦ)· P₍AC₎ = (1/2)·(1/3) = 1/6.
 
-Pₐ (miss) = (1/2)·(1/2) + (1/2)·(1/3)
+Adding the probabilities, we have:
+```
+Pₐ (Aaron misses) =
+= [ pᵦ· P₍AB₎ᵃ ] + [ (1 − pᵦ)· P₍AC₎ ]
+= [ (1/2)·(1/2) ] + [ (1/2)·(1/3) ]
 = 1/4 + 1/6
 = 3/12 + 2/12
 = 5/12 ≈ 0.4167 = 41.67%
+```
 
+The empirical results (~41.67%) agree perfectly with this theoretical value.
 
-Simulation results (~41.67%) agree perfectly with this analytical value.
+For Aaron, missing his target and waiting for the other two opponents to kill each other 
+is better than shooting at Charlie right away (41.67% > 36.11%).
 
 ---
 
-## 4. Why Bob will never skip his shot
+## 4. Why Bob will never skip his shot?
 
-If Bob declines to shoot, Charlie (who never misses) kills him immediately.  
+If Bob decides not to shoot, Charlie (the perfect `marksman`) kills him immediately.  
 Bob’s winning probability drops to **0%**.  
 Thus, the equilibrium of the game is:
 
@@ -163,6 +179,12 @@ Thus, the equilibrium of the game is:
 
 
 ## 6. Empirical results
+
+| Strategy profile | Aaron  | Bob    | Charlie |
+|------------------|--------|--------|---------|
+| **Normal play** – Aaron shoots at Charlie | 36.15% | 41.08% | 22.77%  |
+| **Aaron misses first** (equilibrium) | 41.67% | 25.04% | 33.29%  |
+
 - 10,000 runs
 - Turn order: A → B → C
 - Everyone shoots at the most accurate survivor
