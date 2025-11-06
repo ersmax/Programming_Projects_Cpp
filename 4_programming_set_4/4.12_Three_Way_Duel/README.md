@@ -32,6 +32,13 @@ first shot or to try and hit the best shooter?
 
 ## 0. Setup
 
+To increase their chances of surviving, the duellists prefer to be left with a weaker opponent. 
+So Bob would not shoot at Aaron in preference to Charlie, and Charlie will not shoot at Aaron in preference to Bob. 
+Thus, Aaron will not be shot at until Bob or Charlie is dead, and Aaron will either be left standing 
+with Bob or Charlie, with or without the shot. 
+This puts Aaron in a privileged position, because he can decide whether shooting at Charlie or missing,
+until Charlie or Bob are shot dead.
+
 Turn order repeats **A → B → C.**  
 Everyone always aims at the most accurate opponent still alive.
 
@@ -45,11 +52,27 @@ Everyone always aims at the most accurate opponent still alive.
 
 ## 1. Two-person duel when Charlie is gone
 
+Since the three-way-duel will end inevitably to two-people duel, 
+it is convenient to compute the probability of winning of one contestant in a two-duel match.
+
 | Situation | Who fires first | Aaron’s win probability |
 |------------|----------------|--------------------------|
 | A vs B | **Aaron** fires first | P₍AB₎ᵃ = (1/3) / [1 − (2/3)·(1/2)] = 1/2 |
 | A vs B | **Bob** fires first   | P₍AB₎ᵇ = (1 − pᵦ)·P₍AB₎ᵃ = (1/2)·(1/2) = 1/4 |
 | A vs C | **Aaron** fires first | P₍AC₎ = pₐ = 1/3 |
+
+- For Aaron, the probability of winning against Bob P₍AB₎ᵃ can be interpreted in this way:
+  1/3 of the time he will shoot and kill Bob immediately.  
+  2/3 of the time he will miss, and then Bob will miss the shot half of the time,
+  returning to the initial situation (Aaron shooting first), which is P₍AB₎ᵃ.
+  In other words, P₍AB₎ᵃ = (1/3) + (2/3)·(1/2)·P₍AB₎ᵃ, which is the same of the first row above.
+- Similarly, when Bob shoots first, Aaron can only win if Bob misses (pᵦ = 1/2),
+  and then Aaron wins the duel shooting first (P₍AB₎ᵃ).
+  In other words, P₍AB₎ᵇ = (1-pᵦ)·P₍AB₎ᵃ, as above
+- If Aaron faces Charlie, he can only win if he hits him immediately (pₐ = 1/3), because after 
+  the first miss, Charlie will kill him right away.
+  P₍AC₎ = pₐ · (1-0) = 1/3.
+- If Charlie shoots first at Aaron, Aaron will lose anytime.
 
 ---
 
@@ -60,6 +83,14 @@ Everyone always aims at the most accurate opponent still alive.
 | (1) A hits C → duel A vs B, **Bob** to fire | pₐ = 1/3 | P₍AB₎ᵇ = 1/4 |
 | (2a) A misses, B hits C → duel A vs B, **Aaron** to fire | (1 − pₐ)pᵦ = (2/3)·(1/2) = 1/3 | P₍AB₎ᵃ = 1/2 |
 | (2b) A misses, B misses, C kills B → duel A vs C, **Aaron** to fire | (1 − pₐ)(1 − pᵦ) = (2/3)·(1/2) = 1/3 | P₍AC₎ = 1/3 |
+
+For a three-way duel, there are more possible paths to Aaron winning.
+A first strategy is for Aaron to start shooting at Charlie immediately.
+
+1. Case 1: Aaron hits Charlie (probability pₐ = 1/3) and is left dueling with Bob in a two-person duel, where 
+   Bob shoots next P₍AB₎ᵇ.
+   Bob shoots next (he always shoots at Charlie if alive), so Bob fires first in the duel A vs B.  
+   Aaron’s chance of winning this duel is P₍AB₎ᵇ = 1/4.
 
 Adding the probabilities:
 
