@@ -105,14 +105,15 @@ A first strategy is for Aaron to start shooting at Charlie immediately.
    Aaron’s chance of winning this duel in this case equals to: (1 − pₐ)·(1 − pᵦ)· P₍AC₎ = (2/3)·(1/2)·(1/3) = 1/9
 
 Adding the probabilities, we have:
-
+```
 Pₐ (Aaron doesn't miss) =
-[ pₐ · P₍AB₎ᵇ ] + [ (1 − pₐ)· pᵦ· P₍AB₎ᵃ ] + [ (1 − pₐ)(1 − pᵦ)· P₍AC₎ ] =
-[ (1/3)·(1/4) ] + [ (2/3)·(1/2)·(1/2) ] + [ (2/3)·(1/2)·(1/3) ] =
+= [ pₐ · P₍AB₎ᵇ ] + [ (1 − pₐ)· pᵦ· P₍AB₎ᵃ ] + [ (1 − pₐ)(1 − pᵦ)· P₍AC₎ ] =
+= [ (1/3)·(1/4) ] + [ (2/3)·(1/2)·(1/2) ] + [ (2/3)·(1/2)·(1/3) ] =
 = 1/12 + 1/6 + 1/9 =
 = 3/36 + 6/36 + 4/36 =
 = 13/36 ≈ 0.3611 =
 = 36.11%.
+```
 
 The empirical result (figure below) of **36.15%** matches the analytical result of **36.11%**.
 
