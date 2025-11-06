@@ -88,19 +88,33 @@ For a three-way duel, there are more possible paths to Aaron winning.
 A first strategy is for Aaron to start shooting at Charlie immediately.
 
 1. Case 1: Aaron hits Charlie (probability pₐ = 1/3) and is left dueling with Bob in a two-person duel, where 
-   Bob shoots next P₍AB₎ᵇ.
-   Bob shoots next (he always shoots at Charlie if alive), so Bob fires first in the duel A vs B.  
-   Aaron’s chance of winning this duel is P₍AB₎ᵇ = 1/4.
+   Bob shoots next, with probability of Aaron of winning the duel above of P₍AB₎ᵇ = 1/4.  
+   Aaron’s chance of winning this duel equals to: pₐ · P₍AB₎ᵇ = (1/3)·(1/4) = 1/12.
 
-Adding the probabilities:
+2. Case 2a: Aaron misses Charlie (probability 1 − pₐ = 2/3), and then Bob shoots at Charlie 
+   and hits him (probability pᵦ = 1/2).
+   In this case, Aaron is left dueling with Bob in a two-person duel, where 
+   Aaron shoots next, so Aaron fires first in the duel A vs B, with probability of winning above of P₍AB₎ᵃ = 1/2. 
+   Aaron’s chance of winning this duel in this case equals to: (1 − pₐ)· pᵦ· P₍AB₎ᵃ = (2/3)·(1/2)·(1/2) = 1/6
 
-Pₐ (shoot) = (1/3)·(1/4) + (1/3)·(1/2) + (1/3)·(1/3)
+3. Case 2b: Aaron misses Charlie (probability 1 − pₐ = 2/3), and then Bob shoots at Charlie 
+   and misses him (probability 1 − pᵦ = 1/2). 
+   Now Charlie shoots at Bob and kills him (probability 1).
+   In this case, Aaron is left dueling with Charlie in a two-person duel, where 
+   Aaron shoots next, with probability of winning above of P₍AC₎ = 1/3.
+   Aaron’s chance of winning this duel in this case equals to: (1 − pₐ)·(1 − pᵦ)· P₍AC₎ = (2/3)·(1/2)·(1/3) = 1/9
+
+Adding the probabilities, we have:
+
+Pₐ (Aaron doesn't miss) =
+[ pₐ · P₍AB₎ᵇ ] + [ (1 − pₐ)· pᵦ· P₍AB₎ᵃ ] + [ (1 − pₐ)(1 − pᵦ)· P₍AC₎ ]
+[ (1/3)·(1/4) ] + [ (2/3)·(1/2)·(1/2) ] + [ (2/3)·(1/2)·(1/3) ] 
 = 1/12 + 1/6 + 1/9
 = 3/36 + 6/36 + 4/36
-= 13/36 ≈ 0.3611 = 36.11%
+= 13/36 ≈ 0.3611  
+= 36.11%
 
-
-The simulation result **36.15%** matches the analytical **36.11%**.
+The empirical result (figure below) of **36.15%** matches the analytical result of **36.11%**.
 
 ---
 
