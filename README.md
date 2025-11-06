@@ -133,4 +133,10 @@ stay tuned C++ enthusiasts :-). Check also my [Java projects](https://github.com
    <p align="center">
         <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/EmpiricalResults.png" alt="Three Way Duel diagram" width="48%" />
     </p>
-    
+
+13. [Treadmill Pace](./4_programming_set_4/4.13_Treadmill_Pace)
+   \- Convert a running pace and speed with input validation to demonstrates overloaded functions. 
+
+14. [Time Difference](./4_programming_set_4/4.14_Time_Difference)
+   \- Compute the number of minutes to advance a time\-machine from a start time to an end time using 24\-hour HHMM notation. 
+      Input validation to ensure times are in the range 0000 to 2359 and minutes are valid (00 to 59).
