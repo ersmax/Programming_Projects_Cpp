@@ -146,3 +146,5 @@ Check also my [Other projects](https://github.com/ersmax)
 17. [Get Player score and avg comparison](./4_programming_set_4/4.17_Get_Player_score_and_avg_comparison)
     \- Read player names and scores from a file, query the score of a player and compare it with the average.
       Input validation to handle file reading errors.
+18. [Sorting Quicksort](./4_programming_set_4/4.18_Sorting_Trivial_Quick_Merge)
+    \- Implement the Quicksort algorithm (by reference and by value or copy) to sort an array of integers and apply Hoare's algorithm. 
