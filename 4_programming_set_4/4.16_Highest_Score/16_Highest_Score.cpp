@@ -18,13 +18,13 @@ void showHighScore(const std::string& fullName, int highScore);
 // Postcondition: displays the name of the player with the highest score and the score
 
 int main( ) {
-    std::string fullName;
+    std::string nameHighScore;
     int highScore;
-    if (!getHighScore(fullName, highScore)) {;
+    if (!getHighScore(nameHighScore, highScore)) {;
         std::cout << "Error reading high score\n";
         return -1;
     }
-    showHighScore(fullName, highScore);
+    showHighScore(nameHighScore, highScore);
     std::cout << "\n";
     return 0;
 }

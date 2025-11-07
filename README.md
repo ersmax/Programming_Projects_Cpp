@@ -138,5 +138,8 @@ stay tuned C++ enthusiasts :-). Check also my [Other projects](https://github.co
     \- Compute the number of minutes to advance a time\-machine from a start time to an end time using 24\-hour HHMM notation. 
       Input validation to ensure times are in the range 0000 to 2359 and minutes are valid (00 to 59).
 15. [Convert Lowest Terms](./4_programming_set_4/4.15_Convert_Lowest_Terms)
-    \- Convert a fraction to its lowest terms using greatest common divisor (GCD) algorithms, that is Prime factorization and Euclidean algorithm.
+    \- Convert a fraction to its lowest terms using the greatest common divisor (GCD) algorithms, that is Prime factorization and Euclidean algorithm.
       Input validation to ensure denominator is not zero and both numerator and denominator are integers.
+16. [Highest Score](./4_programming_set_4/4.16_Highest_Score)
+    \- Read names and scores from a file, determine the highest score, and print the highest score and relative name.
+      Input validation to ensure scores are non-negative integers and handle file reading errors.
