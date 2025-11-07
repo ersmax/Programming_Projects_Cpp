@@ -1,35 +1,36 @@
-/*
-Write a function named convertToLowestTerms that inputs two integer parameters
-by reference named numerator and denominator. The function should treat
-these variables as a fraction and reduce them to lowest terms. For example, if
-numerator is 20 and denominator is 60, then the function should change the
-variables to 1 and 3, respectively. This will require finding the greatest common
-divisor for the numerator and denominator then dividing both variables by that
-number. If the denominator is zero, the function should return false, otherwise the
-function should return true. Write a test program that uses convertToLowestTerms
-to reduce and output several fractions.
-*/
-
 #include <iostream>
 #include <vector>
 #include <limits>
 
 void enterData(int& numerator, int& denominator);
+// Precondition: numerator and denominator are declared
+// Postcondition: defines the values of numerator and denominator
 
 bool convertToLowestTerms(int& numerator, int& denominator);
+// Precondition: denominator is not 0
+// Postcondition: reduces numerator and denominator to the lowest terms
 
 std::vector<int> findFactors(int number);
+// Postcondition: returns a vector with the prime factors of number
 
-void findGCD(const int& numerator, const int& denominator, int& gcd);
+void findPrimeFactorizationGCD(const int& numerator, const int& denominator, int& gcd);
+// Postcondition: finds the GCD of numerator and denominator using prime factorization
+
+int findEuclideanGCD(int numerator, int denominator);
+// Postcondition: finds the GCD of numerator and denominator using the Euclidean algorithm
 
 void showResults(const int& numerator, const int& denominator);
+// Precondition: numerator and denominator are defined
 
 int main( ) {
     int numerator, denominator;
     enterData(numerator, denominator);
-    convertToLowestTerms(numerator, denominator);
-    showResults(numerator, denominator);
+    if (!convertToLowestTerms(numerator, denominator)) {
+        std::cout << "Invalid input: denominator cannot be 0.\n";
+        return -1;
+    }
 
+    showResults(numerator, denominator);
     std::cout << "\n";
     return 0;
 }
@@ -41,33 +42,53 @@ void enterData(int& numerator, int& denominator) {
             std::cout << "Wrong numbers.\n";
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
         }
         // ignore remaining input
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        if (numerator >= 0 && denominator >= 0)
-            break;
-        std::cout << "Numbers must be positive.\n";
+        break;
     }
 }
 
 void showResults(const int& numerator, const int& denominator) {
-    std::cout << numerator << ", " << denominator;
-    std::cout << "\n";
+    std::cout << numerator << "/" << denominator;
 }
 
 bool convertToLowestTerms(int& numerator, int& denominator) {
     if (denominator == 0)
         return false;
+    if (numerator == 0) {
+        denominator = 1;
+        return true;
+    }
 
     int gcd = 1;
-    findGCD(numerator, denominator, gcd);
+    findPrimeFactorizationGCD(numerator, denominator, gcd);
+    int euclideanGCD = findEuclideanGCD(numerator, denominator);
+    std::cout << "Prime factorization GCD: " << gcd << "\n";
+    std::cout << "Euclidean GCD: " << euclideanGCD << "\n";
     numerator /= gcd;
     denominator /= gcd;
     return true;
 }
 
+int findEuclideanGCD(int numerator, int denominator) {
+    int gcd = 0;
+    numerator = std::abs(numerator);
+    denominator = std::abs(denominator);
+    int remainder = numerator % denominator;
+    while (remainder != 0) {
+        numerator = denominator;
+        denominator = remainder;
+        remainder = numerator % denominator;
+    }
+    gcd = denominator;
+    return gcd;
+}
 
-void findGCD(const int& numerator, const int& denominator, int& gcd) {
+
+void findPrimeFactorizationGCD(const int& numerator, const int& denominator, int& gcd) {
+
     std::vector<int> factorsNumerator = findFactors(numerator);
     std::vector<int> factorsDenominator = findFactors(denominator);
     if (factorsNumerator.empty() || factorsDenominator.empty())
@@ -88,15 +109,19 @@ void findGCD(const int& numerator, const int& denominator, int& gcd) {
 
 
 std::vector<int> findFactors(int number) {
-    int divisor = 2;
     std::vector<int> factors = {};
-    while (number != 1) {
+    number = std::abs(number);
+    if (number == 1 || number == 0)
+        return factors;
+
+    int divisor = 2;
+    while (number > 1) {
         if (number % divisor == 0) {
             factors.push_back(divisor);
             number /= divisor;
             continue;
         }
-        divisor += 1;
+        ++divisor;
     }
     return factors;
 }
