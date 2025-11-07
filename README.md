@@ -120,23 +120,23 @@ stay tuned C++ enthusiasts :-). Check also my [Other projects](https://github.co
     - Written in modern C++ using `std::vector`, iterators, `std::mt19937` and `std::uniform_int_distribution` for unbiased draws and reproducible results (seedable).  
     - Output: counts and percentages for wins when staying vs. switching; optional verbose mode for single-run tracing.  
     - Empirical results: For 10,000 runs and 100 doors, the simulation converges to 60% probability of success.
-   <p align="center">
-        <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall.PNG" alt="Monty Hall diagram" width="48%" />
-        <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
-    </p> 
-
+        <p align="center">
+            <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall.PNG" alt="Monty Hall diagram" width="48%" />
+            <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
+        </p>
 12. [Three Way Duel](./4_programming_set_4/4.12_Three_Way_Duel)
     \- Simulate a three-way duel (truel) between three marksmen with different accuracies, under different strategies 
        (aiming at the strongest opponent, intentionally missing).
     - Written in modern C++ using `std::vector`, RNG`std::mt19937`, `bernoulli_distribution`.
     - The theory suggests 36.1% and 41.7% chances of success under 2 strategies. These results are validated through simulation.
-   <p align="center">
-        <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/EmpiricalResults.png" alt="Three Way Duel diagram" width="48%" />
-    </p>
-
+        <p align="center">
+            <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/EmpiricalResults.png" alt="Three Way Duel diagram" width="48%" />
+        </p>
 13. [Treadmill Pace](./4_programming_set_4/4.13_Treadmill_Pace)
-   \- Convert a running pace and speed with input validation to demonstrates overloaded functions. 
-
+    \- Convert a running pace and speed with input validation to demonstrates overloaded functions.
 14. [Time Difference](./4_programming_set_4/4.14_Time_Difference)
-   \- Compute the number of minutes to advance a time\-machine from a start time to an end time using 24\-hour HHMM notation. 
+    \- Compute the number of minutes to advance a time\-machine from a start time to an end time using 24\-hour HHMM notation. 
       Input validation to ensure times are in the range 0000 to 2359 and minutes are valid (00 to 59).
+15. [Convert Lowest Terms](./4_programming_set_4/4.15_Convert_Lowest_Terms)
+    \- Convert a fraction to its lowest terms using greatest common divisor (GCD) algorithms, that is Prime factorization and Euclidean algorithm.
+      Input validation to ensure denominator is not zero and both numerator and denominator are integers.
