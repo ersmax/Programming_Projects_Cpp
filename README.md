@@ -147,4 +147,19 @@ Check also my [Other projects](https://github.com/ersmax)
     \- Read player names and scores from a file, query the score of a player and compare it with the average.
       Input validation to handle file reading errors.
 18. [Sorting Quicksort](./4_programming_set_4/4.18_Sorting_Trivial_Quick_Merge)
-    \- Implement the Quicksort algorithm (by reference and by value or copy) to sort an array of integers and apply Hoare's algorithm. 
+    \- Implement the Quicksort algorithm (by reference and by value or copy) to sort an array of integers and apply Hoare's algorithm.
+
+---
+
+## Project Set 5
+
+1. [Car Mileage Visualization](5_programming_set_5/5.01_Graph_Car_Mileage)
+   \- Compare a car's average mileage at different speeds with actual mileage values, and prints 
+      a formatted comparison table and an ASCII graph.
+   <p align="center">
+     <img src="5_programming_set_5/5.01_Graph_Car_Mileage/Figures/mileageTable.PNG" alt="car mileage table" width="48%" />
+     <img src="5_programming_set_5/5.01_Graph_Car_Mileage/Figures/mileageGraph.PNG" alt="car mileage graph" width="48%" />
+   </p>    
+
+
+2. [...]
