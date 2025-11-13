@@ -1,8 +1,8 @@
 # Practical C++ Problems — Documentation Index
 
 This repository contains practical, real-life programming problems solved in C++ std 14/17.
-This README lists the documentation files for the collections: `1_programming_set_1`, `2_programming_set_2`,
-`3_programming_set_3`, `4_programming_set_4` (much more to come related to OOP, memory management, pointers, etc.). 
+This README lists the documentation files for the collections: `Set 1` - `Set 5`
+(much more to come related to OOP, memory management, pointers, etc. for a total of 20 sections). 
 Check also my [Other projects](https://github.com/ersmax)
 
 ## Projects set 1
