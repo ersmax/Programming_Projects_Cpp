@@ -1,8 +1,9 @@
 #include <iostream>
-#include <limits>
-#include <span>
-#include <string>
-#include <cctype>
+#include <limits>       // for std::numeric_limits
+#include <span>         // for std::span
+#include <string>       // for std::string
+#include <utility>      // for std::swap
+#include <cctype>       // for std::isalpha
 
 constexpr int SIZE = 10;
 
