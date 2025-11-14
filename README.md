@@ -1,6 +1,6 @@
 # Practical C++ Problems — Documentation Index
 
-This repository contains practical, real-life programming problems solved in C++ std 14/17.
+This repository contains practical, real-life programming problems solved in C++ std 14/20.
 This README lists the documentation files for the collections: `Set 1` - `Set 5`
 (much more to come related to OOP, memory management, pointers, etc. for a total of 20 sections). 
 Check also my [Other projects](https://github.com/ersmax)
@@ -143,7 +143,7 @@ Check also my [Other projects](https://github.com/ersmax)
 16. [Highest Score](./4_programming_set_4/4.16_Highest_Score)
     \- Read names and scores from a file, determine the highest score, and print the highest score and relative name.
       Input validation to ensure scores are non-negative integers and handle file reading errors.
-17. [Get Player score and avg comparison](./4_programming_set_4/4.17_Get_Player_score_and_avg_comparison)
+17. [Get Player score and avg comparison](./4_programming_set_4/4.17_Get_Score_Average_Score)
     \- Read player names and scores from a file, query the score of a player and compare it with the average.
       Input validation to handle file reading errors.
 18. [Sorting Quicksort](./4_programming_set_4/4.18_Sorting_Trivial_Quick_Merge)
