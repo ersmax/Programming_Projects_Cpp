@@ -161,5 +161,7 @@ Check also my [Other projects](https://github.com/ersmax)
      <img src="5_programming_set_5/5.01_Graph_Car_Mileage/Figures/mileageGraph.PNG" alt="car mileage graph" width="48%" />
    </p>    
 
-
-2. [...]
+2. [Remove duplicates](5_programming_set_5/5.02_Delete_Repeated_Characters) 
+   \- Remove repeated letters from a partially filled array in-place using a three-pointer compaction 
+   (p1/p2/p3); preserves first occurrences and order; O(n^2) time, O(1) extra space.
+   
