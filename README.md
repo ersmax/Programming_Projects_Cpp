@@ -177,4 +177,6 @@ Check also my [Other projects](https://github.com/ersmax)
    a number of categories, compute per-judge averages, per-parameter averages and a final participant average, 
    and print a formatted results table. Implementation uses a fixed-size 2D C-style array and modular functions 
    with input validation and clear terminal prompts.
+7. [Histogram Grades](5_programming_set_5/5.07_Histogram_Grades) \- Gather validated quiz grades, 
+   count frequencies in an array, and print a text histogram; supports early termination and rejects malformed input.
 

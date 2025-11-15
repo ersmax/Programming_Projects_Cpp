@@ -1,41 +1,35 @@
-/*
-Generate a text-based histogram for a quiz given to a class of students. The quiz is
-graded on a scale from 0 to 5. Write a program that allows the user to enter grades
-for each student. As the grades are being entered, the program should count, using
-an array, the number of 0s, the number of 1s, the number of 2s, the number of
-3s, the number of 4s, and the number of 5s. The program should be capable of
-handling an arbitrary number of student grades.
-You can do this by making an array of size 6, where each array element is initialized
-to zero. Whenever a zero is entered, increment the value in the array at index 0.
-Whenever a one is entered, increment the value in the array at index 1, and so on,
-up to index 5 of the array.
-Output the histogram count at the end. For example, if the input grades are 3, 0,
-1, 3, 3, 5, 5, 4, 5, 4, then the program should output
-1 grade(s) of 0
-1 grade(s) of 1
-0 grade(s) of 2
-3 grade(s) of 3
-2 grade(s) of 4
-3 grade(s) of 5
-*/
-
-#include <iostream>
-#include <limits>
+#include <iostream>     // for std::cout, std::cin
+#include <limits>       // for std::numeric_limits
+#include <string>       // for std::string
 
 constexpr int CLASS_SIZE = 100;
 constexpr int N_GRADES = 6;
 
 void registerGrades(int grades[], int classSize, int& nStudents,
                     int countGrades[], int nGrades);
+//   Precondition: classSize is the declared size of the array `grades`
+//   Postcondition: nStudents is the number of grades entered (<= classSize).
+// grades[0] through grades[nStudents - 1] have been filled with
+// integers read from the keyboard in the range 0 to 5.
+// countGrades[0] through countGrades[nGrades - 1] contain
+// the count of each grade entered.
 
-bool validGrade(int number);
+bool validGrade(const std::string& result, int& grade);
+//   Precondition: result is the string entered by the user.
+//   Postcondition: If result represents a valid integer grade in the range 0 to 5,
+// then grade is set to that integer value and the function returns true.
+// Otherwise, the function returns false. Also validates that the entire string
+// is a valid integer.
 
 void showGrades(int countGrades[], int nGrades);
+//   Precondition: countGrades[0] through countGrades[nGrades - 1] have nonnegative values.
+//   Postcondition: A text histogram is displayed showing the count of each grade
+// from 0 to nGrades - 1.
 
 int main( ) {
-    int grades[CLASS_SIZE];
-    int countGrades[6];
-    int nStudents;
+    int grades[CLASS_SIZE] = {};
+    int countGrades[N_GRADES] = {};
+    int nStudents = 0;
 
     registerGrades(grades, CLASS_SIZE, nStudents, countGrades, N_GRADES);
     showGrades(countGrades, N_GRADES);
@@ -51,7 +45,7 @@ void registerGrades(int grades[], int classSize, int& nStudents,
     std::string result;
 
     while(student < classSize) {
-        std::cout << "Enter result for student #" << student
+        std::cout << "Enter result (0-5) for student #" << student + 1
                   << " (or type `end` to terminate):\n";
 
         if (!(std::cin >> result)) {
@@ -60,29 +54,35 @@ void registerGrades(int grades[], int classSize, int& nStudents,
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
         }
-        // ignore next characters
+        // consume rest of the line
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
         if (result == "end") break;
-        int grade = std::stoi(result);
 
-        if (!validGrade(grade)) {
-            std::cout << "Not a valid grade. Retry\n";
-            continue;
+        int grade;
+        if (validGrade(result, grade)) {
+            grades[student++] = grade;
+            ++countGrades[grade];
         }
-
-        grades[student++] = grade;
-        countGrades[grade] += 1;
     }
     nStudents = student;
 }
 
-bool validGrade(const int number) {
-    if (!std::isdigit(number))
+bool validGrade(const std::string& result, int& grade) {
+    try {
+        std::size_t positionFirstChar = 0;
+        grade = std::stoi(result, &positionFirstChar);
+        if (positionFirstChar != result.size()) {
+            std::cout << "Invalid grade. Retry\n";
+            return false;
+        }
+    } catch (const std::invalid_argument&) {
+        std::cout << "Not a number. Retry\n";
         return false;
-    if (number < 0 || number > 5)
+    } catch (const std::out_of_range&) {
+        std::cout << "Number out of range. Retry\n";
         return false;
-    return true;
+    }
+    return (grade >= 0 && grade <= 5);
 }
 
 void showGrades(int countGrades[], int nGrades) {
