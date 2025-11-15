@@ -165,3 +165,7 @@ Check also my [Other projects](https://github.com/ersmax)
    \- Remove repeated letters from a partially filled array in-place using a three-pointer compaction 
    (p1/p2/p3); preserves first occurrences and order; O(n^2) time, O(1) extra space.
    
+3. [Standard Deviation](5_programming_set_5/5.03_Standard_Deviation) 
+   \-  Compute the population standard deviation for up to 10 double values 
+    using a partially filled array; demonstrates input validation with std::stod, basic error handling, 
+    and std::span for concise output.
