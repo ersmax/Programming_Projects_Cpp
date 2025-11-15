@@ -173,3 +173,6 @@ Check also my [Other projects](https://github.com/ersmax)
    \- Count vowels in a user-input string using a fixed-size char array; demonstrates input validation, 
    character classification with std::isalpha and std::tolower, and array traversal. Explore alternatives with maps/sets.
 
+5. [Integer Overflow Sum with Arrays](5_programming_set_5/5.05_Integer_Overflow_Sum_With_Arrays) 
+   \- Sum two large integers represented as arrays of digits to avoid overflow; demonstrates array manipulation, 
+   carry handling, and formatted output.
