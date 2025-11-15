@@ -159,12 +159,10 @@ Check also my [Other projects](https://github.com/ersmax)
    <p align="center">
      <img src="5_programming_set_5/5.01_Graph_Car_Mileage/Figures/mileageTable.PNG" alt="car mileage table" width="48%" />
      <img src="5_programming_set_5/5.01_Graph_Car_Mileage/Figures/mileageGraph.PNG" alt="car mileage graph" width="48%" />
-   </p>    
-
+   </p>
 2. [Remove duplicates](5_programming_set_5/5.02_Delete_Repeated_Characters) 
    \- Remove repeated letters from a partially filled array in-place using a three-pointer compaction 
    (p1/p2/p3); preserves first occurrences and order; O(n^2) time, O(1) extra space.
-   
 3. [Standard Deviation](5_programming_set_5/5.03_Standard_Deviation) 
    \-  Compute the population standard deviation for up to 10 double values 
     using a partially filled array; demonstrates input validation with std::stod, basic error handling, 
@@ -172,7 +170,11 @@ Check also my [Other projects](https://github.com/ersmax)
 4. [Count vowels](5_programming_set_5/5.04_Vowels_Count) 
    \- Count vowels in a user-input string using a fixed-size char array; demonstrates input validation, 
    character classification with std::isalpha and std::tolower, and array traversal. Explore alternatives with maps/sets.
-
 5. [Integer Overflow Sum with Arrays](5_programming_set_5/5.05_Integer_Overflow_Sum_With_Arrays) 
    \- Sum two large integers represented as arrays of digits to avoid overflow; demonstrates array manipulation, 
    carry handling, and formatted output.
+6. [Contest Score](5_programming_set_5/5.06_Contest_Score) \- Read validated scores (1..10) from judges across 
+   a number of categories, compute per-judge averages, per-parameter averages and a final participant average, 
+   and print a formatted results table. Implementation uses a fixed-size 2D C-style array and modular functions 
+   with input validation and clear terminal prompts.
+
