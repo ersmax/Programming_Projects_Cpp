@@ -169,3 +169,7 @@ Check also my [Other projects](https://github.com/ersmax)
    \-  Compute the population standard deviation for up to 10 double values 
     using a partially filled array; demonstrates input validation with std::stod, basic error handling, 
     and std::span for concise output.
+4. [Count vowels](5_programming_set_5/5.04_Vowels_Count) 
+   \- Count vowels in a user-input string using a fixed-size char array; demonstrates input validation, 
+   character classification with std::isalpha and std::tolower, and array traversal. Explore alternatives with maps/sets.
+

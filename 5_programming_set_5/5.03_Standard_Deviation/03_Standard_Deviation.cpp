@@ -55,7 +55,7 @@ void fillArray(double numbers[], const std::size_t size, int& numberUsed) {
             break;
 
         try {
-            size_t idxFirstCharacter;       // write the index of first invalid character
+            size_t idxFirstCharacter;       // write index of first invalid character (not a number)
             double number = std::stod(next, &idxFirstCharacter);
             if (idxFirstCharacter != next.size()) {
                 std::cout << "Not a valid number at idx " << idx
