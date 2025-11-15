@@ -29,6 +29,14 @@ void computeJudgeAvg(const double score[][PARAMETERS], int nJudges,
 void computeParameterAvg(const double score[][PARAMETERS], int nJudges,
                          double parameterAvg[], int nParameters);
 
+double computeParticipantAvg(const double judgeAvg[], int nJudges);
+
+void displayResults(const double score[][PARAMETERS], int nJudges,
+                    const double judgeAvg[], int numJudges,
+                    const double parameterAvg[], int numParameters,
+                    double participantAvg);
+
+
 void display();
 
 int main( ) {
@@ -43,8 +51,8 @@ int main( ) {
             assert((singleScore >= 0) && (singleScore <= 10));
     computeJudgeAvg(score, JUDGES, judgeAvg, JUDGES);
     computeParameterAvg(score, JUDGES, parameterAvg, PARAMETERS);
-    // TODO: computeParticipantAvg();
-    // TODO: displayResults();
+    double participantScore = computeParticipantAvg(judgeAvg, JUDGES);
+    displayResults(score, JUDGES, judgeAvg, JUDGES, parameterAvg, PARAMETERS, participantScore);
 
     std::cout << "\n";
     return 0;
@@ -82,7 +90,7 @@ void fillData(double score[][PARAMETERS], const int nJudges) {
 }
 
 void computeJudgeAvg(const double score[][PARAMETERS], const int nJudges,
-                    double judgeAvg[], int numJudges) {
+                    double judgeAvg[], const int numJudges) {
 
     for (int judge = 0; judge < numJudges; ++judge) {
         double sum = 0;
@@ -94,10 +102,31 @@ void computeJudgeAvg(const double score[][PARAMETERS], const int nJudges,
     }
 }
 
-void computeParameterAvg(const double score[][PARAMETERS], int nJudges,
-                         double parameterAvg[], int nParameters) {
+void computeParameterAvg(const double score[][PARAMETERS], const int nJudges,
+                         double parameterAvg[], const int nParameters) {
 
-    for (int parameter = 0; parameter < nParameters; ++parameter)
+    for (int parameter = 0; parameter < nParameters; ++parameter) {
+        double sum = 0;
+        for (int judge = 0; judge < nJudges; ++judge)
+            sum += score[judge][parameter];
+
+        const double avgParameter = sum / nJudges;
+        parameterAvg[parameter] = avgParameter;
+    }
 }
 
+double computeParticipantAvg(const double judgeAvg[], const int nJudges) {
+    double sum = 0;
+    for (int judge = 0; judge < nJudges; ++judge)
+        sum += judgeAvg[judge];
+    return (sum / nJudges);
+}
+
+void displayResults(const double score[][PARAMETERS], int nJudges,
+                    const double judgeAvg[], int numJudges,
+                    const double parameterAvg[], int numParameters,
+                    double participantAvg) {
+
+    // TODO
+}
 
