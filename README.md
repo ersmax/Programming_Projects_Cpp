@@ -179,4 +179,8 @@ Check also my [Other projects](https://github.com/ersmax)
    with input validation and clear terminal prompts.
 7. [Histogram Grades](5_programming_set_5/5.07_Histogram_Grades) \- Gather validated quiz grades, 
    count frequencies in an array, and print a text histogram; supports early termination and rejects malformed input.
+8. [Birthday Paradox](5_programming_set_5/5.08_Birthday_Paradox)  \- This program simulates the birthday paradox 
+   over many trials (default 5000). Use <random> library, checks pairwise for any matching birthdays, and prints probabilities.
+   Make use of operator overloading for structure comparison and static RNG for efficiency.
+
 
