@@ -26,57 +26,71 @@ Raspberry 1
 
 #include <iostream>
 #include <iomanip>
-#include <limits>
 
 constexpr int VARIATIONS = 5;
 
-void makeChoice(const std::string flavors[], int nFlavors, int quantity[], int& choice);
+void makeChoice(const std::string flavors[], int nFlavors, int quantity[],
+                int& choice, int& qtyChosen);
+
+void addChoice(int cart[], int choice, int qtyChosen);
 
 void showOffer(const std::string flavors[], int nFlavors, const int quantity[]);
+
+void showCart(const std::string flavors[], int nFlavors, const int cart[]);
 
 int main( ) {
     std::string flavors[VARIATIONS] = {"Chocolate", "Vanilla", "Strawberry", "Raspberry", "Butterscotch"};
     int quantity[VARIATIONS] = {20, 15, 15, 20, 20};
-    int choice;
+    int cart[VARIATIONS] = {0};
+
+    int choice, qtyChosen = 0;
     do {
-        makeChoice(flavors, VARIATIONS, quantity, choice);
+        makeChoice(flavors, VARIATIONS, quantity, choice, qtyChosen);
+        if (choice != -1)
+            addChoice(cart, choice, qtyChosen);
     } while (choice != -1);
 
+    std::cout << "Remaining stock:\n";
     showOffer(flavors, VARIATIONS, quantity);
+    showCart(flavors, VARIATIONS, cart);
 
     std::cout << "\n";
     return 0;
 }
 
-void makeChoice(const std::string flavors[], const int nFlavors, int quantity[], int& choice) {
-    int itemChosen, qtyChosen;
+void makeChoice(const std::string flavors[], const int nFlavors,
+                int quantity[], int& choice, int& qtyChosen) {
+    choice = -1;
+    std::string line;
     while (true) {
         showOffer(flavors, nFlavors, quantity);
         std::cout << "\nEnter item and quantity (separated by space).\n"
                      "To exit, press `-1` :\n";
-        if (!(std::cin >> itemChosen >> qtyChosen)) {
-            std::cout << "Not a valid choice. Retry\n";
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            continue;
-        }
-        // consume remaining input
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        // exit
-        if (itemChosen == -1) {
-            choice = itemChosen;
+
+        // EOF or error
+        if (!std::getline(std::cin, line)) {
+            choice = -1;
             return;
         }
-        // correct for array bound
-        --itemChosen;
-
-        if ((itemChosen < nFlavors) && (itemChosen >= 0) &&
-            (qtyChosen >= 0) && (qtyChosen <= quantity[itemChosen]) ) {
-
-            quantity[itemChosen] -= qtyChosen;
-            break;
+        std::istringstream iss(line);
+        if (!(iss >> choice)) {
+            std::cout << "Not a valid choice. Retry\n";
+            continue;
+        }
+        if (choice == -1)
+            return;
+        if (!(iss >> qtyChosen)) {
+            std::cout << "Wrong quantity. Retry\n";
+            continue;
         }
 
+        // adjust to zero-based-idx array
+        --choice;
+        if ((choice < nFlavors) && (choice >= 0) &&
+            (qtyChosen >= 0) && (qtyChosen <= quantity[choice]) ) {
+            quantity[choice] -= qtyChosen;
+            break;
+        }
         std::cout << "Product not available. Retry\n";
     }
 }
@@ -92,3 +106,14 @@ void showOffer(const std::string flavors[], const int nFlavors, const int quanti
                   << std::setw(8)  << quantity[idx] << "\n";
 }
 
+void addChoice(int cart[], int choice, int qtyChosen) {
+    if (choice >= 0)
+        cart[choice] += qtyChosen;
+}
+
+void showCart(const std::string flavors[], const int nFlavors, const int cart[]) {
+    std::cout << "Your cart: \n";
+    for (int idx = 0; idx < nFlavors; ++idx) {
+        
+    }
+}
