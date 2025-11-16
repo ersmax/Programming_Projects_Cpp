@@ -120,7 +120,7 @@ Check also my [Other projects](https://github.com/ersmax)
     - Written in modern C++ using `std::vector`, iterators, `std::mt19937` and `std::uniform_int_distribution` for unbiased draws and reproducible results (seedable).  
     - Output: counts and percentages for wins when staying vs. switching; optional verbose mode for single-run tracing.  
     - Empirical results: For 10,000 runs and 100 doors, the simulation converges to 60% probability of success.
-        <p align="center">
+        <p style="text-align: center;">
             <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall.PNG" alt="Monty Hall diagram" width="48%" />
             <img src="4_programming_set_4/4.11_Monty_Hall_Problem/Figures/MontyHall10000.PNG" alt="Monty Hall" width="48%" />
         </p>
@@ -129,7 +129,7 @@ Check also my [Other projects](https://github.com/ersmax)
        (aiming at the strongest opponent, intentionally missing).
     - Written in modern C++ using `std::vector`, RNG`std::mt19937`, `bernoulli_distribution`.
     - The theory suggests 36.1% and 41.7% chances of success under 2 strategies. These results are validated through simulation.
-        <p align="center">
+        <p style="text-align: center;">
             <img src="4_programming_set_4/4.12_Three_Way_Duel/Figures/EmpiricalResults.png" alt="Three Way Duel diagram" width="48%" />
         </p>
 13. [Treadmill Pace](./4_programming_set_4/4.13_Treadmill_Pace)
@@ -156,7 +156,7 @@ Check also my [Other projects](https://github.com/ersmax)
 1. [Car Mileage Visualization](5_programming_set_5/5.01_Graph_Car_Mileage)
    \- Compare a car's average mileage at different speeds with actual mileage values, and prints 
       a formatted comparison table and an ASCII graph.
-   <p align="center">
+   <p style="text-align: center;">
      <img src="5_programming_set_5/5.01_Graph_Car_Mileage/Figures/mileageTable.PNG" alt="car mileage table" width="48%" />
      <img src="5_programming_set_5/5.01_Graph_Car_Mileage/Figures/mileageGraph.PNG" alt="car mileage graph" width="48%" />
    </p>
@@ -185,7 +185,7 @@ Check also my [Other projects](https://github.com/ersmax)
 9. [Tic Tac Toe](5_programming_set_5/5.09_Tic_Tac_Toe) \- Two-player Tic Tac Toe game using a 3x3 char array board.
    Players alternate turns, input validation ensures valid and not repeated moves. The board is displayed after each move for clarity.
    Use enum to keep track of player turn, and function modularity for clarity.
-   <p align="center">
+   <p style="text-align: center;">
      <img src="5_programming_set_5/5.09_Tic_Tac_Toe/Figures/TicTacToe.PNG" alt="Tic Tac Toe" width="48%" />
    </p>
 
