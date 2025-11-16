@@ -24,22 +24,25 @@ constexpr int MOVES = 5;
 
 enum class PlayerIndex { O = 0, X = 1};
 
+int boardValue(PlayerIndex player);
+
+char playerChar(PlayerIndex player);
+
+void togglePlayer(PlayerIndex& player);
+
 void initializeBoard(int board[][N_COLS], int nRows);
 
 void showBoard(const int board[][N_COLS], int nRows);
 
 void playTurn(int board[][N_COLS], int nRows,
-                int movesPlayer[], int& nMoves,
-                int idxPlayer);
+              int movesPlayer[], int& nMoves,
+              PlayerIndex playerNumber);
 
 int enterMove(const int board[][N_COLS], int nRows);
-
-void changePlayer(int nPlayers, int& idxPlayer);
 
 bool isCellBusy(const int board[][N_COLS], int nRows, int position);
 
 int main( ) {
-    char player[PLAYERS] = {'0','X'};     // player O = 0, player X = -1
     int board[N_ROWS][N_COLS];
     int placesLeft = N_ROWS * N_COLS;
     int movesPlayerX[MOVES] = {};
@@ -49,18 +52,17 @@ int main( ) {
 
     std::mt19937 rng(std::random_device{}());       // random number generator
     std::uniform_int_distribution<int> playerNumber(0, 1);
-    int playerTurn  = playerNumber(rng);
+    auto playerTurn = static_cast<PlayerIndex>(playerNumber(rng));
 
     initializeBoard(board, N_ROWS);
     while (placesLeft > 0) {
 
-        char namePlayer = player[playerTurn];
-        if (namePlayer == '0')
-            playTurn(board, N_ROWS, movesPlayerO, nMovesY, 0);
-        else if (namePlayer == 'X')
-            playTurn(board, N_ROWS, movesPlayerX, nMovesX, -1);
+        if (playerTurn == PlayerIndex::O)
+            playTurn(board, N_ROWS, movesPlayerO, nMovesY, playerTurn);
+        else if (playerTurn == PlayerIndex::X)
+            playTurn(board, N_ROWS, movesPlayerX, nMovesX, playerTurn);
 
-        changePlayer(PLAYERS, playerTurn);
+        togglePlayer(playerTurn);
         --placesLeft;
     }
 
@@ -70,22 +72,31 @@ int main( ) {
     return 0;
 }
 
+int boardValue(const PlayerIndex player) {
+    return (player == PlayerIndex::O) ? 0 : -1;
+}
+
+char playerChar(const PlayerIndex player) {
+    return (player == PlayerIndex::O) ? 'O' : 'X';
+}
+
+
 void initializeBoard(int board[][N_COLS], const int nRows) {
-    int n = 0;
+    int num = 0;
     for (int row = 0; row < nRows; ++row)
         for (int col = 0; col < N_COLS; ++col)
-            board[row][col] = ++n;
+            board[row][col] = ++num;
 }
 
 void playTurn(int board[][N_COLS], const int nRows,
               int movesPlayer[], int& nMoves,
-              const int idxPlayer) {
+              const PlayerIndex playerNumber) {
 
     int movePlace = enterMove(board, nRows);
     movesPlayer[nMoves++] = movePlace;
     int row = (movePlace - 1) / N_COLS;
     int col = (movePlace - 1) % N_COLS;
-    board[row][col] = idxPlayer;
+    board[row][col] = boardValue(playerNumber);
 }
 
 int enterMove(const int board[][N_COLS], const int nRows) {
@@ -121,20 +132,22 @@ void showBoard(const int board[][N_COLS], const int nRows) {
 
     for (int row = 0; row < nRows; ++row) {
         for (int col = 0; col < N_COLS; ++col) {
-            if (board[row][col] == 0)
-                std::cout << 'O' << " ";
-            else if (board[row][col] == -1)
-                std::cout << 'X' << " ";
-            else
-                std::cout << board[row][col] << " ";
+            int cell = board[row][col];
 
+            if (cell == boardValue(PlayerIndex::O))
+                std::cout << playerChar(PlayerIndex::O) << " ";
+
+            else if (cell == boardValue(PlayerIndex::X))
+                std::cout << playerChar(PlayerIndex::X) << " ";
+
+            else  std::cout << cell << " ";
         }
         std::cout << "\n";
     }
 }
 
-void changePlayer(const int nPlayers, int& idxPlayer) {
-    idxPlayer = (idxPlayer + 1) % nPlayers;
+void togglePlayer(PlayerIndex& player) {
+    player = (player == PlayerIndex::O) ? PlayerIndex::X : PlayerIndex::O;
 }
 
 bool isCellBusy(const int board[][N_COLS], const int nRows, const int position) {
