@@ -22,6 +22,8 @@ constexpr int N_ROWS = 3;
 constexpr int N_COLS = 3;
 constexpr int MOVES = 5;
 
+enum class PlayerIndex { O = 0, X = 1};
+
 void initializeBoard(int board[][N_COLS], int nRows);
 
 void showBoard(const int board[][N_COLS], int nRows);
@@ -34,7 +36,7 @@ int enterMove(const int board[][N_COLS], int nRows);
 
 void changePlayer(int nPlayers, int& idxPlayer);
 
-bool isBusy(const int board[][N_COLS], int nRows, int position);
+bool isCellBusy(const int board[][N_COLS], int nRows, int position);
 
 int main( ) {
     char player[PLAYERS] = {'0','X'};     // player O = 0, player X = -1
@@ -45,7 +47,7 @@ int main( ) {
     int movesPlayerO[MOVES] = {};
     int nMovesY = 0;
 
-    std::mt19937 rng(std::random_device{}());
+    std::mt19937 rng(std::random_device{}());       // random number generator
     std::uniform_int_distribution<int> playerNumber(0, 1);
     int playerTurn  = playerNumber(rng);
 
@@ -68,7 +70,7 @@ int main( ) {
     return 0;
 }
 
-void initializeBoard(int board[][N_COLS], int nRows) {
+void initializeBoard(int board[][N_COLS], const int nRows) {
     int n = 0;
     for (int row = 0; row < nRows; ++row)
         for (int col = 0; col < N_COLS; ++col)
@@ -81,8 +83,8 @@ void playTurn(int board[][N_COLS], const int nRows,
 
     int movePlace = enterMove(board, nRows);
     movesPlayer[nMoves++] = movePlace;
-    int row = (movePlace - 1) / nRows;
-    int col = (movePlace - 1) % nRows;
+    int row = (movePlace - 1) / N_COLS;
+    int col = (movePlace - 1) % N_COLS;
     board[row][col] = idxPlayer;
 }
 
@@ -95,7 +97,6 @@ int enterMove(const int board[][N_COLS], const int nRows) {
             std::cout << "Not a number\n";
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
             continue;
         }
         // consume remaining input
@@ -107,8 +108,7 @@ int enterMove(const int board[][N_COLS], const int nRows) {
             continue;
         }
 
-        // check position is free.
-        if (isBusy(board, nRows, next)) {
+        if (isCellBusy(board, nRows, next)) {
             std::cout << "Position already chosen. Retry\n";
             continue;
         }
@@ -137,8 +137,8 @@ void changePlayer(const int nPlayers, int& idxPlayer) {
     idxPlayer = (idxPlayer + 1) % nPlayers;
 }
 
-bool isBusy(const int board[][N_COLS], int nRows, int position) {
-    int row = (position - 1) / nRows;
+bool isCellBusy(const int board[][N_COLS], const int nRows, const int position) {
+    int row = (position - 1) / N_COLS;
     int col = (position - 1) % N_COLS;
     return (board[row][col] < 1);
 }
