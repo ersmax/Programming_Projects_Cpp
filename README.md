@@ -188,6 +188,9 @@ Check also my [Other projects](https://github.com/ersmax)
    <p align="center">
      <img src="5_programming_set_5/5.09_Tic_Tac_Toe/Figures/TicTacToe.PNG" alt="Tic Tac Toe" width="48%" />
    </p>
+10. [Ice Cream Parlor](5_programming_set_5/5.10_Ice_Cream_Parlor) \- This program helps customers select ice cream flavors
+    based on their preferences. It lists flavors with numeric codes and stock, accepts repeated code quantity purchases, 
+    updates inventory immediately, records purchases per flavor in a cart, and prints remaining stock and the cart on exit.
 
 
 
