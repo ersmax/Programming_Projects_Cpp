@@ -185,6 +185,10 @@ Check also my [Other projects](https://github.com/ersmax)
 9. [Tic Tac Toe](5_programming_set_5/5.09_Tic_Tac_Toe) \- Two-player Tic Tac Toe game using a 3x3 char array board.
    Players alternate turns, input validation ensures valid and not repeated moves. The board is displayed after each move for clarity.
    Use enum to keep track of player turn, and function modularity for clarity.
+   <p align="center">
+     <img src="5_programming_set_5/5.09_Tic_Tac_Toe/Figures/TicTacToe.PNG" alt="Tic Tac Toe" width="48%" />
+   </p>
+
 
 
 
