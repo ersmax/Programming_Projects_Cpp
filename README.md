@@ -182,5 +182,9 @@ Check also my [Other projects](https://github.com/ersmax)
 8. [Birthday Paradox](5_programming_set_5/5.08_Birthday_Paradox)  \- This program simulates the birthday paradox 
    over many trials (default 5000). Use <random> library, checks pairwise for any matching birthdays, and prints probabilities.
    Make use of operator overloading for structure comparison and static RNG for efficiency.
+9. [Tic Tac Toe](5_programming_set_5/5.09_Tic_Tac_Toe) \- Two-player Tic Tac Toe game using a 3x3 char array board.
+   Players alternate turns, input validation ensures valid and not repeated moves. The board is displayed after each move for clarity.
+   Use enum to keep track of player turn, and function modularity for clarity.
+
 
 

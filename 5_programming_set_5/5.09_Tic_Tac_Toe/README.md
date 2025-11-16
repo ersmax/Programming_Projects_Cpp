@@ -2,27 +2,21 @@ Write a program that will allow two users to play tic-tac-toe. The program shoul
 ask for moves alternately from player X and player O. The program displays the
 game positions as follows:
 
-| Positions |
-|----------:|
-| <pre>1 2 3
-4 5 6
-7 8 9</pre> |
+|  Positions  |   |   | 
+|------------:|:--|:--|
+|           1 | 2 | 3 | 
+|           4 | 5 | 6 | 
+|           7 | 8 | 9 |  
 
 The players enter their moves by entering the position number they wish to mark.
 After each move, the program displays the changed board. A sample board configuration
 is as follows:
-X X O
-4 5 6
-O 8 9
 
-Add the following Markdown table to `README.md`. It displays the position grid and the current board side‑by‑side.
-
-| Current board |
-|---:|
-| X | X  |O |
-| 4|  5 | 6 |
-| O | 8 | 9 |
-```
+|  Current board |   |   | 
+|---------------:|:--|:--|
+|              X | X | O | 
+|              4 | 5 | 6 | 
+|              O | 8 | 9 |  
 
 
 ---
@@ -47,7 +41,7 @@ and prints the board after each input and at the end.
 - When a player marks a cell it is replaced by that player's numeric marker:
     - For `PlayerIndex::O` the stored value is `0`.
     - For `PlayerIndex::X` the stored value is `-1`.
-- A cell is considered occupied when its stored value is \< `1` (the code uses `board[row][col] < 1`).
+- A cell is considered occupied when its stored value is < `1` (the code uses `board[row][col] < 1`).
 
 This choice ensures no collision between position numbers (positive) and player markers (`0` and `-1`).
 
@@ -57,7 +51,7 @@ Declaration in the file:
 
 - `enum class PlayerIndex { O = 0, X = -1 };`
 
-Notes:
+### Notes:
 
 - The enum values are chosen to match the integers stored in the board for each player. Converting an enum value to `int` via `static_cast<int>(player)` yields the board value for that player.
 - Using an `enum class` scopes the names (`PlayerIndex::O`, `PlayerIndex::X`) and avoids accidental implicit conversions.
@@ -148,16 +142,6 @@ Each function is listed with its signature and concise description.
 - The `enum class PlayerIndex` values are set so `static_cast<int>(player)` is exactly the stored board value; `boardValue` simply wraps this cast for clarity.
 - Input handling in `enterMove` is defensive: it clears `std::cin` and discards remaining characters when a non-number is entered.
 - Move recording arrays keep which positions each player has taken; these arrays are separate from the `board` and are incremented via their associated `nMoves` variables.
-
-## Implementation quibbles (observations)
-- The `playerChar` function returns `'0'` (zero character) for `PlayerIndex::O`. If the intent is the letter `O`, replace `'0'` with `'O'`.
-- The variable name `nMovesY` is used for player O; renaming to `nMovesO` improves clarity.
-- `boardValue` could be `constexpr` if desired, since the mapping is simple and constant.
-
-## Files
-
-- Main implementation: `5_programming_set_5/5.09_Tic_Tac_Toe/09_Tic_Tac_Toe.cpp`
-- This README: `5_programming_set_5/5.09_Tic_Tac_Toe/README.md`
 
 ## Illustrative example
 <p align="center">
