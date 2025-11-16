@@ -2,11 +2,11 @@ Write a program that will allow two users to play tic-tac-toe. The program shoul
 ask for moves alternately from player X and player O. The program displays the
 game positions as follows:
 
-|  Positions | 
-|-----------:|
-|  1   2   3 | 
-| 4   5    6 | 
-|  7  8    9 |  
+| Positions |
+|----------:|
+| <pre>1 2 3
+4 5 6
+7 8 9</pre> |
 
 The players enter their moves by entering the position number they wish to mark.
 After each move, the program displays the changed board. A sample board configuration
