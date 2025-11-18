@@ -60,6 +60,8 @@ for the program.
 #include <algorithm>
 #include <string>
 #include <cstring>
+#include <thread>
+#include <chrono>
 
 void generation();
 
@@ -93,12 +95,12 @@ int main( ) {
 
    int busyCells = 0;
    startGrid(world, ROW, busyCells);
+   display(world, ROW);
 
    while (busyCells > 0) {
       generation(world, ROW, busyCells);
       display(world, ROW);
    }
-   display(world, ROW);
    std::cout << "\n";
    return 0;
 }
@@ -144,29 +146,43 @@ void display(const char grid[][COL], const int nRows) {
       std::cout << "\n";
    }
    std::cout << std::string(COL, '-') << "\n";
+   std::this_thread::sleep_for(std::chrono::milliseconds(450));
 }
 
 void generation(char grid[][COL], const int nRows, int& busyPosition) {
+   // Births and deaths occur at the changes of generation.
+   char nextGenGrid[ROW][COL];
+   std::fill_n(&nextGenGrid[0][0], ROW * COL, EMPTY);
+
+   int newBusy = 0;
    for (int row = 0; row < nRows; ++row) {
       for (int col = 0; col < COL; ++col) {
-         switch (countNeighbors(row, col, grid, nRows)) {
-            case 0:
+         int neighbors = countNeighbors(row, col, grid, nRows);
+         switch (neighbors) {
+            case 0:  // Die of loneliness or stays dead
             case 1:
-               die(grid[row][col]);
+               nextGenGrid[row][col] = EMPTY;
                break;
-            case 2:
-               // stay alive
+            case 2:  // Don't change
+               if (grid[row][col] == FILL) {
+                  nextGenGrid[row][col] = FILL;
+                  ++newBusy;
+               } else
+                  nextGenGrid[row][col] = EMPTY;
                break;
-            case 3:
-               if (!alive(grid[row][col])) isBorn(grid[row][col]);
+            case 3:  // Birth (or stay alive)
+               nextGenGrid[row][col] = FILL;
+               ++newBusy;
                break;
             default:
                // die for overcrowding
-               die(grid[row][col]);
+               nextGenGrid[row][col] = EMPTY;
                break;
          }
       }
    }
+   std::memcpy(grid, nextGenGrid, sizeof nextGenGrid);
+   busyPosition = newBusy;
 }
 
 int countNeighbors(const int row, const int col, const char grid[][COL], const int nRows) {
