@@ -1,10 +1,3 @@
-/*
-Write a program that accepts input like the program in Display 5.4 (repository Playgroud 5_0_4)
-and that outputs a bar graph like the one in that program, except that your program will
-output the bars vertically rather than horizontally. A two-dimensional array may
-be useful.
-*/
-
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -116,7 +109,7 @@ void showRawData(const int numbers[], const int numPlants) {
 
 
 void showHistogram(const int scaleNumbers[], const int numPlants) {
-    int maxProduction = findMax(scaleNumbers, PLANTS);
+    int maxProduction = findMax(scaleNumbers, numPlants);
 
     std::cout << "\nUnits produced (in thousands) per plant:\n";
 
@@ -143,10 +136,10 @@ int findMax(const int scaleNumbers[], const int numPlants) {
 }
 
 void printAsterisks(const int number) {
-    if (number == 0) {
+    if (number > 0)
+        for (int count = 0; count < number; ++count)
+            std::cout << std::setw(COL_WIDTH) << '*';
+    else
         std::cout << std::setw(COL_WIDTH) << ' ';
-        return;
-    }
-    for (int count = 0; count < number; ++count)
-        std::cout << std::setw(COL_WIDTH) << '*';
+
 }
