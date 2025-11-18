@@ -58,6 +58,8 @@ for the program.
 
 #include <iostream>
 #include <algorithm>
+#include <string>
+#include <cstring>
 
 void generation();
 
@@ -72,6 +74,12 @@ void setCell(char grid[][COL], int nRows,
              int row, int col, int& busyPosition);
 
 void generation(char grid[][COL], int nRows, int& busyPosition);
+
+bool alive(char organism);
+
+void die(char& organism);
+
+void isBorn(char& organism);
 
 int countNeighbors(int row, int col, const char grid[][COL], int nRows);
 
@@ -138,10 +146,25 @@ void display(const char grid[][COL], const int nRows) {
    std::cout << std::string(COL, '-') << "\n";
 }
 
-void generation(char grid[][COL], const int nRows, int &busyPosition) {
+void generation(char grid[][COL], const int nRows, int& busyPosition) {
    for (int row = 0; row < nRows; ++row) {
       for (int col = 0; col < COL; ++col) {
-         int neighbors = countNeighbors(row, col, grid, nRows);
+         switch (countNeighbors(row, col, grid, nRows)) {
+            case 0:
+            case 1:
+               die(grid[row][col]);
+               break;
+            case 2:
+               // stay alive
+               break;
+            case 3:
+               if (!alive(grid[row][col])) isBorn(grid[row][col]);
+               break;
+            default:
+               // die for overcrowding
+               die(grid[row][col]);
+               break;
+         }
       }
    }
 }
@@ -162,5 +185,17 @@ int countNeighbors(const int row, const int col, const char grid[][COL], const i
 
 bool inBounds(const int idxCell, const int limit) {
    return ((idxCell >= 0) && (idxCell < limit));
+}
+
+bool alive(const char organism) {
+   return (organism == FILL);
+}
+
+void die(char& organism) {
+   if (organism == FILL) organism = EMPTY;
+}
+
+void isBorn(char& organism) {
+   if (organism == EMPTY) organism = FILL;
 }
 
