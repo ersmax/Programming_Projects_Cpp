@@ -81,7 +81,7 @@ bool alive(char organism);
 
 void die(char& organism);
 
-void isBorn(char& organism);
+void isBorn(char& organism, int& countAlive);
 
 int countNeighbors(int row, int col, const char grid[][COL], int nRows);
 
@@ -123,7 +123,23 @@ void startGrid(char grid[][COL], const int nRows, int& busyPosition) {
 
    for (const int col : colSmall)
       for (const int row : rowSmall)
-         setCell(grid, nRows,centerRow + row, startingCol + col, busyPosition);
+         setCell(grid, nRows, centerRow + row, startingCol + col, busyPosition);
+
+   // place a small ship
+   constexpr int offsets[][2] = {
+                     {-1, 0}, {+1, 0}, {+2, 1},
+                     {-2, 2}, {+2, 2}, {-2, 3}, {+2, 3},
+                     {+2, 4}, {-1, 5}, {+2, 5}, { 0, 6},
+                     {+1, 6}, {+2, 6}
+                  };
+
+   for (const auto& offset : offsets) {
+      constexpr int startRow = 5;
+      constexpr int startCol = 15;
+      const int row = offset[0];
+      const int col = offset[1];
+      setCell(grid, nRows, startRow + row, startCol + col, busyPosition);
+   }
 }
 
 void setCell(char grid[][COL], const int nRows,
@@ -145,8 +161,8 @@ void display(const char grid[][COL], const int nRows) {
          std::cout << grid[row][col];
       std::cout << "\n";
    }
-   std::cout << std::string(COL, '-') << "\n";
-   std::this_thread::sleep_for(std::chrono::milliseconds(450));
+   // std::cout << std::string(COL, '-') << "\n";
+   std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
 void generation(char grid[][COL], const int nRows, int& busyPosition) {
@@ -154,44 +170,51 @@ void generation(char grid[][COL], const int nRows, int& busyPosition) {
    char nextGenGrid[ROW][COL];
    std::fill_n(&nextGenGrid[0][0], ROW * COL, EMPTY);
 
-   int newBusy = 0;
+   int newBorn = 0;
+   auto alive = [](const char organism) {
+      return (organism == FILL);
+   };
+   auto isBorn = [&](char& cell) {
+      cell = FILL;
+      ++newBorn;
+   };
+   auto die = [&](char& cell) {
+      cell = EMPTY;
+   };
+
    for (int row = 0; row < nRows; ++row) {
       for (int col = 0; col < COL; ++col) {
-         int neighbors = countNeighbors(row, col, grid, nRows);
-         switch (neighbors) {
-            case 0:  // Die of loneliness or stays dead
+         switch (countNeighbors(row, col, grid, nRows)) {
+            case 0:
             case 1:
-               nextGenGrid[row][col] = EMPTY;
+               die(nextGenGrid[row][col]);
                break;
-            case 2:  // Don't change
-               if (grid[row][col] == FILL) {
-                  nextGenGrid[row][col] = FILL;
-                  ++newBusy;
-               } else
-                  nextGenGrid[row][col] = EMPTY;
+            case 2:
+               if (alive(grid[row][col]))
+                  isBorn(nextGenGrid[row][col]);
+               else
+                  die(nextGenGrid[row][col]);
                break;
-            case 3:  // Birth (or stay alive)
-               nextGenGrid[row][col] = FILL;
-               ++newBusy;
+            case 3:
+               isBorn(nextGenGrid[row][col]);
                break;
             default:
-               // die for overcrowding
-               nextGenGrid[row][col] = EMPTY;
+               die(nextGenGrid[row][col]);
                break;
          }
       }
    }
    std::memcpy(grid, nextGenGrid, sizeof nextGenGrid);
-   busyPosition = newBusy;
+   busyPosition = newBorn;
 }
 
 int countNeighbors(const int row, const int col, const char grid[][COL], const int nRows) {
    int neighbors = 0;
    for (int r = row - 1; r <= row + 1; ++r) {
-      if (!inBounds(r, nRows))      continue;   // out-of-bounds row
+      if (!inBounds(r, nRows))      continue;
 
       for (int c = col - 1; c <= col + 1; ++c) {
-         if (!inBounds(c, COL))     continue;   // out-of-bounds columns
+         if (!inBounds(c, COL))     continue;
          if (r == row && c == col)  continue;   // itself
          if (grid[r][c] == FILL)    ++neighbors;
       }
@@ -203,15 +226,16 @@ bool inBounds(const int idxCell, const int limit) {
    return ((idxCell >= 0) && (idxCell < limit));
 }
 
+
 bool alive(const char organism) {
    return (organism == FILL);
 }
 
 void die(char& organism) {
-   if (organism == FILL) organism = EMPTY;
+   organism = EMPTY;
 }
 
-void isBorn(char& organism) {
-   if (organism == EMPTY) organism = FILL;
+void isBorn(char& organism, int& countAlive) {
+   organism = FILL;
+   ++countAlive;
 }
-
