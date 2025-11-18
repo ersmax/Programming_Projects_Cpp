@@ -66,10 +66,23 @@ constexpr int COL = 80;
 constexpr char FILL = '*';
 constexpr char EMPTY = ' ';
 
-int main( ) {
-   char world[]
+void startGrid(char grid[][COL], int nRows, int& busyPosition);
 
+void generation(char grid[][COL], int nRows, int& busyPosition);
+
+void display(const char grid[][COL], int nRows, int busyPosition);
+
+int main( ) {
+   char world[ROW][COL] = {EMPTY};
+   int busyCells = 0;
+   startGrid(world, ROW, busyCells);
+
+   while (busyCells > 0) {
+      generation(world, ROW, busyCells);
+      display(world, ROW, busyCells);
+   }
    std::cout << "\n";
    return 0;
 }
+
 
