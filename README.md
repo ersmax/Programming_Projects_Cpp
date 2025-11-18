@@ -191,8 +191,8 @@ Check also my [Other projects](https://github.com/ersmax)
 10. [Ice Cream Parlor](5_programming_set_5/5.10_Ice_Cream_Parlor) \- This program helps customers select ice cream flavors
     based on their preferences. It lists flavors with numeric codes and stock, accepts repeated code quantity purchases, 
     updates inventory immediately, records purchases per flavor in a cart, and prints remaining stock and the cart on exit.
-11. [Histogram Production](5_programming_set_5/5.11_Histogram_Production) \- This program reads daily production for  
-    different plants of a factory, counts frequencies in specified ranges using a fixed-size array, and prints a text histogram.
+11. [Histogram Production](5_programming_set_5/5.11_Histogram_Production) \- This program reads daily production for  different plants of a factory, 
+    counts frequencies in specified ranges using a fixed-size array, and prints a text histogram.
     It includes input validation for numeric entries and handles file reading errors.
     <p align="center">
      <img src="5_programming_set_5/5.11_Histogram_Production/Figures/Histogram.PNG" alt="Histogram" width="48%" />
