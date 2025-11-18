@@ -57,7 +57,7 @@ for the program.
 */
 
 #include <iostream>
-
+#include <algorithm>
 
 void generation();
 
@@ -73,6 +73,10 @@ void setCell(char grid[][COL], int nRows,
 
 void generation(char grid[][COL], int nRows, int& busyPosition);
 
+int countNeighbors(int row, int col, const char grid[][COL], int nRows);
+
+bool inBounds(int idxCell, int limit);
+
 void display(const char grid[][COL], int nRows);
 
 int main( ) {
@@ -83,7 +87,7 @@ int main( ) {
    startGrid(world, ROW, busyCells);
 
    while (busyCells > 0) {
-      // TODO : generation(world, ROW, busyCells);
+      generation(world, ROW, busyCells);
       display(world, ROW);
    }
    display(world, ROW);
@@ -126,9 +130,37 @@ void setCell(char grid[][COL], const int nRows,
 }
 
 void display(const char grid[][COL], const int nRows) {
-      for (int row = 0; row < nRows; ++row) {
-         for (int col = 0; col < COL; ++col)
-            std::cout << grid[row][col];
-         std::cout << "\n";
-      }
+   for (int row = 0; row < nRows; ++row) {
+      for (int col = 0; col < COL; ++col)
+         std::cout << grid[row][col];
+      std::cout << "\n";
+   }
+   std::cout << std::string(COL, '-') << "\n";
 }
+
+void generation(char grid[][COL], const int nRows, int &busyPosition) {
+   for (int row = 0; row < nRows; ++row) {
+      for (int col = 0; col < COL; ++col) {
+         int neighbors = countNeighbors(row, col, grid, nRows);
+      }
+   }
+}
+
+int countNeighbors(const int row, const int col, const char grid[][COL], const int nRows) {
+   int neighbors = 0;
+   for (int r = row - 1; r <= row + 1; ++r) {
+      if (!inBounds(r, nRows))      continue;   // out-of-bounds row
+
+      for (int c = col - 1; c <= col + 1; ++c) {
+         if (!inBounds(c, COL))     continue;   // out-of-bounds columns
+         if (r == row && c == col)  continue;   // itself
+         if (grid[r][c] == FILL)    ++neighbors;
+      }
+   }
+   return neighbors;
+}
+
+bool inBounds(const int idxCell, const int limit) {
+   return ((idxCell >= 0) && (idxCell < limit));
+}
+
