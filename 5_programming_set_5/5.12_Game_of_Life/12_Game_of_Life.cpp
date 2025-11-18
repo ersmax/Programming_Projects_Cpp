@@ -68,21 +68,67 @@ constexpr char EMPTY = ' ';
 
 void startGrid(char grid[][COL], int nRows, int& busyPosition);
 
+void setCell(char grid[][COL], int nRows,
+             int row, int col, int& busyPosition);
+
 void generation(char grid[][COL], int nRows, int& busyPosition);
 
-void display(const char grid[][COL], int nRows, int busyPosition);
+void display(const char grid[][COL], int nRows);
 
 int main( ) {
-   char world[ROW][COL] = {EMPTY};
+   char world[ROW][COL];
+   std::fill_n(&world[0][0], ROW * COL, EMPTY);
+
    int busyCells = 0;
    startGrid(world, ROW, busyCells);
 
    while (busyCells > 0) {
-      generation(world, ROW, busyCells);
-      display(world, ROW, busyCells);
+      // TODO : generation(world, ROW, busyCells);
+      display(world, ROW);
    }
+   display(world, ROW);
    std::cout << "\n";
    return 0;
 }
 
+void startGrid(char grid[][COL], const int nRows, int& busyPosition) {
+   busyPosition = 0;
+   // place a pulsar around 2/3 of the col width and centered
+   const int centerRow = nRows / 2;
+   constexpr int startingCol = 2 * (COL / 3);
 
+   constexpr int colLarge[] = {-6, -1, 1, 6};
+   constexpr int rowLarge[] = {-4, -3, -2, 2, 3, 4};
+
+   constexpr int colSmall[] = {-4, -3, -2, 2, 3, 4};
+   constexpr int rowSmall[] = {-6, -1, 1, 6};
+
+   for (const int col : colLarge)
+      for (const int row : rowLarge)
+         setCell(grid, nRows, centerRow + row, startingCol + col, busyPosition);
+
+   for (const int col : colSmall)
+      for (const int row : rowSmall)
+         setCell(grid, nRows,centerRow + row, startingCol + col, busyPosition);
+}
+
+void setCell(char grid[][COL], const int nRows,
+             const int row, const int col,
+             int& busyPosition) {
+
+   if (row < 0 || row >= nRows ||
+       col < 0 || col >= COL)
+      return;
+   if (grid[row][col] != FILL) {
+      grid[row][col] = FILL;
+      ++busyPosition;
+   }
+}
+
+void display(const char grid[][COL], const int nRows) {
+      for (int row = 0; row < nRows; ++row) {
+         for (int col = 0; col < COL; ++col)
+            std::cout << grid[row][col];
+         std::cout << "\n";
+      }
+}

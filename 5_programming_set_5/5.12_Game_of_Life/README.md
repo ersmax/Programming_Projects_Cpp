@@ -53,3 +53,75 @@ sort of time delay is appropriate between calls to generation and display. To
 do this, your program should generate and display the next generation when you
 press Return. You are at liberty to automate this, but automation is not necessary
 for the program.
+
+
+
+```cpp
+int c = 50;
+   grid[4][c] = FILL;
+   grid[5][c] = FILL;
+   grid[6][c] = FILL;
+   grid[10][c] = FILL;
+   grid[11][c] = FILL;
+   grid[12][c] = FILL;
+
+   c += 2;
+   grid[2][c] = FILL;
+   grid[7][c] = FILL;
+   grid[9][c] = FILL;
+   grid[14][c] = FILL;
+
+   ++c;
+   grid[2][c] = FILL;
+   grid[7][c] = FILL;
+   grid[9][c] = FILL;
+   grid[14][c] = FILL;
+
+   ++c;
+   grid[2][c] = FILL;
+   grid[7][c] = FILL;
+   grid[9][c] = FILL;
+   grid[14][c] = FILL;
+
+   ++c;
+   grid[4][c] = FILL;
+   grid[5][c] = FILL;
+   grid[6][c] = FILL;
+   grid[10][c] = FILL;
+   grid[11][c] = FILL;
+   grid[12][c] = FILL;
+
+   c += 2;
+   grid[4][c] = FILL;
+   grid[5][c] = FILL;
+   grid[6][c] = FILL;
+   grid[10][c] = FILL;
+   grid[11][c] = FILL;
+   grid[12][c] = FILL;
+
+   c += 2;
+   grid[2][c] = FILL;
+   grid[7][c] = FILL;
+   grid[9][c] = FILL;
+   grid[14][c] = FILL;
+
+   ++c;
+   grid[2][c] = FILL;
+   grid[7][c] = FILL;
+   grid[9][c] = FILL;
+   grid[14][c] = FILL;
+
+   ++c;
+   grid[2][c] = FILL;
+   grid[7][c] = FILL;
+   grid[9][c] = FILL;
+   grid[14][c] = FILL;
+
+   ++c;
+   grid[4][c] = FILL;
+   grid[5][c] = FILL;
+   grid[6][c] = FILL;
+   grid[10][c] = FILL;
+   grid[11][c] = FILL;
+   grid[12][c] = FILL;
+```
