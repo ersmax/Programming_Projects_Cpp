@@ -1,51 +1,56 @@
-/*
-A common memory matching game played by young children is to start with a
-deck of cards that contains identical pairs. For example, given six cards in the deck,
-two might be labeled “1”, two might be labeled “2”, and two might be labeled “3”.
-The cards are shuffled and placed facedown on the table. The player then selects
-two cards that are facedown, turns them faceup, and if they match they are left
-faceup. If the two cards do not match, they are returned to their original position
-facedown. The game continues in this fashion until all cards are faceup.
-Write a program that plays the memory matching game. Use 16 cards that are
-laid out in a 4 * 4 square and are labeled with pairs of numbers from 1 to 8. Your
-program should allow the player to specify the cards through a coordinate system.
-For example, in the following layout:
-
-| cards | 1 | 2 | 3 | 4 |
-|---:|:--:|:--:|:--:|:--:|
-| 1 | 8 | * | * | * |
-| 2 | * | * | * | * |
-| 3 | * | 8 | * | * |
-| 4 | * | * | * | * |
-
-all of the cards are facedown except for the pair of 8’s, which has been located at
-coordinates (1,1) and (2,3). To hide the cards that have been temporarily placed
-faceup, output a large number of newlines that force the old board off the screen.
-Hint: Use a 2D array for the arrangement of cards and another 2D array that indicates
-whether a card is faceup or facedown. Write a function that “shuffles” the
-cards in the array by repeatedly selecting two cards at random and swapping them.
-*/
-
 #include <iostream>
 #include <random>
 #include <sstream>
-
 
 constexpr int ROWS = 4;
 constexpr int COLS = 4;
 constexpr int CARDS = ROWS * COLS;
 constexpr int SAME = 2;
 constexpr int COORDINATES = 2;
-constexpr char FOLD = '*';
-constexpr char UNFOLD = '#';
+constexpr char UNFOLD = '*';
+constexpr char FOLD = '#';
 
 void createBoard(int cards[][COLS], char upDown[][COLS], int nRows);
+//   Precondition: nRows is the number of rows in cards and upDown.
+// cards is an array of size nRows x COLS that will hold the card values.
+// upDown is an array of size nRows x COLS that will hold the card face status.
+//   Postcondition: cards[0][0] through cards[nRows-1][COL-1]
+// have been initialized with pairs of values from 1 to CARDS/2.
+// upDown[0][0] through upDown[nRows-1][COL-1] have been initialized to UNFOLD.
+
 void shuffleCards(int cards[][COLS], int nRows);
+//   Precondition: nRows is the number of rows in cards.
+// cards is an array of size nRows x COLS that holds the card values.
+//   Postcondition: the elements of cards have been randomly shuffled.
+
 void showBoard(const int cards[][COLS], const char upDown[][COLS], int nRows);
+//   Precondition: nRows is the number of rows in cards and upDown.
+// cards is an array of size nRows x COLS that holds the card values.
+// upDown is an array of size nRows x COLS that holds the card face status.
+//   Postcondition: the contents of cards have been displayed on the console,
+// showing UNFOLD for facedown cards and the card value for faceup cards.
+
 bool chooseCards(int nRows, int nCols, int card1[], int card2[], int dimensions);
+//   Precondition: nRows is the number of rows in the board, nCols is the number of columns in the board.
+// card1 and card2 are arrays of size 2 that will hold the row and column of the chosen cards.
+// dimensions is the number of cards to choose (2 in this case).
+//   Postcondition: the user has been prompted to enter the coordinates of two cards.
+// The function returns true if the user successfully chose two cards, or false
+// if the user decided to exit the game.
+
 void unfold(const int cards[][COLS], char upDown[][COLS], int nRows,
             const int card1[], const int card2[], int dimensions, int& remainingCards);
+//   Precondition: nRows is the number of rows in cards and upDown.
+// cards is an array of size nRows x COLS that holds the card values.
+// upDown is an array of size nRows x COLS that holds the card face status.
+// card1 and card2 are arrays of size 2 that hold the row and column of the chosen cards.
+// dimensions is the number of cards chosen (2 in this case).
+// remainingCards is the number of unmatched cards remaining in the game.
+//   Postcondition: the chosen cards have been unfolded (faceup). If the cards match,
+// they remain faceup; otherwise, they are turned facedown again.
+
 void clearConsole();
+//   Postcondition: the console output has been cleared by printing multiple newlines.
 
 int main( ) {
     int board[ROWS][COLS] = {0};
@@ -56,8 +61,7 @@ int main( ) {
     shuffleCards(board, ROWS);
     showBoard(board, upDown, ROWS);
 
-    while (chooseCards(ROWS, COLS, card1, card2, COORDINATES) ||
-           unmatchedCards > 0) {
+    while (chooseCards(ROWS, COLS, card1, card2, COORDINATES) && unmatchedCards > 0) {
         unfold(board, upDown, ROWS, card1, card2, COORDINATES, unmatchedCards);
         showBoard(board, upDown, ROWS);
     }
@@ -76,15 +80,16 @@ void createBoard(int cards[][COLS], char upDown[][COLS], const int nRows) {
                 cards[row][col] = cardValue;
             else
                 cards[row][col] = cardValue++;
-            upDown[row][col] = FOLD;
+            upDown[row][col] = UNFOLD;
         }
 }
 
 void shuffleCards(int cards[][COLS], int nRows) {
     static std::random_device rd;
     static std::mt19937 gen(rd());
+    const int total = nRows * COLS;
     // Fisher-Yates on flattened indices
-    for (int card = CARDS - 1; card > 0; --card) {
+    for (int card = total - 1; card > 0; --card) {
         std::uniform_int_distribution<int>dist(0, card);
         const int randomCard = dist(gen);
         const int rowRandomCard = randomCard / COLS;
@@ -112,7 +117,7 @@ void showBoard(const int cards[][COLS], const char upDown[][COLS], int nRows) {
         std::cout << (row + 1);
         std::cout << " |";
         for (int col = 0; col < COLS; ++col) {
-            if (upDown[row][col] == FOLD)  std::cout << FOLD << " ";
+            if (upDown[row][col] == UNFOLD)  std::cout << UNFOLD << " ";
             else                           std::cout << cards[row][col] << " ";
         }
         std::cout << "\n";
@@ -183,13 +188,13 @@ void unfold(const int cards[][COLS], char upDown[][COLS], const int nRows,
     const int rowCard2 = card2[0], colCard2 = card2[1];
 
     bool card1seen = false, card2seen = false;
-    if (upDown[rowCard1][colCard1] == UNFOLD) card1seen = true;
-    if (upDown[rowCard2][colCard2] == UNFOLD) card2seen = true;
+    if (upDown[rowCard1][colCard1] == FOLD) card1seen = true;
+    if (upDown[rowCard2][colCard2] == FOLD) card2seen = true;
 
 
 
-    upDown[rowCard1][colCard1] = UNFOLD;
-    upDown[rowCard2][colCard2] = UNFOLD;
+    upDown[rowCard1][colCard1] = FOLD;
+    upDown[rowCard2][colCard2] = FOLD;
     if (cards[rowCard1][colCard1] == cards[rowCard2][colCard2]) {
         remainingCards -= 2;
         std::cout << "Found a match!\n";
@@ -201,9 +206,9 @@ void unfold(const int cards[][COLS], char upDown[][COLS], const int nRows,
     std::string keystroke;
     std::getline(std::cin, keystroke);
     if (!card1seen)
-        upDown[rowCard1][colCard1] = FOLD;
+        upDown[rowCard1][colCard1] = UNFOLD;
     if (!card2seen)
-        upDown[rowCard2][colCard2] = FOLD;
+        upDown[rowCard2][colCard2] = UNFOLD;
 
     clearConsole();
 }

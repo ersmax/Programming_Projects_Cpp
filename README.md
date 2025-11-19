@@ -207,14 +207,17 @@ Check also my [Other projects](https://github.com/ersmax)
     (births and deaths occur simultaneously at generation boundaries), and `std::this_thread::sleep_for` together with `std::chrono::milliseconds`
     is used to pause between visualizations.
     <p align="center">
-      <img src="5_programming_set_5/5.12_Game_of_Life/Figures/GliderGun.gif" alt="GliderGun" width="48%" />
-      <img src="5_programming_set_5/5.12_Game_of_Life/Figures/SpaceshipPulsar.gif" alt="Spaceship Into Pulsar" width="48%" />
-    </p>
-    <p align="center">
       <img src="5_programming_set_5/5.12_Game_of_Life/Figures/GliderGunDark.gif" alt="GliderGun" width="48%" />
       <img src="5_programming_set_5/5.12_Game_of_Life/Figures/SpaceshipPulsarDark.gif" alt="Spaceship Into Pulsar" width="48%" />
     </p>
+13. [Memory Matching Game](5_programming_set_5/5.13_Memory_Matching_Cards) 
+    \- This program implements a console-based Memory Matching Game using a 4x4 grid of cards.
+    The player flips two cards per turn by entering row/column coordinates; matching pairs remain revealed. 
+    Includes input validation to prevent invalid or repeated selections, 
+    a Fisher\-Yates shuffle for unbiased random placement. 
+    The board is redrawn after each turn and the game announces victory when all pairs are found.
+    <p align="center">
+      <img src="5_programming_set_5/5.13_Memory_Matching_Cards/Figures/CardgameDark.gif" alt="Memory Matching Game" width="48%" />
+    </p>
 
-
- 
 
