@@ -56,38 +56,6 @@ for the program.
 
 ---
 
-# Implementation details
-
-## Alternative implementation to lambdas
-An alternative way to implement the `generation` function is that of using 
-separate functions in the code, instead of lambda helper functions.
-
-Functions signature:
-```cpp
-bool alive(char organism);
-
-void die(char& organism);
-
-void isBorn(char& organism, int& countAlive);
-```
-
-Functions definition:
-```cpp
-bool alive(const char organism) {
-   return (organism == FILL);
-}
-
-void die(char& organism) {
-   organism = EMPTY;
-}
-
-void isBorn(char& organism, int& countAlive) {
-   organism = FILL;
-   ++countAlive;
-}
-```
-
-
 ## Implementation notes
 
 - `startGrid(char grid[][COL], int nRows, int& busyPosition)`
@@ -159,7 +127,7 @@ void isBorn(char& organism, int& countAlive) {
 }
 ```
 
-### Comparison (pros / cons)
+### Comparison
 
 - Lambdas (used in `generation`)
    - Pros:
@@ -177,7 +145,7 @@ void isBorn(char& organism, int& countAlive) {
    - Cons:
       - Cannot capture local variables — we must pass references or make state global.
 
-### Practical recommendation
+### Notes
 - I decided to try lambdas in `generation` because they are short, closely tied to the algorithm, 
   and need to update the new organisms, `newBorn`. If the helper logic grows or is reused elsewhere, 
   we should refactor into separate functions with explicit parameters (or into a small helper class).
