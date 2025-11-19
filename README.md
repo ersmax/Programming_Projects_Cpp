@@ -200,7 +200,7 @@ Check also my [Other projects](https://github.com/ersmax)
 12. [Game of Life](5_programming_set_5/5.12_Game_of_Life) \- This implementation of Conway's Game of Life uses an 80×22 char grid.
     A small ship enters a pulsar in the grid, and the simulation runs with subsequent generations in console output.
     Small helper actions inside the `generation` function are implemented as lambdas so they can capture local state 
-    (e.g., the `newBorn` counter). Grids are initialized efficiently with `std::fill_n`, 
+    (e.g., the counter for new living cells, `newBorn`). Grids are initialized efficiently with `std::fill_n`, 
     the next generation is computed into a separate `nextGenGrid` and then applied in one step with `std::memcpy` 
     (births and deaths occur simultaneously at generation boundaries), and `std::this_thread::sleep_for` together with `std::chrono::milliseconds` 
     is used to pause between visualizations.
