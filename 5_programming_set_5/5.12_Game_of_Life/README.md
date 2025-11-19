@@ -56,41 +56,82 @@ for the program.
 
 ---
 
-## Implementation notes
+# Illustrative example (Glider Gun)
+<p align="center">
+  <img src="./Figures/GliderGun.gif" alt="Glider Gun" width="48%" />
+</p>
 
-- `startGrid(char grid[][COL], int nRows, int& busyPosition)`
-  - Places initial patterns (pulsar and small ship) into `grid`.
-  - Uses `setCell` to guard bounds and increment `busyPosition` for each live cell.
 
-- `setCell(char grid[][COL], const int nRows, int row, int col, int& busyPosition)`
-  - Checks `inBounds` for row and col.
-  - Sets `grid[row][col]` to `FILL` and increments `busyPosition` if cell was previously empty.
+# Illustrative example (Spaceship crashes on Pulsar)
 
-- `display(const char grid[][COL], const int nRows)`
-  - Writes `nRows` rows of the grid to `stdout` and sleeps a short duration to animate.
 
-- `generation(char grid[][COL], const int nRows, int& busyPosition)`
-  - Builds `nextGenGrid` initialized to `EMPTY`.
-  - Uses small helpers (implemented as lambdas in the code) to test and set cells:
-    - `alive` — checks whether a cell is `FILL`.
-    - `isBorn` — marks a cell `FILL` and increments local `newBorn`.
-    - `die` — marks a cell `EMPTY`.
-  - For each cell, counts neighbors via `countNeighbors` and applies the Game of Life rules to `nextGenGrid`.
-  - Copies the computed rows back into `grid` and updates `busyPosition` with the number of new live cells.
-  - Note: copy should copy only the `nRows * COL` characters (either `std::copy_n` or `std::memcpy` with the correct byte count) to avoid copying unused rows.
 
-- `countNeighbors(int row, int col, const char grid[][COL], int nRows)`
-  - Iterates the 3x3 neighborhood, uses `inBounds` to skip outside cells and ignores the center cell.
-  - Returns the number of neighboring `FILL` cells.
+# Implementation notes
 
-- `inBounds(int idxCell, int limit)`
-  - Simple range check: `idxCell >= 0 && idxCell < limit`.
+## Functions (purpose, key behavior)
 
----
+- `int main()`
+    - Purpose: program entry point — creates the world grid, initializes it, runs the simulation loop.
+    - Key steps: clear `world`, call `startGrid(...)` to place an initial pattern, 
+      `display(...)`, then loop calling `generation(...)` and `display(...)` while `busyCells > 0`.
+    - Note: `busyCells` is used to track how many cells are alive each generation (set by `startGrid` and updated by `generation`).
 
-## Lambda vs separate functions
-A lambda is an inline, unnamed function object that can capture local variables from the surrounding scope. 
-Example form used in `generation` function:
+- `void startGrid(char grid[][COL], const int nRows, int& busyPosition, const Pattern p = Pattern::GliderGun)`
+    - Purpose: dispatcher that sets an initial pattern into `grid`.
+    - Behavior: calls `PulsarWithShip::apply(...)` or `GliderGun::apply(...)` depending on `p`.
+    - Notes: Keeps a backward-compatible default of `Pattern::GliderGun`. 
+      Pattern `apply` methods clear the grid, reset `busyPosition`, and place live-cell offsets via `setCell`.
+
+- `void setCell(char grid[][COL], const int nRows, const int row, const int col, int& busyPosition)`
+    - Purpose: safely set a single cell to alive (`FILL`) and update the alive counter.
+    - Behavior: checks `inBounds(row, nRows)` and `inBounds(col, COL)`; 
+      if the cell was previously empty it sets it to `FILL` and increments `busyPosition`.
+    - Notes: centralizes bounds checks so pattern placement and other code do not duplicate that logic.
+
+- `void display(const char grid[][COL], const int nRows)`
+    - Purpose: write the current grid to `stdout` and pause briefly for animation.
+    - Behavior: loops rows and columns printing characters; 
+      calls `std::this_thread::sleep_for(std::chrono::milliseconds(50))`.
+    - Notes: We ought to use `nRows` when printing wen `ROW` and `nRows` differ.
+
+- `void generation(char grid[][COL], const int nRows, int& busyPosition)`
+    - Purpose: compute the next generation of the world following Conway’s rules.
+    - Behavior:
+        - Allocates a local `nextGenGrid[ROW][COL]` and initializes it to `EMPTY`.
+        - Uses `countNeighbors(...)` for each cell and applies the rules to fill `nextGenGrid`.
+        - Copies `nextGenGrid` back into `grid` using `std::memcpy(grid, nextGenGrid, sizeof nextGenGrid)`.
+        - Updates `busyPosition` to the number of cells born in this generation (`newBorn`).
+    - Important caveat: `sizeof nextGenGrid` copies the full `ROW * COL` bytes. 
+    - If `nRows` can differ from `ROW`, we should use `std::memcpy(grid, nextGenGrid, nRows * COL * sizeof(char))` or `std::copy_n`.
+
+- `int countNeighbors(const int row, const int col, const char grid[][COL], const int nRows)`
+    - Purpose: return number of live neighbors around `(row, col)`.
+    - Behavior: iterates the 3×3 neighborhood, uses `inBounds` to skip outside indices, ignores the center cell, counts `grid[r][c] == FILL`.
+
+- `bool inBounds(const int idxCell, const int limit)`
+    - Purpose: simple index range check (`0 <= idxCell < limit`).
+    - Usage: used before any grid access to avoid out-of-range indexing.
+
+## Pattern structs 
+
+- `struct GliderGun` and `struct PulsarWithShip`
+    - Purpose: encapsulate initial patterns as self-contained units.
+    - Interface: each exposes a static `apply(char grid[][COL], const int nRows, int& busyPosition)` function.
+    - Behavior of `apply`:
+        - Clears the grid (`std::fill_n(&grid[0][0], ROW * COL, EMPTY)`).
+        - Sets `busyPosition = 0`.
+        - Iterates a list of relative offsets and calls `setCell(...)` for each live-cell coordinate.
+    - Benefits of using `struct`s:
+        - Separation of concerns: pattern placement logic is grouped and isolated from simulation logic.
+        - Easy extension: add new patterns by authoring another struct with an `apply` method.
+        - Readability: named types make intent clear (`GliderGun::apply(...)` is self-documenting).
+        - Reuse: patterns can be reused across multiple simulations or tests without modifying `startGrid`.
+
+## Lambdas vs separate functions
+
+- Lambdas are used in `generation` function as helpers:
+- A lambda is an inline, unnamed function object that can capture local variables from the surrounding scope.
+- The lambdas in `generation` function are:
 ```cpp
 auto alive = [](char organism) { 
    return organism == FILL; 
@@ -153,5 +194,5 @@ void isBorn(char& organism, int& countAlive) {
   or `std::memcpy` with an explicit byte count: `nRows * COL * sizeof(char)` if nRows differ between old 
   and new Grid. This is not the case, however.
 
-### Illustrative example
+
 

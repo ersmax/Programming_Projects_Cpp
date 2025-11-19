@@ -12,7 +12,10 @@ constexpr int COL = 80;
 constexpr char FILL = '*';
 constexpr char EMPTY = ' ';
 
-void startGrid(char grid[][COL], int nRows, int& busyPosition);
+enum class Pattern {GliderGun, PulsarWithShip};
+
+
+void startGrid(char grid[][COL], int nRows, int& busyPosition, Pattern p = Pattern::GliderGun);
 //   Precondition: nRows is the number of rows in grid.
 // grid is an array of size nRows x COL.
 //   Postcondition: grid[0][0] through grid[nRows-1][COL-1] have been filled
@@ -46,6 +49,77 @@ void display(const char grid[][COL], int nRows);
 //   Postcondition: the contents of grid[0][0] through grid[nRows-1][COL-1]
 // have been displayed on the console.
 
+struct PulsarWithShip {
+   //    Place a pulsar with a small ship in the grid that crashes into it.
+   static void apply(char grid[][COL], const int nRows, int& busyPosition) {
+      std::fill_n(&grid[0][0], ROW * COL, EMPTY);
+      busyPosition = 0;
+         // Place a pulsar around 2/3 of the col width and centered
+      const int centerRow = nRows / 2;
+      constexpr int startingCol = 2 * (COL / 3);
+
+      constexpr int colLarge[] = {-6, -1, 1, 6};
+      constexpr int rowLarge[] = {-4, -3, -2, 2, 3, 4};
+
+      constexpr int colSmall[] = {-4, -3, -2, 2, 3, 4};
+      constexpr int rowSmall[] = {-6, -1, 1, 6};
+
+      for (const int col : colLarge)
+         for (const int row : rowLarge)
+            setCell(grid, nRows, centerRow + row, startingCol + col, busyPosition);
+
+      for (const int col : colSmall)
+         for (const int row : rowSmall)
+            setCell(grid, nRows, centerRow + row, startingCol + col, busyPosition);
+
+         // place a small ship at the starting column and middle row
+      constexpr int offsets[][2] = {
+         {-1, 0}, {+1, 0}, {+2, 1},
+         {-2, 2}, {+2, 2}, {-2, 3}, {+2, 3},
+         {+2, 4}, {-1, 5}, {+2, 5}, { 0, 6},
+         {+1, 6}, {+2, 6}
+      };
+
+      constexpr int startRow = 5;
+      constexpr int startCol = 15;
+      for (const auto& offset : offsets)
+         setCell(grid, nRows, startRow + offset[0], startCol + offset[1], busyPosition);
+   }
+};
+
+struct GliderGun {
+   //    Place Gosper glider gun at the start.
+   static void apply(char grid[][COL], const int nRows, int& busyPosition) {
+      std::fill_n(&grid[0][0], ROW * COL, EMPTY);
+      busyPosition = 0;
+         // Place Gosper glider gun at the start
+      constexpr int originRow = 5;
+      constexpr int originCol = 2;
+
+      // Relative coordinates for the Gosper glider gun (rows, cols)
+      constexpr int gunOffsets[][2] = {
+         {5,1},{5,2},{6,1},{6,2},
+         {5,11},{6,11},{7,11},
+         {4,12},{8,12},
+         {3,13},{9,13},
+         {3,14},{9,14},
+         {6,15},
+         {4,16},{8,16},
+         {5,17},{6,17},{7,17},
+         {6,18},
+         {3,21},{4,21},{5,21},
+         {3,22},{4,22},{5,22},
+         {2,23},{6,23},
+         {1,25},{2,25},
+         {6,25},{7,25},
+         {3,35},{4,35},{3,36},{4,36}
+      };
+
+      for (const auto& offset : gunOffsets)
+         setCell(grid, nRows, originRow + offset[0], originCol + offset[1], busyPosition);
+   }
+};
+
 int main( ) {
    char world[ROW][COL];
    std::fill_n(&world[0][0], ROW * COL, EMPTY);
@@ -62,40 +136,14 @@ int main( ) {
    return 0;
 }
 
-void startGrid(char grid[][COL], const int nRows, int& busyPosition) {
-   busyPosition = 0;
-   // place a pulsar around 2/3 of the col width and centered
-   const int centerRow = nRows / 2;
-   constexpr int startingCol = 2 * (COL / 3);
-
-   constexpr int colLarge[] = {-6, -1, 1, 6};
-   constexpr int rowLarge[] = {-4, -3, -2, 2, 3, 4};
-
-   constexpr int colSmall[] = {-4, -3, -2, 2, 3, 4};
-   constexpr int rowSmall[] = {-6, -1, 1, 6};
-
-   for (const int col : colLarge)
-      for (const int row : rowLarge)
-         setCell(grid, nRows, centerRow + row, startingCol + col, busyPosition);
-
-   for (const int col : colSmall)
-      for (const int row : rowSmall)
-         setCell(grid, nRows, centerRow + row, startingCol + col, busyPosition);
-
-   // place a small ship
-   constexpr int offsets[][2] = {
-                     {-1, 0}, {+1, 0}, {+2, 1},
-                     {-2, 2}, {+2, 2}, {-2, 3}, {+2, 3},
-                     {+2, 4}, {-1, 5}, {+2, 5}, { 0, 6},
-                     {+1, 6}, {+2, 6}
-                  };
-
-   for (const auto& offset : offsets) {
-      constexpr int startRow = 5;
-      constexpr int startCol = 15;
-      const int row = offset[0];
-      const int col = offset[1];
-      setCell(grid, nRows, startRow + row, startCol + col, busyPosition);
+void startGrid(char grid[][COL], const int nRows, int& busyPosition, const Pattern p) {
+   switch (p) {
+      case Pattern::PulsarWithShip:
+         PulsarWithShip::apply(grid, nRows, busyPosition);
+         break;
+      case Pattern::GliderGun:
+         GliderGun::apply(grid, nRows, busyPosition);
+         break;
    }
 }
 
