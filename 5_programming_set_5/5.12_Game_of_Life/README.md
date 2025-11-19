@@ -54,74 +54,136 @@ do this, your program should generate and display the next generation when you
 press Return. You are at liberty to automate this, but automation is not necessary
 for the program.
 
+---
 
+# Implementation details
 
+## Alternative implementation to lambdas
+An alternative way to implement the `generation` function is that of using 
+separate functions in the code, instead of lambda helper functions.
+
+Functions signature:
 ```cpp
-int c = 50;
-   grid[4][c] = FILL;
-   grid[5][c] = FILL;
-   grid[6][c] = FILL;
-   grid[10][c] = FILL;
-   grid[11][c] = FILL;
-   grid[12][c] = FILL;
+bool alive(char organism);
 
-   c += 2;
-   grid[2][c] = FILL;
-   grid[7][c] = FILL;
-   grid[9][c] = FILL;
-   grid[14][c] = FILL;
+void die(char& organism);
 
-   ++c;
-   grid[2][c] = FILL;
-   grid[7][c] = FILL;
-   grid[9][c] = FILL;
-   grid[14][c] = FILL;
-
-   ++c;
-   grid[2][c] = FILL;
-   grid[7][c] = FILL;
-   grid[9][c] = FILL;
-   grid[14][c] = FILL;
-
-   ++c;
-   grid[4][c] = FILL;
-   grid[5][c] = FILL;
-   grid[6][c] = FILL;
-   grid[10][c] = FILL;
-   grid[11][c] = FILL;
-   grid[12][c] = FILL;
-
-   c += 2;
-   grid[4][c] = FILL;
-   grid[5][c] = FILL;
-   grid[6][c] = FILL;
-   grid[10][c] = FILL;
-   grid[11][c] = FILL;
-   grid[12][c] = FILL;
-
-   c += 2;
-   grid[2][c] = FILL;
-   grid[7][c] = FILL;
-   grid[9][c] = FILL;
-   grid[14][c] = FILL;
-
-   ++c;
-   grid[2][c] = FILL;
-   grid[7][c] = FILL;
-   grid[9][c] = FILL;
-   grid[14][c] = FILL;
-
-   ++c;
-   grid[2][c] = FILL;
-   grid[7][c] = FILL;
-   grid[9][c] = FILL;
-   grid[14][c] = FILL;
-
-   ++c;
-   grid[4][c] = FILL;
-   grid[5][c] = FILL;
-   grid[6][c] = FILL;
-   grid[10][c] = FILL;
-   grid[11][c] = FILL;
-   grid[12][c] = FILL;
+void isBorn(char& organism, int& countAlive);
 ```
+
+Functions definition:
+```cpp
+bool alive(const char organism) {
+   return (organism == FILL);
+}
+
+void die(char& organism) {
+   organism = EMPTY;
+}
+
+void isBorn(char& organism, int& countAlive) {
+   organism = FILL;
+   ++countAlive;
+}
+```
+
+
+## Implementation notes
+
+- `startGrid(char grid[][COL], int nRows, int& busyPosition)`
+  - Places initial patterns (pulsar and small ship) into `grid`.
+  - Uses `setCell` to guard bounds and increment `busyPosition` for each live cell.
+
+- `setCell(char grid[][COL], const int nRows, int row, int col, int& busyPosition)`
+  - Checks `inBounds` for row and col.
+  - Sets `grid[row][col]` to `FILL` and increments `busyPosition` if cell was previously empty.
+
+- `display(const char grid[][COL], const int nRows)`
+  - Writes `nRows` rows of the grid to `stdout` and sleeps a short duration to animate.
+
+- `generation(char grid[][COL], const int nRows, int& busyPosition)`
+  - Builds `nextGenGrid` initialized to `EMPTY`.
+  - Uses small helpers (implemented as lambdas in the code) to test and set cells:
+    - `alive` — checks whether a cell is `FILL`.
+    - `isBorn` — marks a cell `FILL` and increments local `newBorn`.
+    - `die` — marks a cell `EMPTY`.
+  - For each cell, counts neighbors via `countNeighbors` and applies the Game of Life rules to `nextGenGrid`.
+  - Copies the computed rows back into `grid` and updates `busyPosition` with the number of new live cells.
+  - Note: copy should copy only the `nRows * COL` characters (either `std::copy_n` or `std::memcpy` with the correct byte count) to avoid copying unused rows.
+
+- `countNeighbors(int row, int col, const char grid[][COL], int nRows)`
+  - Iterates the 3x3 neighborhood, uses `inBounds` to skip outside cells and ignores the center cell.
+  - Returns the number of neighboring `FILL` cells.
+
+- `inBounds(int idxCell, int limit)`
+  - Simple range check: `idxCell >= 0 && idxCell < limit`.
+
+---
+
+## Lambda vs separate functions
+A lambda is an inline, unnamed function object that can capture local variables from the surrounding scope. 
+Example form used in `generation` function:
+```cpp
+auto alive = [](char organism) { 
+   return organism == FILL; 
+};
+```
+```cpp
+auto isBorn = [&](char& cell) { 
+   cell = FILL; ++newBorn; 
+};
+```  
+The `&` capture allows `isBorn` to update the local `newBorn` counter without passing it explicitly.
+This allows me to update the number of total `organisms` living in the grid, hence ending the 
+loop or repeat it indefinitely on the basis of such living cells.
+
+### Separate functions alternative
+The alternative is to define regular functions in file scope.
+Functions signature:
+```cpp
+bool alive(char organism);
+void die(char& organism);
+void isBorn(char& organism, int& countAlive);
+```
+Functions definition:
+```cpp
+bool alive(const char organism) {
+   return (organism == FILL);
+}
+void die(char& organism) {
+   organism = EMPTY;
+}
+void isBorn(char& organism, int& countAlive) {
+   organism = FILL;
+   ++countCountAlive;
+}
+```
+
+### Comparison (pros / cons)
+
+- Lambdas (used in `generation`)
+   - Pros:
+      - Local scope: helpers are defined next to the algorithm that uses them (better locality).
+      - Can capture local variables (e.g., `newBorn`) directly; no extra parameters needed (better readability).
+      - Avoid polluting global/function-scope namespace.
+   - Cons:
+      - Small, one-off helpers — not ideal if reuse or unit testing is needed (not a big deal here).
+      - Slightly less discoverable if overused inline (can be misleading).
+
+- Separate functions
+   - Pros:
+      - Reusable and easier to test independently.
+      - Clear function signatures and potentially more readable if logic is non-trivial.
+   - Cons:
+      - Cannot capture local variables — we must pass references or make state global.
+
+### Practical recommendation
+- I decided to try lambdas in `generation` because they are short, closely tied to the algorithm, 
+  and need to update the new organisms, `newBorn`. If the helper logic grows or is reused elsewhere, 
+  we should refactor into separate functions with explicit parameters (or into a small helper class).
+- When copying the computed grid, we should use `std::copy_n` for element-wise clarity 
+  or `std::memcpy` with an explicit byte count: `nRows * COL * sizeof(char)` if nRows differ between old 
+  and new Grid. This is not the case, however.
+
+### Illustrative example
+
