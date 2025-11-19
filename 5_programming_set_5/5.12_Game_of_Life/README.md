@@ -59,12 +59,14 @@ for the program.
 # Illustrative example (Glider Gun)
 <p align="center">
   <img src="./Figures/GliderGun.gif" alt="Glider Gun" width="48%" />
+  <img src="./Figures/GliderGunDark.gif" alt="Glider Gun" width="48%" />
 </p>
 
 
 # Illustrative example (Spaceship crashes into Pulsar)
 <p align="center">
   <img src="./Figures/SpaceshipPulsar.gif" alt="Spaceship into Pulsar" width="48%" />
+  <img src="./Figures/SpaceshipPulsarDark.gif" alt="Spaceship into Pulsar" width="48%" />
 </p>
 
 

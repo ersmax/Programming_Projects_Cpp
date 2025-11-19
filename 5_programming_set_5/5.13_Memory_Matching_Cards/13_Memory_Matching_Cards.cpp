@@ -30,18 +30,22 @@ cards in the array by repeatedly selecting two cards at random and swapping them
 #include <random>
 #include <sstream>
 
+
 constexpr int ROWS = 4;
 constexpr int COLS = 4;
 constexpr int CARDS = ROWS * COLS;
 constexpr int SAME = 2;
 constexpr int COORDINATES = 2;
+constexpr char FOLD = '*';
+constexpr char UNFOLD = '#';
 
 void createBoard(int cards[][COLS], char upDown[][COLS], int nRows);
 void shuffleCards(int cards[][COLS], int nRows);
 void showBoard(const int cards[][COLS], const char upDown[][COLS], int nRows);
 bool chooseCards(int nRows, int nCols, int card1[], int card2[], int dimensions);
-void unfold(const int cards[][COLS], int nRows,
+void unfold(const int cards[][COLS], char upDown[][COLS], int nRows,
             const int card1[], const int card2[], int dimensions, int& remainingCards);
+void clearConsole();
 
 int main( ) {
     int board[ROWS][COLS] = {0};
@@ -52,8 +56,9 @@ int main( ) {
     shuffleCards(board, ROWS);
     showBoard(board, upDown, ROWS);
 
-    while (chooseCards(ROWS, COLS, card1, card2, COORDINATES)) {
-        unfold(board, ROWS, card1, card2, COORDINATES, unmatchedCards);
+    while (chooseCards(ROWS, COLS, card1, card2, COORDINATES) ||
+           unmatchedCards > 0) {
+        unfold(board, upDown, ROWS, card1, card2, COORDINATES, unmatchedCards);
         showBoard(board, upDown, ROWS);
     }
     if (unmatchedCards == 0) std::cout << "You won!\n";
@@ -71,7 +76,7 @@ void createBoard(int cards[][COLS], char upDown[][COLS], const int nRows) {
                 cards[row][col] = cardValue;
             else
                 cards[row][col] = cardValue++;
-            upDown[row][col] = '*';
+            upDown[row][col] = FOLD;
         }
 }
 
@@ -92,16 +97,33 @@ void shuffleCards(int cards[][COLS], int nRows) {
 }
 
 void showBoard(const int cards[][COLS], const char upDown[][COLS], int nRows) {
+    // Print header
+    std::cout << "   ";
+    for (int col = 0; col < COLS; ++col)
+        std::cout << (col + 1) << " ";
+    std::cout << "\n";
+    std::cout << "   ";
+    for (int col = 0; col < COLS; ++col)
+        std::cout << "--";
+    std::cout << "\n";
+
+
     for (int row = 0; row < nRows; ++row) {
-        for (int col = 0; col < COLS; ++col)
-            std::cout << cards[row][col] << " ";
+        std::cout << (row + 1);
+        std::cout << " |";
+        for (int col = 0; col < COLS; ++col) {
+            if (upDown[row][col] == FOLD)  std::cout << FOLD << " ";
+            else                           std::cout << cards[row][col] << " ";
+        }
         std::cout << "\n";
     }
-    for (int row = 0; row < nRows; ++row) {
-        for (int col = 0; col < COLS; ++col)
-            std::cout << upDown[row][col] << " ";
-        std::cout << "\n";
-    }
+
+    // Show true values. DEBUG ONLY
+    // for (int row = 0; row < nRows; ++row) {
+    //     for (int col = 0; col < COLS; ++col)
+    //         std::cout << cards[row][col] << " ";
+    //     std::cout << "\n";
+    // }
 }
 
 bool chooseCards(const int nRows, const int nCols, int card1[], int card2[], const int dimensions) {
@@ -127,7 +149,7 @@ bool chooseCards(const int nRows, const int nCols, int card1[], int card2[], con
             }
             --row;
             --col;
-            if (row < 0 || row >= nRows || col < 0 || col > nCols) {
+            if (row < 0 || row >= nRows || col < 0 || col >= nCols) {
                 std::cout << "No valid card selected. Retry\n";
                 continue;
             }
@@ -154,7 +176,38 @@ bool chooseCards(const int nRows, const int nCols, int card1[], int card2[], con
     return true;
 }
 
-void unfold(const int cards[][COLS], const int nRows, const int card1[],
-            const int card2[], const int dimensions, int& remainingCards) {
+void unfold(const int cards[][COLS], char upDown[][COLS], const int nRows,
+            const int card1[], const int card2[], const int dimensions, int& remainingCards) {
 
+    const int rowCard1 = card1[0], colCard1 = card1[1];
+    const int rowCard2 = card2[0], colCard2 = card2[1];
+
+    bool card1seen = false, card2seen = false;
+    if (upDown[rowCard1][colCard1] == UNFOLD) card1seen = true;
+    if (upDown[rowCard2][colCard2] == UNFOLD) card2seen = true;
+
+
+
+    upDown[rowCard1][colCard1] = UNFOLD;
+    upDown[rowCard2][colCard2] = UNFOLD;
+    if (cards[rowCard1][colCard1] == cards[rowCard2][colCard2]) {
+        remainingCards -= 2;
+        std::cout << "Found a match!\n";
+        return;
+    }
+    // for unpaired match, show and then hide pair
+    showBoard(cards, upDown, nRows);
+    std::cout << "Cards do not match. Press `Enter` to continue\n";
+    std::string keystroke;
+    std::getline(std::cin, keystroke);
+    if (!card1seen)
+        upDown[rowCard1][colCard1] = FOLD;
+    if (!card2seen)
+        upDown[rowCard2][colCard2] = FOLD;
+
+    clearConsole();
+}
+
+void clearConsole() {
+    for (int idx = 0; idx < 8; ++idx) std::cout << "\n";
 }

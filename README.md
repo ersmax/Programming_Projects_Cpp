@@ -210,6 +210,10 @@ Check also my [Other projects](https://github.com/ersmax)
       <img src="5_programming_set_5/5.12_Game_of_Life/Figures/GliderGun.gif" alt="GliderGun" width="48%" />
       <img src="5_programming_set_5/5.12_Game_of_Life/Figures/SpaceshipPulsar.gif" alt="Spaceship Into Pulsar" width="48%" />
     </p>
+    <p align="center">
+      <img src="5_programming_set_5/5.12_Game_of_Life/Figures/GliderGunDark.gif" alt="GliderGun" width="48%" />
+      <img src="5_programming_set_5/5.12_Game_of_Life/Figures/SpaceshipPulsarDark.gif" alt="Spaceship Into Pulsar" width="48%" />
+    </p>
 
 
  
