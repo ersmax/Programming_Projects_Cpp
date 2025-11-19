@@ -62,8 +62,10 @@ for the program.
 </p>
 
 
-# Illustrative example (Spaceship crashes on Pulsar)
-
+# Illustrative example (Spaceship crashes into Pulsar)
+<p align="center">
+  <img src="./Figures/SpaceshipPulsar.gif" alt="Spaceship into Pulsar" width="48%" />
+</p>
 
 
 # Implementation notes

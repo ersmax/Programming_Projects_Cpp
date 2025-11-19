@@ -15,7 +15,7 @@ constexpr char EMPTY = ' ';
 enum class Pattern {GliderGun, PulsarWithShip};
 
 
-void startGrid(char grid[][COL], int nRows, int& busyPosition, Pattern p = Pattern::GliderGun);
+void startGrid(char grid[][COL], int nRows, int& busyPosition, Pattern p = Pattern::PulsarWithShip);
 //   Precondition: nRows is the number of rows in grid.
 // grid is an array of size nRows x COL.
 //   Postcondition: grid[0][0] through grid[nRows-1][COL-1] have been filled

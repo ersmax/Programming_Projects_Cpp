@@ -198,12 +198,18 @@ Check also my [Other projects](https://github.com/ersmax)
       <img src="5_programming_set_5/5.11_Histogram_Production/Figures/Histogram.PNG" alt="Histogram" width="48%" />
     </p>
 12. [Game of Life](5_programming_set_5/5.12_Game_of_Life) \- This implementation of Conway's Game of Life uses an 80×22 char grid.
-    A small ship enters a pulsar in the grid, and the simulation runs with subsequent generations in console output.
-    Small helper actions inside the `generation` function are implemented as lambdas so they can capture local state 
-    (e.g., the counter for new living cells, `newBorn`). Grids are initialized efficiently with `std::fill_n`, 
-    the next generation is computed into a separate `nextGenGrid` and then applied in one step with `std::memcpy` 
-    (births and deaths occur simultaneously at generation boundaries), and `std::this_thread::sleep_for` together with `std::chrono::milliseconds` 
+    Two games are provided as stucture: a ship that collides into a pulsar and generate a new universe,
+    and a shooting gun that produces butterflies. `struct` (`GliderGun` and `PulsarWithShip`) expose a static `apply(...)` method that places live-cell offsets,
+    with an enum working as a dispatcher to select which pattern to apply at program start. This allows extendibility for new patterns in the future.
+    mall helper actions inside the `generation` function are implemented as lambdas so they can capture local state
+    (e.g., the counter for new living cells, `newBorn`). Grids are initialized efficiently with `std::fill_n`,
+    the next generation is computed into a separate `nextGenGrid` and then applied in one step with `std::memcpy`
+    (births and deaths occur simultaneously at generation boundaries), and `std::this_thread::sleep_for` together with `std::chrono::milliseconds`
     is used to pause between visualizations.
+    <p align="center">
+      <img src="5_programming_set_5/5.12_Game_of_Life/Figures/GliderGun.gif" alt="GliderGun" width="48%" />
+      <img src="5_programming_set_5/5.12_Game_of_Life/Figures/SpaceshipPulsar.gif" alt="Spaceship Into Pulsar" width="48%" />
+    </p>
 
 
  
