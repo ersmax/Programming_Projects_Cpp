@@ -92,11 +92,9 @@ struct GliderGun {
    static void apply(char grid[][COL], const int nRows, int& busyPosition) {
       std::fill_n(&grid[0][0], ROW * COL, EMPTY);
       busyPosition = 0;
-         // Place Gosper glider gun at the start
       constexpr int originRow = 5;
       constexpr int originCol = 2;
 
-      // Relative coordinates for the Gosper glider gun (rows, cols)
       constexpr int gunOffsets[][2] = {
          {5,1},{5,2},{6,1},{6,2},
          {5,11},{6,11},{7,11},
