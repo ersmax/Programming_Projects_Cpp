@@ -24,6 +24,7 @@ For example, if the user inputs a rating of 5 for movie 102, 2 for movie 104, an
 ((5 - 5)2 + (2 - 1)2 + (5 - 5)2) = 1. The program would then predict a rating of
 3 for movie 100, a rating of 1 for movie 101, and a rating of 2 for movie 103.
 */
+#include <algorithm>
 #include <iostream>
 #include <cstring>
 #include <limits>
@@ -39,11 +40,15 @@ constexpr double MAX = 5.0;
 
 void fillReviews(int reviews[][MOVIES], int reviewers);
 void makeChoice(int choices[], double scoreChoice[], int nMovies, int notSeen[], int notSeenMovies);
+void addNotChosen(int notSeen[], int notSeenMovies, const int choices[], int nMovies);
 bool movieAlreadyChosen(const int choices[], int nChoices, int code);
 bool correctInput(int code, double score);
 void predictScore(const int reviews[][MOVIES], int reviewers,
                   const int choices[], const double scoreChoice[], int nChoices,
                   const int notSeen[], double ratingNotSeen[], int notSeenSize);
+
+void computeDistance(const int choices[], const double scoreChoice[], int nChoices,
+                     const int reviews[][MOVIES], double distance[], int nReviewers);
 
 void showPrediction(const int notSeen[], const double ratingNotSeen[], int notSeenSize);
 
@@ -52,7 +57,7 @@ int main( ) {
     int choices[CHOICES] = {-1 -1 -1};
     double scoreChoice[CHOICES];
     int notSeen[MOVIES - CHOICES];
-    double ratingNotSeen[MOVIES - CHOICES] = {0};
+    double ratingNotSeen[MOVIES - CHOICES] = {0.0};
 
     fillReviews(reviews, REVIEWERS);
     makeChoice(choices, scoreChoice, CHOICES, notSeen, MOVIES - CHOICES);
@@ -96,11 +101,23 @@ void makeChoice(int choices[], double scoreChoice[], const int nMovies,
             std::cout << "Wrong values. Retry\n";
         }
     }
-    int idx = 0;
-    for (int movie = FIRST; movie < LAST; ++movie) {
-        for (int choice = 0; choice < nMovies; ++choice)
-            if (movie == choices[choice]) break;
-        notSeen[idx++] = movie;
+    addNotChosen(notSeen, notSeenMovies, choices, nMovies);
+}
+
+void addNotChosen(int notSeen[], const int notSeenMovies,
+                  const int choices[], const int nMovies) {
+
+    int idxNotSeen = 0;
+    for (int movie = FIRST; movie <= LAST && idxNotSeen < notSeenMovies; ++movie) {
+        bool chosen = false;
+
+        for (int choice = 0; choice < nMovies; ++choice) {
+            if (movie == choices[choice]) {
+                chosen = true;
+                break;
+            }
+        }
+        if (!chosen) notSeen[idxNotSeen++] = movie;
     }
 }
 
@@ -118,22 +135,29 @@ bool correctInput(const int code, const double score) {
                 (score >= MIN) && (score <= MAX));
 }
 
-void predictScore(const int reviews[][MOVIES], const int reviewers,
-                  const int choices[], const double scoreChoice[], const int nChoices,
-                  const int notSeen[], double ratingNotSeen[], const int notSeenSize) {
+void computeDistance(const int choices[], const double scoreChoice[], const int nChoices,
+                     const int reviews[][MOVIES], double distance[], const int nReviewers) {
 
-    double distance[REVIEWERS] = {0.0};
-
+    // distance for each movie chosen
     for (int choice = 0; choice < nChoices; ++choice) {
         const int codeChoice = choices[choice] - FIRST;
-
-        for (int reviewer = 0; reviewer < reviewers; ++reviewer) {
+        // consider every reviewer
+        for (int reviewer = 0; reviewer < nReviewers; ++reviewer) {
             const double difference = scoreChoice[choice] - reviews[reviewer][codeChoice];
             distance[reviewer] += std::pow(difference, 2);
         }
     }
+}
 
-    double min = std::min(distance);
+void predictScore(const int reviews[][MOVIES], const int reviewers,
+                  const int choices[], const double scoreChoice[], const int nChoices,
+                  const int notSeen[], double ratingNotSeen[], const int notSeenSize) {
+
+
+    double distance[REVIEWERS] = {0.0};
+    computeDistance(choices, scoreChoice, nChoices, reviews, distance, REVIEWERS);
+
+    double min = *std::min_element(distance, distance + reviewers);
     int similarRating[REVIEWERS];
     int sizeSimilar = 0;
     for (int reviewer = 0; reviewer < REVIEWERS; ++reviewer)
@@ -143,20 +167,24 @@ void predictScore(const int reviews[][MOVIES], const int reviewers,
         }
 
     for (int notSeenMovie = 0; notSeenMovie < notSeenSize; ++notSeenMovie) {
-        for (int similarPerson = 0; similarPerson < sizeSimilar; ++similarPerson)
-            ratingNotSeen[notSeenMovie] += similarRating[similarPerson];
+        double sum = 0;
+        for (int similarPerson = 0; similarPerson < sizeSimilar; ++similarPerson) {
+            int reviewer = similarRating[similarPerson];
+            int movieCode = notSeen[notSeenMovie];
+            int movieIdx = movieCode - FIRST;
+            sum = reviews[reviewer][movieIdx];
+        }
 
-        ratingNotSeen[notSeenMovie] /= sizeSimilar;
+        ratingNotSeen[notSeenMovie] = sum / sizeSimilar;
     }
 
     std::cout << "Most similar reviewers:\n";
-    for (int similar : similarRating)
-        std::cout << similar << " ";
-    std::cout << "\n";
+    for (int idx = 0; idx < sizeSimilar; ++idx)
+        std::cout << similarRating[idx] << ", distance: " << distance[idx] << "\n";
 }
 
 void showPrediction(const int notSeen[], const double ratingNotSeen[], const int notSeenSize) {
     for (int idx = 0; idx < notSeenSize; ++idx)
         std::cout << "Movie " << notSeen[idx]
-                  << ", Rating: " << ratingNotSeen[idx] << "\n";
+                  << ", Predicted Rating: " << ratingNotSeen[idx] << "\n";
 }
