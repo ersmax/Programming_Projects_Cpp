@@ -219,5 +219,11 @@ Check also my [Other projects](https://github.com/ersmax)
     <p align="center">
       <img src="5_programming_set_5/5.13_Memory_Matching_Cards/Figures/CardgameDark.gif" alt="Memory Matching Game" width="48%" />
     </p>
-
-
+14. [Movie Recommender](5_programming_set_5/5.14_Movie_Recommender) 
+    \- This program recommends movies based on user preferences using a fixed-size 2D array of ratings.
+    It prompts the user for their ratings on a scale of 1 to 5 for a set of predefined movies, validates input,
+    computes average ratings per movie, and suggests the highest-rated movie that the user hasn't rated yet.
+    Input validation ensures ratings are numeric and within the valid range.
+    <p align="center">
+      <img src="5_programming_set_5/5.14_Movie_Reccomendation/Figures/MovieRecommender.PNG" alt="Movie Recommender" width="48%" />
+    </p>

@@ -1,29 +1,3 @@
-/*
-You have collected reviews from four movie reviewers where the reviewers are
-numbered 0–3. Each reviewer has rated six movies where the movies are numbered
-100–105. The ratings range from 1 (terrible) to 5 (excellent).
-The reviews are shown in the following table:
-
-| Reviewer | 100 | 101 | 102 | 103 | 104 | 105 |
-|---------:|:---:|:---:|:---:|:---:|:---:|:---:|
-| 0        |  3  |  1  |  5  |  2  |  1  |  5  |
-| 1        |  4  |  2  |  1  |  4  |  2  |  4  |
-| 2        |  3  |  1  |  2  |  4  |  4  |  1  |
-| 3        |  5  |  1  |  4  |  2  |  4  |  2  |
-
-Write a program that stores this data using a 2D array. Based on this information
-your program should allow the user to enter ratings for any three movies. The program
-should then find the reviewer whose ratings most closely match the ratings
-input by the user. It should then predict the user’s interest in the other movies by
-outputting the ratings by the reviewer for the movies that were not rated by the
-user. Use the Cartesian distance as the metric to determine how close the reviewer’s
-movie ratings are to the ratings input by the user. This technique is a simple version
-of the nearest neighbor classification algorithm.
-For example, if the user inputs a rating of 5 for movie 102, 2 for movie 104, and
-5 for movie 105, then the closest match is reviewer 0 with a distance of sqrt
-((5 - 5)2 + (2 - 1)2 + (5 - 5)2) = 1. The program would then predict a rating of
-3 for movie 100, a rating of 1 for movie 101, and a rating of 2 for movie 103.
-*/
 #include <algorithm>
 #include <iostream>
 #include <cstring>
@@ -39,27 +13,78 @@ constexpr double MIN = 1.0;
 constexpr double MAX = 5.0;
 
 void fillReviews(int reviews[][MOVIES], int reviewers);
+//   Precondition: reviewers is the declared size of the first dimension of reviews.
+//   Postcondition: reviews[0] through reviews[reviewers - 1] have been filled
+// with the movie ratings from users.
+
 void makeChoice(int choices[], double scoreChoice[], int nMovies, int notSeen[], int notSeenMovies);
+//   Precondition: nMovies is the total number of movies.
+//   Postcondition: choices[0] through choices[nMovies - 1] have been filled
+// with the movie codes chosen by the user, and scoreChoice[0] through scoreChoice[nMovies - 1]
+// have been filled with the corresponding ratings.
+// notSeen[0] through notSeen[notSeenMovies - 1] have been filled with the movie codes
+// not chosen by the user. notSeenMovies = nMovies - number of choices.
+
 void addNotChosen(int notSeen[], int notSeenMovies, const int choices[], int nMovies);
+//   Precondition: nMovies is the total number of movies.
+//   Postcondition: notSeen[0] through notSeen[notSeenMovies - 1] have been filled
+// with the movie codes not chosen by the user.
+
 bool movieAlreadyChosen(const int choices[], int nChoices, int code);
+//   Precondition: nChoices is the number of choices already made.
+//   Postcondition: returns true if code is already in choices[0] through choices[nChoices - 1],
+// otherwise returns false.
+
 bool correctInput(int code, double score);
+//   Postcondition: returns true if code is between FIRST and LAST (inclusive)
+// and score is between MIN and MAX (inclusive), otherwise returns false.
+
 void predictScore(const int reviews[][MOVIES], int reviewers,
                   const int choices[], const double scoreChoice[], int nChoices,
                   const int notSeen[], double ratingNotSeen[], int notSeenSize);
+//   Precondition: reviewers is the declared size of the first dimension of reviews.
+//   Postcondition: ratingNotSeen[0] through ratingNotSeen[notSeenSize - 1]
+// have been filled with the predicted ratings for the movies in notSeen[0]
+// through notSeen[notSeenSize - 1].
 
 void computeDistance(const int choices[], const double scoreChoice[], int nChoices,
                      const int reviews[][MOVIES], double distance[], int nReviewers);
+// Helper to `predictScore`
+//   Precondition: nChoices is the number of choices made by the user.
+//   Postcondition: distance[0] through distance[nReviewers - 1]
+// have been filled with the computed distances between the user's choices
+// and each reviewer's ratings.
 
 bool findMostSimilar(const double distance[], int similarRatingReviewers[], int nReviewers, int& nSimilar);
+// Helper to `predictScore`
+//   Precondition: nReviewers is the declared size of distance.
+//   Postcondition: similarRatingReviewers[0] through similarRatingReviewers[nSimilar - 1]
+// have been filled with the indices of the reviewers with the smallest distance.
+// nSimilar is set to the number of similar reviewers found.
 
 void computeRatingFromSimilar(const int notSeen[], double ratingNotSeen[], int notSeenSize,
                               const int similarRatingReviewers[], int sizeSimilar,
                               const int reviews[][MOVIES], int totReviewers);
+// Helper to `predictScore`
+//   Precondition: sizeSimilar is the number of similar reviewers found.
+//   Postcondition: ratingNotSeen[0] through ratingNotSeen[notSeenSize - 1]
+// have been filled with the average ratings from the similar reviewers
+// for the movies in notSeen[0] through notSeen[notSeenSize - 1].
 
 void showSimilar(const int similarRatingReviewers[], int sizeSimilar,
                  const double distance[], int totReviewers);
+// Helper to `predictScore`
+//   Precondition: sizeSimilar is the number of similar reviewers found.
+//   Postcondition: displays on console the similar reviewers and their distances.
 
 void showPrediction(const int notSeen[], const double ratingNotSeen[], int notSeenSize);
+//   Precondition: notSeenSize is the size of notSeen and ratingNotSeen.
+//   Postcondition: displays on console the predicted ratings for the movies
+// in notSeen[0] through notSeen[notSeenSize - 1].
+
+void showReviews(const int reviews[][MOVIES], int reviewers);
+//   Precondition: reviewers is the declared size of the first dimension of reviews.
+//   Postcondition: displays on console the reviews table.
 
 int main( ) {
     int reviews[REVIEWERS][MOVIES];
@@ -69,6 +94,7 @@ int main( ) {
     double ratingNotSeen[MOVIES - CHOICES] = {0.0};
 
     fillReviews(reviews, REVIEWERS);
+    showReviews(reviews, REVIEWERS);
     makeChoice(choices, scoreChoice, CHOICES, notSeen, MOVIES - CHOICES);
     predictScore(reviews, REVIEWERS, choices, scoreChoice, CHOICES, notSeen, ratingNotSeen, MOVIES - CHOICES);
     showPrediction(notSeen, ratingNotSeen, MOVIES - CHOICES);
@@ -88,7 +114,7 @@ void fillReviews(int reviews[][MOVIES], const int reviewers) {
 }
 
 void makeChoice(int choices[], double scoreChoice[], const int nMovies,
-                int notSeen[], int notSeenMovies) {
+                int notSeen[], const int notSeenMovies) {
     int code;
     double score;
     for (int movie = 0; movie < nMovies; ++movie) {
@@ -203,7 +229,7 @@ void computeRatingFromSimilar(const int notSeen[], double ratingNotSeen[], const
             sum += reviews[reviewer][movieIdx];
         }
 
-        ratingNotSeen[notSeenMovie] = sum / sizeSimilar;
+        ratingNotSeen[notSeenMovie] = sum / static_cast<double>(sizeSimilar);
     }
 
 }
@@ -218,8 +244,32 @@ void showSimilar(const int similarRatingReviewers[], const int sizeSimilar,
     }
 }
 
+
+
 void showPrediction(const int notSeen[], const double ratingNotSeen[], const int notSeenSize) {
     for (int idx = 0; idx < notSeenSize; ++idx)
         std::cout << "Movie " << notSeen[idx]
                   << ", Predicted Rating: " << ratingNotSeen[idx] << "\n";
+}
+
+void showReviews(const int reviews[][MOVIES], const int reviewers) {
+    // Print header
+    std::cout << "Movie: ";
+    for (int col = FIRST; col <= LAST; ++col)
+        std::cout << col << " ";
+    std::cout << "\n";
+    std::cout << "User ";
+    for (int col = FIRST; col <= LAST; ++col)
+        std::cout << "----";
+    std::cout << "\n";
+
+
+    for (int reviewer = 0; reviewer < reviewers; ++reviewer) {
+        std::cout << "#" << reviewer;
+        std::cout << "  |   ";
+        for (int movie = 0; movie < MOVIES; ++movie)
+            std::cout << reviews[reviewer][movie] << "   ";
+        std::cout << "\n";
+    }
+
 }
