@@ -50,12 +50,21 @@ void predictScore(const int reviews[][MOVIES], int reviewers,
 void computeDistance(const int choices[], const double scoreChoice[], int nChoices,
                      const int reviews[][MOVIES], double distance[], int nReviewers);
 
+bool findMostSimilar(const double distance[], int similarRatingReviewers[], int nReviewers, int& nSimilar);
+
+void computeRatingFromSimilar(const int notSeen[], double ratingNotSeen[], int notSeenSize,
+                              const int similarRatingReviewers[], int sizeSimilar,
+                              const int reviews[][MOVIES], int totReviewers);
+
+void showSimilar(const int similarRatingReviewers[], int sizeSimilar,
+                 const double distance[], int totReviewers);
+
 void showPrediction(const int notSeen[], const double ratingNotSeen[], int notSeenSize);
 
 int main( ) {
     int reviews[REVIEWERS][MOVIES];
-    int choices[CHOICES] = {-1 -1 -1};
-    double scoreChoice[CHOICES];
+    int choices[CHOICES] = {-1, -1, -1};
+    double scoreChoice[CHOICES] = {0.0};
     int notSeen[MOVIES - CHOICES];
     double ratingNotSeen[MOVIES - CHOICES] = {0.0};
 
@@ -135,6 +144,25 @@ bool correctInput(const int code, const double score) {
                 (score >= MIN) && (score <= MAX));
 }
 
+void predictScore(const int reviews[][MOVIES], const int reviewers,
+                  const int choices[], const double scoreChoice[], const int nChoices,
+                  const int notSeen[], double ratingNotSeen[], const int notSeenSize) {
+
+
+    double distance[REVIEWERS] = {0.0};
+    int similarRatingReviewers[REVIEWERS];
+    int sizeSimilar = 0;
+    computeDistance(choices, scoreChoice, nChoices, reviews, distance, REVIEWERS);
+    if (!findMostSimilar(distance, similarRatingReviewers, REVIEWERS, sizeSimilar)) {
+        std::cerr << "No similar reviewers found\n";
+        return;
+    }
+    computeRatingFromSimilar(notSeen, ratingNotSeen, notSeenSize,
+                             similarRatingReviewers, sizeSimilar,
+                             reviews, REVIEWERS);
+    showSimilar(similarRatingReviewers, sizeSimilar, distance, REVIEWERS);
+}
+
 void computeDistance(const int choices[], const double scoreChoice[], const int nChoices,
                      const int reviews[][MOVIES], double distance[], const int nReviewers) {
 
@@ -144,43 +172,50 @@ void computeDistance(const int choices[], const double scoreChoice[], const int 
         // consider every reviewer
         for (int reviewer = 0; reviewer < nReviewers; ++reviewer) {
             const double difference = scoreChoice[choice] - reviews[reviewer][codeChoice];
-            distance[reviewer] += std::pow(difference, 2);
+            distance[reviewer] += difference * difference;
         }
     }
 }
 
-void predictScore(const int reviews[][MOVIES], const int reviewers,
-                  const int choices[], const double scoreChoice[], const int nChoices,
-                  const int notSeen[], double ratingNotSeen[], const int notSeenSize) {
+bool findMostSimilar(const double distance[], int similarRatingReviewers[], const int nReviewers, int& nSimilar) {
+    nSimilar = 0;
+    const double min = *std::min_element(distance, distance + nReviewers);
+    constexpr double EPS = 1e-9;
+    for (int reviewer = 0; reviewer < nReviewers; ++reviewer)
+        if (std::fabs(distance[reviewer] - min) <  EPS)
+            similarRatingReviewers[nSimilar++] = reviewer;
 
+    if (nSimilar == 0)
+        return false;
+    return true;
+}
 
-    double distance[REVIEWERS] = {0.0};
-    computeDistance(choices, scoreChoice, nChoices, reviews, distance, REVIEWERS);
-
-    double min = *std::min_element(distance, distance + reviewers);
-    int similarRating[REVIEWERS];
-    int sizeSimilar = 0;
-    for (int reviewer = 0; reviewer < REVIEWERS; ++reviewer)
-        if (distance[reviewer] == min) {
-            ++sizeSimilar;
-            similarRating[reviewer] = reviewer;
-        }
+void computeRatingFromSimilar(const int notSeen[], double ratingNotSeen[], const int notSeenSize,
+                              const int similarRatingReviewers[], const int sizeSimilar,
+                              const int reviews[][MOVIES], const int totReviewers) {
 
     for (int notSeenMovie = 0; notSeenMovie < notSeenSize; ++notSeenMovie) {
-        double sum = 0;
+        double sum = 0.0;
+        const int movieCode = notSeen[notSeenMovie];
+        const int movieIdx = movieCode - FIRST;
         for (int similarPerson = 0; similarPerson < sizeSimilar; ++similarPerson) {
-            int reviewer = similarRating[similarPerson];
-            int movieCode = notSeen[notSeenMovie];
-            int movieIdx = movieCode - FIRST;
-            sum = reviews[reviewer][movieIdx];
+            const int reviewer = similarRatingReviewers[similarPerson];
+            sum += reviews[reviewer][movieIdx];
         }
 
         ratingNotSeen[notSeenMovie] = sum / sizeSimilar;
     }
 
+}
+
+void showSimilar(const int similarRatingReviewers[], const int sizeSimilar,
+                 const double distance[], const int totReviewers) {
+
     std::cout << "Most similar reviewers:\n";
-    for (int idx = 0; idx < sizeSimilar; ++idx)
-        std::cout << similarRating[idx] << ", distance: " << distance[idx] << "\n";
+    for (int idx = 0; idx < sizeSimilar; ++idx) {
+        const int person = similarRatingReviewers[idx];
+        std::cout << similarRatingReviewers[idx] << ", distance: " << distance[person] << "\n";
+    }
 }
 
 void showPrediction(const int notSeen[], const double ratingNotSeen[], const int notSeenSize) {
