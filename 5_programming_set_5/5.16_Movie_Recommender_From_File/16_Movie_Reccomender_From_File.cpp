@@ -1,16 +1,24 @@
+#include <fstream>
+#include <sstream>
 #include <algorithm>    // for std::min_element
 #include <iostream>     // for std::cout, std::cin, std::cerr
 #include <cstring>      // for std::memcpy
 #include <limits>       // for std::numeric_limits
 #include <cmath>        // for std::fabs
 
-constexpr int MAX_REVIEWERS = 4;
+const std::string PATH = "./5_programming_set_5/5.16_Movie_Recommender_From_File/Utilities/ratings.txt";
+constexpr int MAX_REVIEWERS = 1000;
 constexpr int MOVIES = 6;
 constexpr int CHOICES = 3;
 constexpr int FIRST = 100;
 constexpr int LAST = 100 + MOVIES - 1;
 constexpr double MIN = 1.0;
 constexpr double MAX = 5.0;
+
+void copyData(const std::string& path, int reviews[][MOVIES], int& people);
+
+bool openFile(const std::string& path, std::fstream& inputStream);
+void closeFile(const std::string& path, std::fstream& inputStream);
 
 void fillReviews(int reviews[][MOVIES], int reviewers);
 //   Precondition: reviewers is the declared size of the first dimension of reviews.
@@ -87,17 +95,19 @@ void showReviews(const int reviews[][MOVIES], int reviewers);
 //   Postcondition: displays on console the reviews table.
 
 int main( ) {
+    int people = 0;
     int reviews[MAX_REVIEWERS][MOVIES];
     int choices[CHOICES] = {-1, -1, -1};
     double scoreChoice[CHOICES] = {0.0};
     int notSeen[MOVIES - CHOICES];
     double ratingNotSeen[MOVIES - CHOICES] = {0.0};
 
-    fillReviews(reviews, MAX_REVIEWERS);
-    showReviews(reviews, MAX_REVIEWERS);
-    makeChoice(choices, scoreChoice, CHOICES, notSeen, MOVIES - CHOICES);
-    predictScore(reviews, MAX_REVIEWERS, choices, scoreChoice, CHOICES, notSeen, ratingNotSeen, MOVIES - CHOICES);
-    showPrediction(notSeen, ratingNotSeen, MOVIES - CHOICES);
+    copyData(PATH, reviews, people);
+    // fillReviews(reviews, MAX_REVIEWERS);
+    showReviews(reviews, people);
+    // makeChoice(choices, scoreChoice, CHOICES, notSeen, MOVIES - CHOICES);
+    // predictScore(reviews, MAX_REVIEWERS, choices, scoreChoice, CHOICES, notSeen, ratingNotSeen, MOVIES - CHOICES);
+    // showPrediction(notSeen, ratingNotSeen, MOVIES - CHOICES);
 
     std::cout << "\n";
     return 0;
@@ -273,3 +283,44 @@ void showReviews(const int reviews[][MOVIES], const int reviewers) {
     }
 
 }
+
+void copyData(const std::string& path, int reviews[][MOVIES], int& people) {
+    std::fstream inputStream;
+    if (!openFile(path, inputStream)) {
+        std::cerr << "Cannot open file\n";
+        return;
+    }
+    std::string line;
+    int user = 0, rating;
+
+    // skip header
+    getline(inputStream, line);
+    while (inputStream >> line) {
+        if (line.empty())   continue;
+        std::istringstream iss(line);
+        int read[MOVIES + 1];         // +1 being the user
+        int number, field = 0;
+
+        while (iss >> number)
+            read[field++] = number;
+
+        if (field < (MOVIES + 1))     continue; // skip line, if not all fields
+
+        for (int idx = 1; idx < field; ++idx)   // start from movie (idx=1)
+            reviews[user++][idx] = read[idx];
+    }
+    people = user;
+    closeFile(path, inputStream);
+}
+
+bool openFile(const std::string& path, std::fstream& inputStream) {
+    inputStream.open(path);
+    if (!inputStream)
+        return false;
+    return true;
+}
+
+void closeFile(const std::string& path, std::fstream& inputStream) {
+    inputStream.close();
+}
+
