@@ -224,9 +224,6 @@ Check also my [Other projects](https://github.com/ersmax)
     It prompts the user for their ratings on a scale of 1 to 5 for a set of predefined movies, validates input,
     computes average ratings per movie, and suggests the highest-rated movie that the user hasn't rated yet.
     Input validation ensures ratings are numeric and within the valid range.
-    <p align="center">
-      <img src="5_programming_set_5/5.14_Movie_Recommendation/Figures/MovieRecommender.PNG" alt="Movie Recommender" width="48%" />
-    </p>
 15. [Randomized Challenge Response System](5_programming_set_5/5.15_Randomized_Challenge_Response_System) 
     \- Implements a randomized challenge/response PIN verification.
     The program builds a random mapping from digits 0..9 to values 1..NUMBERS, 
@@ -235,5 +232,16 @@ Check also my [Other projects](https://github.com/ersmax)
     through the table and comparing to the user input.
     Make use of integer to array mapping, random number generation with `<random>`, 
     and input validation to ensure correct digit entry.
+16. [Movie Recommender from File](5_programming_set_5/5.16_Movie_Recommender_From_File) 
+    \- This program recommends movie ratings based on user preferences on movies he had seen, starting from a file of reviewer ratings.
+    Reads reviewer ratings from a whitespace-delimited file (header + rows) using dedicated functions,
+    populate a fixed‑capacity reviews array and the runtime reviewer count people (capped at 1000). 
+    Prompts the user to rate a subset of movies (rated from 1.0 to 5.0) with input validation, 
+    computes similarity amongst users with Euclidean‑distance to find the most similar reviewers, 
+    averages their ratings to predict scores for unseen movies, and displays the top recommendations. 
+    File read errors and malformed lines are handled properly.
+    <p align="center">
+      <img src="5_programming_set_5/5.16_Movie_Recommender_From_File/Figures/MovieRating.PNG" alt="Movie Recommender from File" width="48%" />
+    </p>
 
     
