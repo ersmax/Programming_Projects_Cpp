@@ -291,23 +291,24 @@ void copyData(const std::string& path, int reviews[][MOVIES], int& people) {
         return;
     }
     std::string line;
-    int user = 0, rating;
+    int user = 0;
 
-    // skip header
-    getline(inputStream, line);
-    while (inputStream >> line) {
+    getline(inputStream, line);         // skip header
+    while (getline(inputStream, line)) {
         if (line.empty())   continue;
         std::istringstream iss(line);
-        int read[MOVIES + 1];         // +1 being the user
-        int number, field = 0;
 
-        while (iss >> number)
+        int read[MOVIES + 1] = {0};     // read[0]: user0 rate100 rate101 ... rate 105
+        int number, field = 0;
+        while (field < (MOVIES + 1) && (iss >> number)) // MOVIES + 1 user
             read[field++] = number;
 
-        if (field < (MOVIES + 1))     continue; // skip line, if not all fields
-
-        for (int idx = 1; idx < field; ++idx)   // start from movie (idx=1)
-            reviews[user++][idx] = read[idx];
+        if (field < (MOVIES + 1))  continue;            // skip line, if not all fields
+        for (int idx = 0; idx < MOVIES; ++idx) {
+            int movie = idx + 1;
+            reviews[user][idx] = read[movie];
+        }
+        ++user;
     }
     people = user;
     closeFile(path, inputStream);
