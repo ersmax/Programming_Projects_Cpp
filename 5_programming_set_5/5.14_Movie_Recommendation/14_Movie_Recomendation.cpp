@@ -1,8 +1,8 @@
-#include <algorithm>
-#include <iostream>
-#include <cstring>
-#include <limits>
-#include <cmath>
+#include <algorithm>    // for std::min_element
+#include <iostream>     // for std::cout, std::cin, std::cerr
+#include <cstring>      // for std::memcpy
+#include <limits>       // for std::numeric_limits
+#include <cmath>        // for std::fabs
 
 constexpr int REVIEWERS = 4;
 constexpr int MOVIES = 6;
