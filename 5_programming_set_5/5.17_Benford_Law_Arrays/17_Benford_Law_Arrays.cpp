@@ -1,26 +1,36 @@
-/*
-Programming Project 2.12 asked you to explore Benford’s Law. An easier way to
-write the program is to use an array to store the digit counts. That is, count[0]
-might store the number of times 0 is the first digit (if that is possible in your data
-set), count[1] might store the number of times 1 is the first digit, and so forth.
-Redo Programming Project 2.12 using arrays.
-*/
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <cmath>
-#include <iomanip>
+#include <iostream>     // for std::cout, std::cerr
+#include <fstream>      // for std::fstream
+#include <sstream>      // for std::istringstream
+#include <string>       // for std::string
+#include <cmath>        // for std::abs
+#include <iomanip>      // for std::setprecision, std::fixed, std::showpoint, std::setw
 
 constexpr int DIGITS = 10;
 const std::string PATH = "./5_programming_set_5/5.17_Benford_Law_Arrays/Utilities/benford.txt";
 
 void readData(const std::string& path, int& totNumbers, int count[], int size);
+//   Precondition: path is a valid file path
+//   Postcondition: reads the file and fills count array with the frequency
+// of leading digits (0 through size - 1). totNumbers is set to the total
+// of numbers read.
+
 bool openFile(const std::string& path, std::fstream& inputStream);
+//   Precondition: path is a valid file path
+//   Postcondition: opens the file located at path for reading.
+
 void closeFile(const std::string& path, std::fstream& inputStream);
+//   Precondition: path is a valid file path
+//   Postcondition: closes the file located at path.
+
 void checkNumber(int number, int& totNumbers, int count[], int size);
+//   Precondition: number is an integer
+//   Postcondition: updates totNumbers and count array according to the leading digit
+// of number.
+
 void checkBenfordLaw(int totalNumbers, const int count[], int size);
+//   Precondition: totalNumbers is the total of numbers read,
+//   Postcondition: displays on console the percentage of each leading digit
+// (0 through size - 1) found in the data.
 
 int main( ) {
     int count[DIGITS] = {0};
@@ -52,13 +62,15 @@ void readData(const std::string& path, int& totNumbers,
 }
 
 void checkNumber(int number, int& totNumbers, int count[], const int size) {
-    number = std::abs(number);
+    // widen to avoid overflow on negation
+    long long n = number;
+    n = std::abs(number);
     ++totNumbers;
-    const std::string s = std::to_string(number);
+    const std::string s = std::to_string(n);
     int leadingDigit = s[0] - '0';
     if (leadingDigit >= 0 && leadingDigit < size)
         ++count[leadingDigit];
-    // alternatively:
+    // alternatively (no memory allocation):
     // while (number >= 10) number /= 10;
     // if (number >= 0 && number < size)
     //    ++count[number];

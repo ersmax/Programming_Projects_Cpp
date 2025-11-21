@@ -243,5 +243,10 @@ Check also my [Other projects](https://github.com/ersmax)
     <p align="center">
       <img src="5_programming_set_5/5.16_Movie_Recommender_From_File/Figures/MovieRating.PNG" alt="Movie Recommender from File" width="48%" />
     </p>
-
-    
+17. [Benford Law Arrays](5_programming_set_5/5.17_Benford_Law_Arrays) 
+    \- This program analyzes the leading-digit distribution of numbers from a file to test Benford's Law using arrays.
+    It reads numbers from a specified file into a fixed-size array, extracts the leading digit of each number,
+    counts the frequency of each leading digit using an array, and then compares the observed frequencies
+    to the expected Benford's Law distribution, printing both for comparison.
+    Input validation ensures that only positive numbers are processed, and file reading errors are handled properly.
+    Two alternative of getting the leading digit are provided: using division and using string conversion.
