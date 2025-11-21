@@ -1,10 +1,11 @@
-#include <fstream>
-#include <sstream>
+#include <fstream>      // for std::fstream
+#include <sstream>      // for std::istringstream
 #include <algorithm>    // for std::min_element
 #include <iostream>     // for std::cout, std::cin, std::cerr
 #include <cstring>      // for std::memcpy
 #include <limits>       // for std::numeric_limits
 #include <cmath>        // for std::fabs
+#include <iomanip>      // for std::setprecision, std::fixed, std::showpoint
 
 const std::string PATH = "./5_programming_set_5/5.16_Movie_Recommender_From_File/Utilities/ratings.txt";
 constexpr int MAX_REVIEWERS = 1000;
@@ -16,9 +17,16 @@ constexpr double MIN = 1.0;
 constexpr double MAX = 5.0;
 
 void copyData(const std::string& path, int reviews[][MOVIES], int& people);
+//   Precondition: path is a valid file path
+//   Postcondition: reads the file and fills reviews with the movie ratings from users.
 
 bool openFile(const std::string& path, std::fstream& inputStream);
+//   Precondition: path is a valid file path
+//   Postcondition: opens the file located at path for reading.
+
 void closeFile(const std::string& path, std::fstream& inputStream);
+//   Precondition: path is a valid file path
+//   Postcondition: closes the file located at path.
 
 void fillReviews(int reviews[][MOVIES], int reviewers);
 //   Precondition: reviewers is the declared size of the first dimension of reviews.
@@ -103,24 +111,17 @@ int main( ) {
     double ratingNotSeen[MOVIES - CHOICES] = {0.0};
 
     copyData(PATH, reviews, people);
-    // fillReviews(reviews, MAX_REVIEWERS);
+    if (people == 0) {
+        std::cerr << "No reviewers, exiting\n";
+        return -1;
+    }
     showReviews(reviews, people);
-    // makeChoice(choices, scoreChoice, CHOICES, notSeen, MOVIES - CHOICES);
-    // predictScore(reviews, MAX_REVIEWERS, choices, scoreChoice, CHOICES, notSeen, ratingNotSeen, MOVIES - CHOICES);
-    // showPrediction(notSeen, ratingNotSeen, MOVIES - CHOICES);
+    makeChoice(choices, scoreChoice, CHOICES, notSeen, MOVIES - CHOICES);
+    predictScore(reviews, people, choices, scoreChoice, CHOICES, notSeen, ratingNotSeen, MOVIES - CHOICES);
+    showPrediction(notSeen, ratingNotSeen, MOVIES - CHOICES);
 
     std::cout << "\n";
     return 0;
-}
-
-void fillReviews(int reviews[][MOVIES], const int reviewers) {
-    const int source[MAX_REVIEWERS][MOVIES] = {
-        {3, 1, 5, 2, 1, 5},
-        {4, 2, 1, 4, 2, 4},
-        {3, 1, 2, 4, 4, 1},
-        {5, 1, 4, 2, 4, 2},
-    };
-    std::memcpy(reviews, source, sizeof(source));
 }
 
 void makeChoice(int choices[], double scoreChoice[], const int nMovies,
@@ -184,19 +185,23 @@ void predictScore(const int reviews[][MOVIES], const int reviewers,
                   const int choices[], const double scoreChoice[], const int nChoices,
                   const int notSeen[], double ratingNotSeen[], const int notSeenSize) {
 
+    if (reviewers <= 0) {
+        std::cout << "No reviewers available.\n";
+        return;
+    }
 
     double distance[MAX_REVIEWERS] = {0.0};
     int similarRatingReviewers[MAX_REVIEWERS];
     int sizeSimilar = 0;
-    computeDistance(choices, scoreChoice, nChoices, reviews, distance, MAX_REVIEWERS);
-    if (!findMostSimilar(distance, similarRatingReviewers, MAX_REVIEWERS, sizeSimilar)) {
+    computeDistance(choices, scoreChoice, nChoices, reviews, distance, reviewers);
+    if (!findMostSimilar(distance, similarRatingReviewers, reviewers, sizeSimilar)) {
         std::cerr << "No similar reviewers found\n";
         return;
     }
     computeRatingFromSimilar(notSeen, ratingNotSeen, notSeenSize,
                              similarRatingReviewers, sizeSimilar,
-                             reviews, MAX_REVIEWERS);
-    showSimilar(similarRatingReviewers, sizeSimilar, distance, MAX_REVIEWERS);
+                             reviews, reviewers);
+    showSimilar(similarRatingReviewers, sizeSimilar, distance, reviewers);
 }
 
 void computeDistance(const int choices[], const double scoreChoice[], const int nChoices,
@@ -257,6 +262,7 @@ void showSimilar(const int similarRatingReviewers[], const int sizeSimilar,
 
 
 void showPrediction(const int notSeen[], const double ratingNotSeen[], const int notSeenSize) {
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
     for (int idx = 0; idx < notSeenSize; ++idx)
         std::cout << "Movie " << notSeen[idx]
                   << ", Predicted Rating: " << ratingNotSeen[idx] << "\n";
@@ -288,22 +294,24 @@ void copyData(const std::string& path, int reviews[][MOVIES], int& people) {
     std::fstream inputStream;
     if (!openFile(path, inputStream)) {
         std::cerr << "Cannot open file\n";
+        people = 0;
         return;
     }
     std::string line;
     int user = 0;
 
-    getline(inputStream, line);         // skip header
-    while (getline(inputStream, line)) {
+    std::getline(inputStream, line);             // skip header
+    while (std::getline(inputStream, line)) {
         if (line.empty())   continue;
-        std::istringstream iss(line);
+        if (user >= MAX_REVIEWERS)  break;
 
+        std::istringstream iss(line);
         int read[MOVIES + 1] = {0};     // read[0]: user0 rate100 rate101 ... rate 105
         int number, field = 0;
-        while (field < (MOVIES + 1) && (iss >> number)) // MOVIES + 1 user
+        while (field < (1 + MOVIES) && (iss >> number)) // 1 user + MOVIES
             read[field++] = number;
 
-        if (field < (MOVIES + 1))  continue;            // skip line, if not all fields
+        if (field < (1 + MOVIES))  continue;            // skip if not all fields
         for (int idx = 0; idx < MOVIES; ++idx) {
             int movie = idx + 1;
             reviews[user][idx] = read[movie];
@@ -324,4 +332,3 @@ bool openFile(const std::string& path, std::fstream& inputStream) {
 void closeFile(const std::string& path, std::fstream& inputStream) {
     inputStream.close();
 }
-
