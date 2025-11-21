@@ -31,6 +31,39 @@ matches the PIN number.
 
 ---
 
+
+# Overview
+- The program simulates a randomized challenge/response PIN authentication.
+- An internal (stored) PIN is kept as an integer constant `GIVEN_PIN`.
+- A mapping array `sequence[0..9]` assigns each digit (0..9) a random number in `1..NUMBERS`.
+- The user types the response: the sequence of mapped numbers corresponding to each digit of their PIN.
+- The program verifies the response by mapping each digit of `GIVEN_PIN` through `sequence` and comparing with the user input.
+
+## Constants
+- `NUMBERS` — number of possible mapped values (1..NUMBERS).
+- `DIGITS` — number of digit positions (10).
+- `PIN` — length of stored PIN (5).
+- `GIVEN_PIN` — stored PIN as an integer (leading zeros are handled by digit extraction).
+
+## Functions
+- `createSequence(int sequence[], int size)`
+  - Builds the initial mapping for `0..9`. In the current implementation it fills a repeating pattern (1..NUMBERS) then the mapping is randomized by `shuffleSequence`.
+  - Alternative: use `std::uniform_int_distribution<int>(1, NUMBERS)` per entry to produce independent random assignments.
+- `shuffleSequence(int sequence[], int size)`
+  - Uses Fisher-Yates shuffle with `std::mt19937` to randomize the `sequence` array.
+- `showSystem(const int sequence[], int size)`
+  - Prints the two rows: PIN indices `0..9` and corresponding `NUM` values from `sequence`.
+- `enterPin(int pin[], int nDigits)`
+  - Reads the user response as a `std::string`.
+  - Validates length equals `nDigits`.
+  - Validates each character is in `'1' .. '0' + NUMBERS'`.
+  - Converts each character to an integer by subtracting `'0'` and stores into the `pin[]` array.
+  - Handles bad input and clears `std::cin` appropriately.
+- `checkPin(const int pin[], int nDigitsPin, const int sequence[], int nDigits)`
+  - Converts `GIVEN_PIN` into an array `givenPin[PIN]` by repeated `% DIGITS` and `/= DIGITS` (fills leading positions with `0` when `GIVEN_PIN` has leading zeros).
+  - For each PIN position `i`, obtains the actual digit `d = givenPin[i]` and checks `sequence[d] == pin[i]`.
+  - Returns `true` if all positions match, otherwise `false`.
+
 ## Transform a number into an array
 There are two possible strategies to go about transforming a number into an array.
 
@@ -69,8 +102,6 @@ void enterPin(int pin[], const int nDigits) {
     }
 }
 ```
-
-
 
 
 ## Alternative implementation

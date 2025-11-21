@@ -227,3 +227,13 @@ Check also my [Other projects](https://github.com/ersmax)
     <p align="center">
       <img src="5_programming_set_5/5.14_Movie_Recommendation/Figures/MovieRecommender.PNG" alt="Movie Recommender" width="48%" />
     </p>
+15. [Randomized Challenge Response System](5_programming_set_5/5.15_Randomized_Challenge_Response_System) 
+    \- Implements a randomized challenge/response PIN verification.
+    The program builds a random mapping from digits 0..9 to values 1..NUMBERS, 
+    displays the mapping to the user, prompts the user to enter the mapped sequence corresponding 
+    to the stored PIN, and verifies the response by mapping each stored PIN digit 
+    through the table and comparing to the user input.
+    Make use of integer to array mapping, random number generation with `<random>`, 
+    and input validation to ensure correct digit entry.
+
+    
