@@ -42,10 +42,11 @@ void parseFile(std::ifstream& inputStream,
                std::string name[], int score[], int maxSize, int& nPlayers);
 void showBest(const std::string name[], const int score[], int size, int topPlayers);
 void orderData(std::string name[], int score[], int size);
-void merge(const int arr1[], const std::string name1[], int size1,
-           const int arr2[], const std::string name2[], int size2,
-           int result[], std::string names[], int totSize);
-void mergeSort(std::string name[], int score[], int size);
+void merge(std::string name[], int score[], const int size,
+           std::string tempName[], int tempScore[],
+           const int start, const int mid, const int end);
+void mergeSort(std::string name[], int score[], int size,
+               std::string tempName[], int tempScore[], int start, int end);
 
 int main( ) {
     std::string name[MAX];
@@ -99,63 +100,53 @@ void parseFile(std::ifstream& inputStream,
 
 void orderData(std::string name[], int score[], const int size) {
     if (size <= 1) return;
-    mergeSort(name, score, size);
+    std::string tempName[MAX];
+    int tempScore[MAX];
+    mergeSort(name, score, size, tempName, tempScore, 0, size - 1);
 }
 
-void mergeSort(std::string name[], int score[], int size) {
-    if (size <= 1) return;
-
-    const int sizeLeft = size / 2;
-    const int sizeRight = size - sizeLeft;
-    int score1[MAX], score2[MAX];
-    std::string name1[MAX], name2[MAX];
-
-    std::copy_n(score, sizeLeft, score1);
-    std::copy_n(name, sizeLeft, name1);
-    // for (int idx = 0; idx < sizeLeft; ++idx) {
-    //     score1[idx] = score[idx];
-    //     name1[idx] = name[idx];
-    // }
-    std::copy_n(score + sizeLeft, sizeRight, score2);
-    std::copy_n(name + sizeLeft, sizeRight, name2);
-    // for (int idx = 0; idx < sizeRight; ++idx) {
-    //     score2[idx] = score[sizeLeft + idx];
-    //     name2[idx] = name[sizeLeft + idx];
-    // }
-    mergeSort(name1, score1, sizeLeft);
-    mergeSort(name2, score2, sizeRight);
-    merge(score1, name1, sizeLeft, score2, name2, sizeRight, score, name, size);
+void mergeSort(std::string name[], int score[], const int size,
+               std::string tempName[], int tempScore[], int start, int end) {
+    if (start >= end) return;
+    int mid = start + (end - start) / 2;
+    mergeSort(name, score, size, tempName, tempScore, start, mid);
+    mergeSort(name, score, size, tempName, tempScore, mid + 1, end);
+    merge(name, score, size, tempName, tempScore, start, mid, end);
 }
 
-void merge(const int arr1[], const std::string name1[], const int size1,
-           const int arr2[], const std::string name2[], const int size2,
-           int result[], std::string names[], const int totSize) {
+void merge(std::string name[], int score[], const int size,
+           std::string tempName[], int tempScore[],
+           const int start, const int mid, const int end) {
 
-    int p1 = 0, p2 = 0, idx = 0;
-    while ((p1 < size1) && (p2 < size2) && (idx < totSize)) {
-        if (arr1[p1] >= arr2[p2]) {
-            result[idx] = arr1[p1];
-            names[idx] = name1[p1];
+    int p1 = start, p2 = mid + 1, idx = start;
+    while ((p1 <= mid) && (p2 <= end) && (idx < size)) {
+        if (tempScore[p1] >= tempScore[p2]) {
+            tempScore[idx] = score[p1];
+            tempName[idx] = name[p1];
             ++p1;
         } else {
-            result[idx] = arr2[p2];
-            names[idx] = name2[p2];
+            tempScore[idx] = score[p2];
+            tempName[idx] = name[p2];
             ++p2;
         }
         ++idx;
     }
     // Merge wrap-up
-    while ((p1 < size1) && (idx < totSize)) {
-        result[idx] = arr1[p1];
-        names[idx] = name1[p1];
+    while ((p1 <= mid) && (idx < size)) {
+        tempScore[idx] = score[p1];
+        tempName[idx] = name[p1];
         ++p1;
         ++idx;
     }
-    while ((p2 < size2) && (idx < totSize)) {
-        result[idx] = arr2[p2];
-        names[idx] = name2[p2];
+    while ((p2 <= end) && (idx < size)) {
+        tempScore[idx] = score[p2];
+        tempName[idx] = name[p2];
         ++p2;
         ++idx;
+    }
+    for (int i = start; i <= end; ++i) {
+        score[i] = tempScore[i];
+        name[i] = tempName[i];
     }
 }
 
