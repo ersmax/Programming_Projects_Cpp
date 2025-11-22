@@ -18,8 +18,8 @@ of strings and an array of integers. The function should scan through the file a
 set the string array entry at index 0 to the name of the player with the highest score
 and set the integer array entry at index 0 to the score of the player with the highest
 score. The string array entry at index 1 should be set to the name of the player with
-the second highest score and the integer array entry at index 1 should be set to the
-score of the player with the second highest score. Do the same for the entries at
+the second, highest score and the integer array entry at index 1 should be set to the
+score of the player with the second, highest score. Do the same for the entries at
 index 2. Together, these two arrays give you the names and scores of the top three
 players. In your main function, test the getHighScores function by calling it and
 outputting the top three players and scores.
@@ -29,7 +29,6 @@ outputting the top three players and scores.
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-#include <algorithm>
 
 constexpr int MAX = 1000;
 constexpr int BEST = 3;
@@ -42,9 +41,9 @@ void parseFile(std::ifstream& inputStream,
                std::string name[], int score[], int maxSize, int& nPlayers);
 void showBest(const std::string name[], const int score[], int size, int topPlayers);
 void orderData(std::string name[], int score[], int size);
-void merge(std::string name[], int score[], const int size,
+void merge(std::string name[], int score[], int size,
            std::string tempName[], int tempScore[],
-           const int start, const int mid, const int end);
+           int start, int mid, int end);
 void mergeSort(std::string name[], int score[], int size,
                std::string tempName[], int tempScore[], int start, int end);
 
@@ -118,35 +117,35 @@ void merge(std::string name[], int score[], const int size,
            std::string tempName[], int tempScore[],
            const int start, const int mid, const int end) {
 
-    int p1 = start, p2 = mid + 1, idx = start;
-    while ((p1 <= mid) && (p2 <= end) && (idx < size)) {
-        if (tempScore[p1] >= tempScore[p2]) {
-            tempScore[idx] = score[p1];
-            tempName[idx] = name[p1];
+    int p1 = start, p2 = mid + 1, idxScore = start;
+    while ((p1 <= mid) && (p2 <= end)) {
+        if (score[p1] >= score[p2]) {
+            tempScore[idxScore] = score[p1];
+            tempName[idxScore] = name[p1];
             ++p1;
         } else {
-            tempScore[idx] = score[p2];
-            tempName[idx] = name[p2];
+            tempScore[idxScore] = score[p2];
+            tempName[idxScore] = name[p2];
             ++p2;
         }
-        ++idx;
+        ++idxScore;
     }
     // Merge wrap-up
-    while ((p1 <= mid) && (idx < size)) {
-        tempScore[idx] = score[p1];
-        tempName[idx] = name[p1];
+    while (p1 <= mid) {
+        tempScore[idxScore] = score[p1];
+        tempName[idxScore] = name[p1];
         ++p1;
-        ++idx;
+        ++idxScore;
     }
-    while ((p2 <= end) && (idx < size)) {
-        tempScore[idx] = score[p2];
-        tempName[idx] = name[p2];
+    while (p2 <= end) {
+        tempScore[idxScore] = score[p2];
+        tempName[idxScore] = name[p2];
         ++p2;
-        ++idx;
+        ++idxScore;
     }
-    for (int i = start; i <= end; ++i) {
-        score[i] = tempScore[i];
-        name[i] = tempName[i];
+    for (int idx = start; idx <= end; ++idx) {
+        score[idx] = tempScore[idx];
+        name[idx] = tempName[idx];
     }
 }
 

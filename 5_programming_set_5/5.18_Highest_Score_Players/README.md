@@ -34,9 +34,9 @@ Most importantly, it would need copying and has potentially
 a risk of stack overflow for large array size `MAX`.
 
 1. Memory Efficiency (Most Critical factor)
-   - The program allocates one auxiliary buffer (tempName, tempScore) once, 
+   - The program allocates two auxiliary buffers (tempName, tempScore) once, 
      and reuses it in all recursive calls. 
-   - The alternative allocates two full-size arrays (score1, score2, name1, name2) 
+   - The alternative allocates four full-size arrays (score1, score2, name1, name2) 
      on every recursive call. This means:
      - O(n log n) extra memory usage 
      - Heavy stack frame usage 
