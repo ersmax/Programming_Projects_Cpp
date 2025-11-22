@@ -28,11 +28,12 @@ outputting the top three players and scores.
 ## Alternative implementation
 One could also use a different implementation of merge sort,
 by creating temporary arrays for left and right subpartitions.
-This would need copying and potentially overflow. 
 Below is an example of such an implementation.
-The alternative code in the program provided is dangerous for a number of reasons:
+The alternative code in the program provided is dangerous for a number of reasons.
+Most importantly, it would need copying and has potentially 
+a risk of stack overflow for large array size `MAX`.
 
-1. Memory Efficiency (Most Important Difference)
+1. Memory Efficiency (Most Critical factor)
    - The program allocates one auxiliary buffer (tempName, tempScore) once, 
      and reuses it in all recursive calls. 
    - The alternative allocates two full-size arrays (score1, score2, name1, name2) 
@@ -65,7 +66,7 @@ The alternative code in the program provided is dangerous for a number of reason
    - The alternative:
      - is not scalable, 
      - copies potentially expensive std::string objects repeatedly. 
-     - has higher overhead and memory churn.
+     - has higher overhead and memory churn (more time spent on allocation than computing).
 
 
 ```cpp
