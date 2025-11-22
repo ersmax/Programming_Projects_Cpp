@@ -28,8 +28,10 @@ outputting the top three players and scores.
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 constexpr int MAX = 1000;
+constexpr int BEST = 3;
 const std::string PATH = "./5_programming_set_5/5.18_Highest_Score_Players/Utilities/Scores.txt";
 
 void copyData(std::string name[], int score[], int maxSize, int& nPlayers);
@@ -37,13 +39,16 @@ bool openFile(const std::string& pathFile, std::ifstream& inputStream);
 void closeFile(std::ifstream& inputStream);
 void parseFile(std::ifstream& inputStream,
                std::string name[], int score[], int maxSize, int& nPlayers);
+void showBest(const std::string name[], const int score[], int size, int topPlayers);
+void orderData(std::string name[], int score[], int size);
 
 int main( ) {
     std::string name[MAX];
     int score[MAX];
     int nPlayers = 0;
     copyData(name, score, MAX, nPlayers);
-
+    orderData(name, score, nPlayers);
+    showBest(name, score, nPlayers, BEST);
 
     std::cout << "\n";
     return 0;
@@ -59,7 +64,7 @@ void copyData(std::string name[], int score[], const int maxSize, int& nPlayers)
     closeFile(inputStream);
 }
 
-bool openFile(const std::string& pathFile, std::fstream& inputStream) {
+bool openFile(const std::string& pathFile, std::ifstream& inputStream) {
     inputStream.open(pathFile);
     if (!inputStream)
         return false;
@@ -86,4 +91,57 @@ void parseFile(std::ifstream& inputStream,
         }
     }
 }
+
+void orderData(std::string name[], int score[], const int size) {
+
+}
+
+void mergeSort(std::string name[], int score[], int size) {
+
+
+    
+}
+
+void merge(const int arr1[], const std::string& name1, const int size1,
+           const int arr2[], const std::string& name2, const int size2,
+           int result[], std::string names[], const int totSize) {
+
+    int p1 = 0, p2 = 0, idx = 0;
+    while ((p1 < size1) && (p2 < size2) && (idx < totSize)) {
+        if (arr1[p1] < arr2[p2]) {
+            result[idx] = arr1[p1];
+            names[idx] = name1[p1];
+            ++p1;
+        } else {
+            result[idx] = arr2[p2];
+            names[idx] = name2[p2];
+            ++p2;
+        }
+        ++idx;
+    }
+    while ((p1 < size1) && (idx < totSize)) {
+        result[idx] = arr1[p1];
+        names[idx] = name1[p1];
+        ++p1;
+        ++idx;
+    }
+    while ((p2 < size2) && (idx < totSize)) {
+        result[idx] = arr2[p2];
+        names[idx] = name2[p2];
+        ++p2;
+        ++idx;
+    }
+}
+
+
+
+
+void showBest(const std::string name[], const int score[],
+              const int size, const int topPlayers) {
+    for (int idx = 0; idx < size; ++idx)
+        std::cout << "Player #" << std::setw(2) << idx + 1
+                  << ": " << std::setw(10) << name[idx]
+                  << ", score: " << std::setw(10) << score[idx] << "\n";
+}
+
 
