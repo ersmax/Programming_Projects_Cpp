@@ -25,3 +25,40 @@ outputting the top three players and scores.
 
 ---
 
+## Use of the STL algorithms to copy and sort
+In function `mergeSort` the std::copy_n algorithm is used to copy segments of the original array 
+into temporary arrays for sorting. 
+This is a concise and efficient way to handle array copying without manual loops.
+```cpp
+void mergeSort(std::string name[], int score[], int size) {
+    if (size <= 1) return;
+
+    const int sizeLeft = size / 2;
+    const int sizeRight = size - sizeLeft;
+    int score1[MAX], score2[MAX];
+    std::string name1[MAX], name2[MAX];
+
+    std::copy_n(score, sizeLeft, score1);
+    std::copy_n(name, sizeLeft, name1);
+    // for (int idx = 0; idx < sizeLeft; ++idx) {
+    //     score1[idx] = score[idx];
+    //     name1[idx] = name[idx];
+    // }
+    std::copy_n(score + sizeLeft, sizeRight, score2);
+    std::copy_n(name + sizeLeft, sizeRight, name2);
+    // for (int idx = 0; idx < sizeRight; ++idx) {
+    //     score2[idx] = score[sizeLeft + idx];
+    //     name2[idx] = name[sizeLeft + idx];
+    // }
+    mergeSort(name1, score1, sizeLeft);
+    mergeSort(name2, score2, sizeRight);
+    merge(score1, name1, sizeLeft, score2, name2, sizeRight, score, name, size);
+}
+```
+
+
+## Alternative implementation
+One could also use a different implementation of merge sort,
+by passing directly the left and right indices instead of copying to temporary arrays.
+This would avoid the need for temporary arrays and copying, but would require more complex index management.
+

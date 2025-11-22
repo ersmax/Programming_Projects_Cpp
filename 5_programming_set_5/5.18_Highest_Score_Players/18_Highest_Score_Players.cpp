@@ -29,6 +29,7 @@ outputting the top three players and scores.
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 constexpr int MAX = 1000;
 constexpr int BEST = 3;
@@ -41,6 +42,10 @@ void parseFile(std::ifstream& inputStream,
                std::string name[], int score[], int maxSize, int& nPlayers);
 void showBest(const std::string name[], const int score[], int size, int topPlayers);
 void orderData(std::string name[], int score[], int size);
+void merge(const int arr1[], const std::string name1[], int size1,
+           const int arr2[], const std::string name2[], int size2,
+           int result[], std::string names[], int totSize);
+void mergeSort(std::string name[], int score[], int size);
 
 int main( ) {
     std::string name[MAX];
@@ -93,22 +98,42 @@ void parseFile(std::ifstream& inputStream,
 }
 
 void orderData(std::string name[], int score[], const int size) {
-
+    if (size <= 1) return;
+    mergeSort(name, score, size);
 }
 
 void mergeSort(std::string name[], int score[], int size) {
+    if (size <= 1) return;
 
+    const int sizeLeft = size / 2;
+    const int sizeRight = size - sizeLeft;
+    int score1[MAX], score2[MAX];
+    std::string name1[MAX], name2[MAX];
 
-    
+    std::copy_n(score, sizeLeft, score1);
+    std::copy_n(name, sizeLeft, name1);
+    // for (int idx = 0; idx < sizeLeft; ++idx) {
+    //     score1[idx] = score[idx];
+    //     name1[idx] = name[idx];
+    // }
+    std::copy_n(score + sizeLeft, sizeRight, score2);
+    std::copy_n(name + sizeLeft, sizeRight, name2);
+    // for (int idx = 0; idx < sizeRight; ++idx) {
+    //     score2[idx] = score[sizeLeft + idx];
+    //     name2[idx] = name[sizeLeft + idx];
+    // }
+    mergeSort(name1, score1, sizeLeft);
+    mergeSort(name2, score2, sizeRight);
+    merge(score1, name1, sizeLeft, score2, name2, sizeRight, score, name, size);
 }
 
-void merge(const int arr1[], const std::string& name1, const int size1,
-           const int arr2[], const std::string& name2, const int size2,
+void merge(const int arr1[], const std::string name1[], const int size1,
+           const int arr2[], const std::string name2[], const int size2,
            int result[], std::string names[], const int totSize) {
 
     int p1 = 0, p2 = 0, idx = 0;
     while ((p1 < size1) && (p2 < size2) && (idx < totSize)) {
-        if (arr1[p1] < arr2[p2]) {
+        if (arr1[p1] >= arr2[p2]) {
             result[idx] = arr1[p1];
             names[idx] = name1[p1];
             ++p1;
@@ -119,6 +144,7 @@ void merge(const int arr1[], const std::string& name1, const int size1,
         }
         ++idx;
     }
+    // Merge wrap-up
     while ((p1 < size1) && (idx < totSize)) {
         result[idx] = arr1[p1];
         names[idx] = name1[p1];
@@ -133,15 +159,16 @@ void merge(const int arr1[], const std::string& name1, const int size1,
     }
 }
 
-
-
-
 void showBest(const std::string name[], const int score[],
               const int size, const int topPlayers) {
-    for (int idx = 0; idx < size; ++idx)
+    for (int idx = 0; idx < size; ++idx) {
+        const bool highlight = (idx < topPlayers);
+        if (highlight) std::cout << "*** ";
+        else           std::cout << "    ";
         std::cout << "Player #" << std::setw(2) << idx + 1
-                  << ": " << std::setw(10) << name[idx]
-                  << ", score: " << std::setw(10) << score[idx] << "\n";
+                  << ": " << std::setw(12) << name[idx]
+                  << ", score: " << std::setw(6) << score[idx];
+        if (highlight) std::cout << " ***";
+        std::cout << "\n";
+    }
 }
-
-
