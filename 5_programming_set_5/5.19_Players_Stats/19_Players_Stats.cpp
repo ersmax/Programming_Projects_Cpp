@@ -1,35 +1,49 @@
-/*
-Write a program that manages a list of up to ten players and their high scores in the
-computer’s memory (not on disk as in Programming Project 18). Use two arrays
-to manage the list. One array should store the player’s name, and the other array
-should store the player’s high score. Use the index of the arrays to correlate the
-names with the scores. In the next chapter you will learn a different way to organize
-related data by putting them into a struct or class. Do not use a struct or class for
-this program. Your program should support the following features:
-a. Add a new player and score (up to ten players).
-b. Print all player names and their scores to the screen.
-c. Allow the user to enter a player name and output that player’s score or a message
-if the player name has not been entered.
-d. Allow the user to enter a player name and remove the player from the list.
-Create a menu system that allows the user to select which option to invoke.
-*/
-
-#include <iostream>
-#include <limits>
-#include <iomanip>
+#include <iostream>     // for std::cout, std::cin
+#include <limits>       // for std::numeric_limits
+#include <iomanip>      // for std::setw
+#include <string>       // for std::string
+#include <cctype>       // for std::tolower, std::isspace
 
 constexpr int MAX = 10;
 
 void menu(char& choice);
+//   Postcondition: displays the menu and sets choice to a valid option
+
 bool handleChoice(char choice, std::string names[],
                   int scores[], int maxSize, int& size);
+//   Precondition: choice is a valid menu option
+//   Postcondition: handles the choice selected by the user.
+// Returns false if the user chose to exit the program, true otherwise.
+
 void addPlayer(std::string names[], int scores[], int maxSize, int& size);
+//   Precondition: names and scores are arrays of size at least maxSize
+//   Postcondition: adds a new player and score to names and scores arrays,
+// if there is space available.
+
 std::string enterName();
+//   Postcondition: prompts the user to enter a name and returns it.
+
 int enterScore();
+//   Postcondition: prompts the user to enter a score and returns it.
+
 void showPlayers(const std::string names[], const int scores[], int size);
+//   Precondition: names and scores are arrays of size at least size
+//   Postcondition: displays all player names and their scores.
+
 void showStat(const std::string names[], const int scores[], int size);
+//   Precondition: names and scores are arrays of size at least size
+//   Postcondition: prompts the user to enter a player name and
+// displays the corresponding score or a message if the player is not found.
+
 void removePlayers(std::string names[], int scores[], int& size);
+//   Precondition: names and scores are arrays of size at least size
+//   Postcondition: prompts the user to enter a player name and
+// removes the player from the list if found.
+
 int findPlayer(const std::string& name, const std::string names[], int size);
+//   Precondition: names is an array of size at least size
+//   Postcondition: searches for name in names array.
+// Returns the index of the player if found, -1 otherwise.
 
 int main( ) {
     char choice;
@@ -112,7 +126,7 @@ void showPlayers(const std::string names[], const int scores[], const int size) 
 }
 
 void showStat(const std::string names[], const int scores[], const int size) {
-    if (size < 0) {
+    if (size <= 0) {
         std::cout << "Rooster is empty\n";
         return;
     }
@@ -126,7 +140,7 @@ void showStat(const std::string names[], const int scores[], const int size) {
 }
 
 void removePlayers(std::string names[], int scores[], int& size) {
-    if (size < 0) {
+    if (size <= 0) {
         std::cout << "Rooster is empty\n";
         return;
     }

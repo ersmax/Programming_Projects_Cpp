@@ -257,3 +257,7 @@ Check also my [Other projects](https://github.com/ersmax)
     and includes input validation to handle file reading errors.
     The Merge Sort implementation is optimized to avoid excessive memory allocation by reusing a single auxiliary array
     for merging during the sort process.
+19. [Players Statistics](5_programming_set_5/5.19_Players_Stats) 
+    \- This program allows the user to icheck the list of players and their score, remove and add new players, check
+    if a player exists. It uses a fixed-size array of structures to store player data, and includes input validation 
+    to handle file reading errors. It also validates user input by trimming whitespace and ensuring non-empty names.

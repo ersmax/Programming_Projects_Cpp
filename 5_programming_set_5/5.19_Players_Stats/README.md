@@ -14,6 +14,75 @@ Create a menu system that allows the user to select which option to invoke.
 
 ---
 
+# Overview
+
+This program manages up to ten players and their high scores using two parallel arrays: 
+one for player names and one for scores. 
+The arrays are correlated by index (same index = same player). 
+The program uses a text menu to let the user add, list, query, and remove players. 
+Input is validated and trimmed; EOF is handled gracefully.
+
+## Illustrative example
+<p align="center">
+  <img src="./Figures/Players.PNG" alt="Players" width="48%" />
+</p>
+
+
+## High-level flow
+- `main` creates the arrays and enters a loop that shows the menu and handles the chosen action until the user exits.
+
+## Function summaries and logic
+
+- `menu(char& choice)`
+  - Displays the menu.
+  - Reads a full line with `std::getline`.
+  - Skips leading whitespace to find the first meaningful character.
+  - Converts that character to lowercase (using `std::tolower` with `static_cast<unsigned char>`).
+  - Validates the choice is one of `a`, `b`, `c`, `d`, or `0`.
+  - On EOF sets `choice` to `'0'` (exit).
+
+- `handleChoice(char choice, std::string names[], int scores[], int maxSize, int& size)`
+  - Dispatches the selected option using a `switch`.
+  - Calls the appropriate function for each menu item.
+  - Returns `false` when the user chose to exit (`'0'`), otherwise `true`.
+
+- `addPlayer(std::string names[], int scores[], int maxSize, int& size)`
+  - If the roster is full (`size >= maxSize`) prints a message and returns.
+  - Calls `enterName()` to obtain a validated, trimmed name.
+  - Calls `enterScore()` to obtain a validated non\-negative score.
+  - Stores the name and score at index `size` and increments `size`.
+
+- `enterName()`
+  - Prompts repeatedly until a non\-empty name is entered.
+  - Reads a full line with `std::getline`. On EOF clears state and retries.
+  - Trims leading and trailing whitespace using `std::isspace` (with `static_cast<unsigned char>`).
+  - Rejects empty names (after trimming) and prompts again.
+  - Returns the validated trimmed name.
+
+- `enterScore()`
+  - Prompts repeatedly until a valid non\-negative integer is entered.
+  - Uses `operator>>` to read an `int`. On failure clears the stream and ignores the rest of the line.
+  - Rejects negative scores and prompts again.
+  - Returns the validated score.
+
+- `showPlayers(const std::string names[], const int scores[], int size)`
+  - Prints a header row and then each player line with index (`#`), name, and score.
+  - Uses `std::setw` for alignment and `std::string(37, '-')` to print a separator.
+
+- `showStat(const std::string names[], const int scores[], int size)`
+  - If the roster is empty prints a message and returns.
+  - Prompts for a name using `enterName()`.
+  - Uses `findPlayer` to locate the name; prints the score if found or "Player not found" otherwise.
+
+- `removePlayers(std::string names[], int scores[], int& size)`
+  - If the roster is empty prints a message and returns.
+  - Prompts for a name using `enterName()`.
+  - Uses `findPlayer` to get the index. If found, shifts all subsequent elements left to overwrite the removed entry and decrements `size`.
+
+- `findPlayer(const std::string& name, const std::string names[], int size)`
+  - Performs a linear search over the `names` array.
+  - Returns the index of the matching name or `-1` if not found.
+
 ##  Alternative input validation
 An alternative to input validation in `showMenu` could be:
 However, this implementation works for simple input but has weaknesses: 
