@@ -13,3 +13,39 @@ d. Allow the user to enter a player name and remove the player from the list.
 Create a menu system that allows the user to select which option to invoke.
 
 ---
+
+##  Alternative input validation
+An alternative to input validation in `showMenu` could be:
+However, this implementation works for simple input but has weaknesses: 
+it reads a single token with operator>> (so multi-character input can be mishandled), 
+doesn't accept uppercase, and doesn't handle EOF cleanly. 
+The version that uses std::getline, trims leading whitespace, converts to lowercase, 
+handles EOF by returning '0', and improve the logic of  showMenu(char& choice).
+
+```cpp
+void showMenu(char& choice) {
+    std::cout << "a. Add a new player and score\n"
+              << "b. Print player names and their scores\n"
+              << "c. Show the score by searching the player name\n"
+              << "d. Remove a player by typing the name\n"
+              << "0. Exit the program\n\n"
+              << "Make a choice:\n";
+
+    char letter;
+    while (true) {
+        if (!(std::cin >> letter)) {
+            std::cout << "Error in the choice\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    
+        if ((letter >= 'a' && letter <= 'd') || letter == '0') {
+            choice = letter;
+            break;
+        }
+        std::cout << "Not a valid choice.\n";
+    }
+}
+```
