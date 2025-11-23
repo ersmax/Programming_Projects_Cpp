@@ -56,7 +56,7 @@ int main( ) {
     int nPlayers = 0;
     copyData(name, score, MAX, nPlayers);
     orderData(name, score, nPlayers);
-    showBest(name, score, nPlayers, BEST);
+    showBest(name, score, nPlayers, BEST);  
 
     std::cout << "\n";
     return 0;
