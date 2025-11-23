@@ -250,3 +250,10 @@ Check also my [Other projects](https://github.com/ersmax)
     to the expected Benford's Law distribution, printing both for comparison.
     Input validation ensures that only positive numbers are processed, and file reading errors are handled properly.
     Two alternative of getting the leading digit are provided: using division and using string conversion.
+18. [Highest Score with Merge Sort and avoid memory churn](5_programming_set_5/5.18_Highest_Score_Players) 
+    \- This program reads names and scores from a file, sorts the entries using Merge Sort to find the highest score,
+    and prints the highest score along with the corresponding name. 
+    It uses a fixed-size array of structures to store names and scores, implements Merge Sort to sort the array,
+    and includes input validation to handle file reading errors.
+    The Merge Sort implementation is optimized to avoid excessive memory allocation by reusing a single auxiliary array
+    for merging during the sort process.

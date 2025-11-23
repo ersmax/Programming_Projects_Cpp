@@ -25,10 +25,17 @@ outputting the top three players and scores.
 
 ---
 
+
 # Purpose
 - Read name/score pairs from the file `./5_programming_set_5/5.18_Highest_Score_Players/Utilities/Scores.txt`.
 - Sort players by score in descending order.
 - Display the top `BEST` players.
+
+# Illustrative example
+<play align="center">
+  <img src="./Figures/Ranking.PNG" alt="Ranking" width="600"/>
+</play>
+
 
 ## Key functions and responsibilities
 - `main`
@@ -80,12 +87,13 @@ outputting the top three players and scores.
 - Merging strategy:
     - Two pointers: `p1` starts at `start`, `p2` starts at `mid + 1`.
     - An index into the buffer, `idxScore`, is initialized to `start` so the merged output is placed in the same index range in the buffer.
-    - Compare `score[p1]` and `score[p2]` and write the larger one first to keep descending order.
+    - Compare `score[p1]` and `score[p2]` and write the larger one first to keep descending order in `bufferScore[idxScore]` and `bufferName[idxScore]`.
     - The comparison uses `>=` so ties favor the left element (preserves stability).
     - After exhausting one side, copy the remainder of the other side into the buffer.
     - Finally, copy the buffer slice `buffer[*][start..end]` back into `name[start..end]` and `score[start..end]`.
 - Important details:
-    - Placing the merged output into `buffer[start..end]` (rather than compacting into buffer index 0) lets the code copy back with the same index range, simplifying index arithmetic.
+    - Placing the merged output into `buffer[start..end]` (that is, `index start` rather than compacting into buffer `index 0`) 
+      lets the code copy back with the same index range, simplifying index arithmetic.
     - Using the preallocated buffers means `merge` never performs dynamic allocation.
 
 ## Correctness and efficiency notes
