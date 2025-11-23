@@ -32,10 +32,9 @@ outputting the top three players and scores.
 - Display the top `BEST` players.
 
 # Illustrative example
-<play align="center">
-  <img src="./Figures/Ranking.PNG" alt="Ranking" width="600"/>
-</play>
-
+<p align="center">
+  <img src="./Figures/Ranking.PNG" alt="Ranking" width="48%" />
+</p>
 
 ## Key functions and responsibilities
 - `main`
