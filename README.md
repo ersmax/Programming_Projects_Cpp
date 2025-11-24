@@ -1,3 +1,10 @@
+# Important notes
+This repository is outdated and no longer maintained.
+Please refer to the new repository [ProjectsCpp](https://github.com/ersmax/ProjectsCpp),
+which contains up-to-date C++ code examples and exercises developed by me in
+Visual Studio 2026 with C++20 standard.
+This repository is kept for historical reference only and was developed in CLion and C++14 standard.
+
 # Practical C++ Problems — Documentation Index
 
 This repository contains practical, real-life programming problems solved in C++ std 14/20.
